@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_theme"
+    tools:context=".SplashActivity">
+
+  <ImageView
+      android:id="@+id/splashIV"
+      android:layout_width="@dimen/_130mdp"
+      android:layout_height="@dimen/_130mdp"
+      android:src="@drawable/grocery"
+      android:layout_centerInParent="true"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/splashIV"
+        android:text="Grocery"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/_20font_mdp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginTop="@dimen/_10mdp"/>
+
+</RelativeLayout>
