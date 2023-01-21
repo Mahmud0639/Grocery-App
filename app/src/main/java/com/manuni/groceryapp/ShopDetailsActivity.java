@@ -1,0 +1,318 @@
+package com.manuni.groceryapp;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.manuni.groceryapp.databinding.ActivityShopDetailsBinding;
+import com.manuni.groceryapp.databinding.DialogCartBinding;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
+import p32929.androideasysql_library.Column;
+import p32929.androideasysql_library.EasyDB;
+
+public class ShopDetailsActivity extends AppCompatActivity {
+    ActivityShopDetailsBinding binding;
+    private String shopUid;
+    private FirebaseAuth auth;
+    private String myLatitude,myLongitude;
+    private String shopName,shopEmail,shopPhone,shopAddress,shopLatitude,shopLongitude;
+    private ArrayList<ModelProduct> modelProducts;
+    private ProductUserAdapter productUserAdapter;
+    public String deliveryFee;
+
+    private ArrayList<ModelCartItem> modelCartItemsList;
+    private AdapterCartItem adapterCartItem;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ActivityShopDetailsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        shopUid = getIntent().getStringExtra("shopUid");
+
+        auth = FirebaseAuth.getInstance();
+
+        loadMyInfo();
+        loadShopDetails();
+        loadShopProducts();
+        //each shop have its own products and orders
+        deleteCartData();
+
+        binding.backArrowBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+        binding.cartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showCartDialog();
+            }
+        });
+        //commit korar new ekta upay paoya gece...seta holo alt+(1 key er purber tilda key mane ~ key)
+
+        binding.callBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialPhone();
+            }
+        });
+        binding.mapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openMap();
+            }
+        });
+
+        binding.searchET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                try {
+                    productUserAdapter.getFilter().filter(charSequence);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        binding.filterProductBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ShopDetailsActivity.this);
+                builder.setTitle("Choose Category").setItems(Constants.productCategories1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String selected = Constants.productCategories1[i];
+                        binding.filterProductTV.setText(selected);
+                        if (selected.equals("All")){
+                            loadShopProducts();
+                        }else {
+                            productUserAdapter.getFilter().filter(selected);
+                        }
+                    }
+                }).show();
+            }
+        });
+    }
+
+    private void deleteCartData() {
+        EasyDB easyDB = EasyDB.init(ShopDetailsActivity.this,"ITEMS_DB")
+                .setTableName("ITEMS_TABLE")
+                .addColumn(new Column("Item_Id",new String[]{"text","unique"}))
+                .addColumn(new Column("Item_PID",new String[]{"text","not null"}))
+                .addColumn(new Column("Item_Name",new String[]{"text","not null"}))
+                .addColumn(new Column("Item_Each_Price",new String[]{"text","not null"}))
+                .addColumn(new Column("Item_Price",new String[]{"text","not null"}))
+                .addColumn(new Column("Item_Quantity",new String[]{"text","not null"}))
+                .doneTableColumn();
+
+        easyDB.deleteAllDataFromTable();//it will delete all data from the cart
+
+    }
+
+    public double allTotalPrice = 0.00;
+    public TextView subTotalPriceTV, deliFeeTV,allTotalPriceTV;
+
+    private void showCartDialog() {
+
+        //init list
+        modelCartItemsList = new ArrayList<>();
+
+
+        DialogCartBinding binding;
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_cart,null);
+        binding = DialogCartBinding.bind(view);
+
+        subTotalPriceTV = view.findViewById(R.id.subTotalTV);
+        deliFeeTV = view.findViewById(R.id.deliveryFeeTV);
+        allTotalPriceTV = view.findViewById(R.id.totalPriceTV);
+        binding.shopNameTV.setText(shopName);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ShopDetailsActivity.this);
+        builder.setView(view);
+
+
+
+        EasyDB easyDB = EasyDB.init(ShopDetailsActivity.this,"ITEMS_DB")
+                .setTableName("ITEMS_TABLE")
+                .addColumn(new Column("Item_Id",new String[]{"text","unique"}))
+                .addColumn(new Column("Item_PID",new String[]{"text","not null"}))
+                .addColumn(new Column("Item_Name",new String[]{"text","not null"}))
+                .addColumn(new Column("Item_Each_Price",new String[]{"text","not null"}))
+                .addColumn(new Column("Item_Price",new String[]{"text","not null"}))
+                .addColumn(new Column("Item_Quantity",new String[]{"text","not null"}))
+                .doneTableColumn();
+
+        //get all data from db
+        Cursor result = easyDB.getAllData();
+        while (result.moveToNext()){
+            String id = result.getString(1);
+            String pId = result.getString(2);
+            String name = result.getString(3);
+            String price = result.getString(4);
+            String cost = result.getString(5);
+            String quantity = result.getString(6);
+
+            allTotalPrice = allTotalPrice+Double.parseDouble(cost);
+
+            ModelCartItem modelCartItem = new ModelCartItem(""+id,""+pId,""+name,""+price,""+cost,""+quantity);
+            modelCartItemsList.add(modelCartItem);
+        }
+
+        adapterCartItem = new AdapterCartItem(ShopDetailsActivity.this,modelCartItemsList);
+        binding.cartItemRV.setAdapter(adapterCartItem);
+
+        binding.deliveryFeeTV.setText("$"+deliveryFee);
+        binding.subTotalTV.setText(""+String.format("%.2f",allTotalPrice));
+        binding.totalPriceTV.setText("$"+(allTotalPrice+Double.parseDouble(deliveryFee.replaceAll("$",""))));
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        //reset total price on dialog dismiss
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                allTotalPrice = 0.00;
+            }
+        });
+
+
+    }
+
+    private void dialPhone(){
+        startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+Uri.encode(shopPhone))));
+        Toast.makeText(this, ""+shopPhone, Toast.LENGTH_SHORT).show();
+    }
+    private void openMap(){
+        //saddr means source address
+        //daddr means destination address
+        String address = "https://maps.google.com/maps?saddr=" +myLatitude+","+myLongitude+"&daddr=" + shopLatitude+","+shopLongitude;
+        Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse(address));
+        startActivity(intent);
+    }
+    private void loadMyInfo(){
+        DatabaseReference dR = FirebaseDatabase.getInstance().getReference().child("Users");
+        dR.orderByChild("uid").equalTo(auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    String name = ""+dataSnapshot.child("fullName").getValue();
+                    String accountType = ""+dataSnapshot.child("accountType").getValue();
+                    String email = ""+dataSnapshot.child("email").getValue();
+                    String phoneNumber = ""+dataSnapshot.child("phoneNumber").getValue();
+                    String profileImage = ""+dataSnapshot.child("profileImage").getValue();
+                    String city = ""+dataSnapshot.child("city").getValue();
+                    myLatitude = ""+dataSnapshot.child("latitude").getValue();
+                    myLongitude = ""+dataSnapshot.child("longitude").getValue();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void loadShopDetails(){
+        DatabaseReference dbr = FirebaseDatabase.getInstance().getReference().child("Users");
+        dbr.child(shopUid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String fullName = ""+snapshot.child("fullName").getValue();
+                shopName = ""+snapshot.child("shopName").getValue();
+                shopEmail = ""+snapshot.child("email").getValue();
+                shopAddress = ""+snapshot.child("address").getValue();
+                shopPhone = ""+snapshot.child("phoneNumber").getValue();
+                shopLatitude = ""+snapshot.child("latitude").getValue();
+                shopLongitude = ""+snapshot.child("longitude").getValue();
+                deliveryFee = ""+snapshot.child("deliveryFee").getValue();
+                String profileImage = ""+snapshot.child("profileImage").getValue();
+                String shopOpen = ""+snapshot.child("shopOpen").getValue();
+
+
+                binding.shopNameTV.setText(shopName);
+                binding.emailTV.setText(shopEmail);
+                binding.addressTV.setText(shopAddress);
+                binding.phoneTV.setText(shopPhone);
+                binding.deliveryFeeTV.setText("Delivery Fee $"+deliveryFee);
+
+                if (shopOpen.equals("true")){
+                    binding.openCloseTV.setText("Open");
+                }else {
+                    binding.openCloseTV.setText("Closed");
+                }
+
+                try {
+                    Picasso.get().load(profileImage).into(binding.shopIV);
+                }catch (Exception e){
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void loadShopProducts() {
+
+        modelProducts = new ArrayList<>();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
+        reference.child(shopUid).child("Products").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                modelProducts.clear();
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    ModelProduct data = dataSnapshot.getValue(ModelProduct.class);
+                    modelProducts.add(data);
+                }
+                productUserAdapter = new ProductUserAdapter(ShopDetailsActivity.this,modelProducts);
+                binding.productRV.setAdapter(productUserAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+}

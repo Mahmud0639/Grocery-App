@@ -10,7 +10,7 @@
     <RelativeLayout
         android:id="@+id/userRL"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_80mdp"
+        android:layout_height="@dimen/_50mdp"
         android:background="@drawable/shape_rect_01"
         android:padding="@dimen/_10mdp">
 
@@ -184,16 +184,17 @@
         android:layout_marginTop="@dimen/_5mdp"
         android:layout_marginEnd="@dimen/_5mdp"
         android:layout_marginBottom="@dimen/_5mdp"
-        android:textColorHint="@color/background_theme"
         android:background="@drawable/shape_rect_02"
         android:drawableStart="@drawable/ic_location_gray"
         android:drawablePadding="@dimen/_5mdp"
         android:hint="Complete Address"
         android:inputType="textPostalAddress|textMultiLine"
-        android:padding="@dimen/_10mdp" />
+        android:padding="@dimen/_10mdp"
+        android:textColorHint="@color/background_theme" />
 
     <Switch
         android:id="@+id/shopOpenSwitch"
+        style="@style/TextAppearance.MaterialComponents.Body1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/completeAddressET"
@@ -202,7 +203,7 @@
         android:layout_marginEnd="@dimen/_4mdp"
         android:layout_marginBottom="@dimen/_4mdp"
         android:text="Shop Open"
-        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/white"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <Button

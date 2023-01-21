@@ -59,10 +59,10 @@ public class SplashActivity extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                     String accountType = ""+dataSnapshot.child("accountType").getValue();
                     if (accountType.equals("Seller")){
-                        startActivity(new Intent(SplashActivity.this,RegisterSellerActivity.class));
+                        startActivity(new Intent(SplashActivity.this,MainSellerActivity.class));
                         finish();
                     }else {
-                        startActivity(new Intent(SplashActivity.this,RegisterUserActivity.class));
+                        startActivity(new Intent(SplashActivity.this,MainUserActivity.class));
                         finish();
                     }
                 }

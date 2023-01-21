@@ -52,16 +52,15 @@
             android:padding="@dimen/_5mdp"
             android:src="@drawable/ic_key_white" />
 
-        <com.blogspot.atifsoftwares.circularimageview.CircularImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/personImage"
             android:layout_width="@dimen/_80mdp"
             android:layout_height="@dimen/_80mdp"
             android:layout_below="@id/iconIv"
             android:layout_centerHorizontal="true"
             android:src="@drawable/ic_person_gray"
-            app:c_border="true"
-            app:c_border_color="@color/teal_700"
-            app:c_border_width="@dimen/_2mdp" />
+            app:civ_border_color="@color/black"
+            app:civ_border_width="@dimen/_2mdp" />
 
 
         <EditText

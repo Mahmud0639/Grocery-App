@@ -1,11 +1,15 @@
 package com.manuni.groceryapp;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Toast;
 
@@ -18,7 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.manuni.groceryapp.databinding.ActivityMainSellerBinding;
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainSellerActivity extends AppCompatActivity {
@@ -26,6 +32,9 @@ public class MainSellerActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseReference dbRef;
     private ProgressDialog dialog;
+
+    private ArrayList<ModelProduct> list;
+    private ProductSellerAdapter productSellerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +53,31 @@ public class MainSellerActivity extends AppCompatActivity {
 
 
         checkUser();
+        showProductsUI();
+
+        loadAllProducts();
+
+        //searching
+        binding.searchET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                try {
+                    productSellerAdapter.getFilter().filter(charSequence);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         binding.logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +94,122 @@ public class MainSellerActivity extends AppCompatActivity {
             }
         });
 
+        binding.addProductBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainSellerActivity.this,AddProductActivity.class));
+            }
+        });
 
+        binding.tabProductsTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showProductsUI();
+            }
+        });
+
+        binding.tabOrdersTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showOrdersUI();
+            }
+        });
+
+        binding.filterProductBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainSellerActivity.this);
+                builder.setTitle("Choose Category").setItems(Constants.productCategories1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String selected = Constants.productCategories1[i];
+                        binding.filterProductTV.setText(selected);
+                        if (selected.equals("All")){
+                            loadAllProducts();
+                        }else {
+                            loadFilteredProducts(selected);
+                        }
+                    }
+                }).show();
+            }
+        });
+
+
+    }
+
+    private void loadFilteredProducts(String selected) {
+        list = new ArrayList<>();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        databaseReference.child(auth.getUid()).child("Products").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //before getting data clear the list data
+                list.clear();
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+
+                    String productCategory = ""+dataSnapshot.child("productCategory").getValue();
+                    if (selected.equals(productCategory)){
+                        ModelProduct data = dataSnapshot.getValue(ModelProduct.class);
+                        list.add(data);
+                    }
+
+
+                }
+                productSellerAdapter = new ProductSellerAdapter(MainSellerActivity.this,list);
+                binding.productRV.setAdapter(productSellerAdapter);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void loadAllProducts() {
+        list = new ArrayList<>();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        databaseReference.child(auth.getUid()).child("Products").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //before getting data clear the list data
+                list.clear();
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    ModelProduct data = dataSnapshot.getValue(ModelProduct.class);
+                    list.add(data);
+                }
+                productSellerAdapter = new ProductSellerAdapter(MainSellerActivity.this,list);
+                binding.productRV.setAdapter(productSellerAdapter);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void showProductsUI(){
+        binding.productsRL.setVisibility(View.VISIBLE);
+        binding.ordersRL.setVisibility(View.GONE);
+
+        binding.tabProductsTV.setTextColor(getResources().getColor(R.color.black));
+        binding.tabProductsTV.setBackgroundResource(R.drawable.shape_rect04);
+
+        binding.tabOrdersTV.setTextColor(getResources().getColor(R.color.white));
+        binding.tabOrdersTV.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+    }
+    private void showOrdersUI(){
+        binding.ordersRL.setVisibility(View.VISIBLE);
+        binding.productsRL.setVisibility(View.GONE);
+
+        binding.tabProductsTV.setTextColor(getResources().getColor(R.color.white));
+        binding.tabProductsTV.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+
+        binding.tabOrdersTV.setTextColor(getResources().getColor(R.color.black));
+        binding.tabOrdersTV.setBackgroundResource(R.drawable.shape_rect04);
     }
     private void makeMeOffLine(){
         dialog.setMessage("Logging out...");
@@ -100,8 +249,19 @@ public class MainSellerActivity extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                     String name = ""+dataSnapshot.child("fullName").getValue();
                     String accountType = ""+dataSnapshot.child("accountType").getValue();
+                    String email = ""+dataSnapshot.child("email").getValue();
+                    String shopName = ""+dataSnapshot.child("shopName").getValue();
+                    String profileImage = ""+dataSnapshot.child("profileImage").getValue();
 
                     binding.nameTxt.setText(name+"("+accountType+")");
+                    binding.shopName.setText(shopName);
+                    binding.email.setText(email);
+                    try {
+                        Picasso.get().load(profileImage).placeholder(R.drawable.ic_person_gray).into(binding.profileIV);
+                    } catch (Exception e) {
+                        binding.profileIV.setImageResource(R.drawable.ic_baseline_store_gray);
+                        e.printStackTrace();
+                    }
                 }
             }
 
