@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/GroceryApp/app/src/main/res/drawable/shape_circle_01.xml" value="0.189" />
+        <entry key="..\:/GroceryApp/app/src/main/res/drawable/shape_circle_03.xml" value="0.1665" />
+        <entry key="..\:/GroceryApp/app/src/main/res/drawable/shape_rect03.xml" value="0.1555" />
+        <entry key="..\:/GroceryApp/app/src/main/res/drawable/shape_rect04.xml" value="0.1555" />
+        <entry key="..\:/GroceryApp/app/src/main/res/drawable/shape_rect05.xml" value="0.212" />
+        <entry key="..\:/GroceryApp/app/src/main/res/drawable/shape_rect06.xml" value="0.1665" />
+        <entry key="..\:/GroceryApp/app/src/main/res/drawable/shape_rect_01.xml" value="0.189" />
+        <entry key="..\:/GroceryApp/app/src/main/res/drawable/shape_rect_02.xml" value="0.189" />
+        <entry key="..\:/GroceryApp/app/src/main/res/layout/activity_add_product.xml" value="0.25" />
+        <entry key="..\:/GroceryApp/app/src/main/res/layout/activity_edit_product.xml" value="0.2046875" />
+        <entry key="..\:/GroceryApp/app/src/main/res/layout/activity_edit_profile_seller.xml" value="0.25" />
+        <entry key="..\:/GroceryApp/app/src/main/res/layout/activity_edite_profile_user.xml" value="0.25" />
+        <entry key="..\:/GroceryApp/app/src/main/res/layout/activity_forgot_password.xml" value="0.25" />
+        <entry key="..\:/GroceryApp/app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="..\:/GroceryApp/app/src/main/res/layout/activity_main_seller.xml" value="0.25" />
+        <entry key="..\:/GroceryApp/app/src/main/res/layout/activity_main_user.xml" value="0.25" />
+        <entry key="..\:/GroceryApp/app/src/main/res/layout/activity_register_seller.xml" value="0.209375" />
+        <entry key="..\:/GroceryApp/app/src/main/res/layout/activity_register_user.xml" value="0.209375" />
+        <entry key="..\:/GroceryApp/app/src/main/res/layout/activity_shop_details.xml" value="0.25" />
+        <entry key="..\:/GroceryApp/app/src/main/res/layout/activity_splash.xml" value="0.209375" />
+        <entry key="..\:/GroceryApp/app/src/main/res/layout/bottom_sheet_product_details_seller.xml" value="0.25" />
+        <entry key="..\:/GroceryApp/app/src/main/res/layout/dialog_cart.xml" value="0.209375" />
+        <entry key="..\:/GroceryApp/app/src/main/res/layout/dialog_quantity.xml" value="0.25" />
+        <entry key="..\:/GroceryApp/app/src/main/res/layout/row_cart_item.xml" value="0.22" />
+        <entry key="..\:/GroceryApp/app/src/main/res/layout/row_shop.xml" value="0.25" />
+        <entry key="..\:/GroceryApp/app/src/main/res/layout/sample_product_seller.xml" value="0.25" />
+        <entry key="..\:/GroceryApp/app/src/main/res/layout/sample_product_user.xml" value="0.25" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
