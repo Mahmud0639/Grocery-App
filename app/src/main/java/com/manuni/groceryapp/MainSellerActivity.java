@@ -36,6 +36,9 @@ public class MainSellerActivity extends AppCompatActivity {
     private ArrayList<ModelProduct> list;
     private ProductSellerAdapter productSellerAdapter;
 
+    private ArrayList<ModelOrderShop> modelOrderShops;
+    private AdapterOrderShop adapterOrderShop;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +57,7 @@ public class MainSellerActivity extends AppCompatActivity {
 
         checkUser();
         showProductsUI();
-
+        loadAllOrders();
         loadAllProducts();
 
         //searching
@@ -134,7 +137,69 @@ public class MainSellerActivity extends AppCompatActivity {
             }
         });
 
+        binding.filterOrderBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String[] options = {"All","In Progress","Completed","Cancelled"};
 
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainSellerActivity.this);
+                builder.setTitle("Filter Orders")
+                        .setItems(options, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                if (i==0){
+                                    binding.filterOrderTV.setText("Showing All Orders");
+                                    adapterOrderShop.getFilter().filter("");
+                                }else {
+                                    String optionClicked = options[i];
+                                    binding.filterOrderTV.setText("Showing "+optionClicked+" Orders");
+                                    adapterOrderShop.getFilter().filter(optionClicked);
+                                }
+                            }
+                        }).show();
+            }
+        });
+
+        binding.reviewBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainSellerActivity.this,ShopReviewActivity.class);
+                intent.putExtra("shopUid",auth.getUid());
+                startActivity(intent);
+            }
+        });
+
+        binding.settingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainSellerActivity.this,SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+    }
+
+    private void loadAllOrders() {
+        modelOrderShops = new ArrayList<>();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
+        reference.child(auth.getUid()).child("Orders").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                modelOrderShops.clear();
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    ModelOrderShop modelOrderShop = dataSnapshot.getValue(ModelOrderShop.class);
+                    modelOrderShops.add(modelOrderShop);
+                }
+                adapterOrderShop = new AdapterOrderShop(MainSellerActivity.this,modelOrderShops);
+                binding.ordersRV.setAdapter(adapterOrderShop);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void loadFilteredProducts(String selected) {

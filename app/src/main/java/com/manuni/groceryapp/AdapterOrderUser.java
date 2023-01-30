@@ -1,6 +1,7 @@
 package com.manuni.groceryapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,6 +68,16 @@ public class AdapterOrderUser extends RecyclerView.Adapter<AdapterOrderUser.Adap
         String dateTime = DateFormat.format("dd/MM/yyyy",calendar).toString();
 
         holder.binding.dateTV.setText(dateTime);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context,OrderDetailsUsersActivity.class);
+                intent.putExtra("orderTo",orderTo);
+                intent.putExtra("orderId",orderId);
+                context.startActivity(intent);
+            }
+        });
     }
 
     private void loadShopInfo(ModelOrderUser data, AdapterOrderUserViewHolder holder) {

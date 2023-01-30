@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/white"
+    app:cardElevation="@dimen/_3mdp"
+    app:contentPadding="@dimen/_5mdp"
+    android:layout_marginBottom="@dimen/_1mdp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/profileLL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_5mdp"
+            android:layout_marginBottom="@dimen/_5mdp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profileIV"
+                android:layout_width="@dimen/_35mdp"
+                android:layout_height="@dimen/_35mdp"
+                android:src="@drawable/ic_person_gray"
+                app:civ_border_color="@color/background_theme"
+                android:layout_marginEnd="@dimen/_5mdp"
+                app:civ_border_width="@dimen/_2mdp"/>
+
+            <TextView
+                android:id="@+id/nameTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mahmud Islam"
+                android:textColor="@color/background_theme"
+                android:textSize="@dimen/_13font_mdp"/>
+
+
+
+
+
+        </LinearLayout>
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profileLL"
+            android:layout_marginEnd="@dimen/_10mdp"
+            android:numStars="5"
+            android:progressBackgroundTint="@color/black"
+            android:progressTint="@color/background_theme"
+            />
+
+        <TextView
+            android:id="@+id/dateTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profileLL"
+            android:layout_toEndOf="@id/ratingBar"
+            android:text="12/07/23"
+            android:textColor="#959292"
+            android:textSize="@dimen/_8font_mdp" />
+
+        <TextView
+            android:id="@+id/reviewMsgTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dateTV"
+            android:layout_marginTop="@dimen/_5mdp"
+            android:text="The original review of the user"
+            android:textColor="@color/black" />
+
+
+    </RelativeLayout>
+
+
+
+
+</androidx.cardview.widget.CardView>

@@ -80,6 +80,8 @@ public class AdapterCartItem extends RecyclerView.Adapter<AdapterCartItem.CartIt
                 ((ShopDetailsActivity)context).subTotalPriceTV.setText("$"+String.format("%.2f",subTotal));
                 ((ShopDetailsActivity)context).allTotalPriceTV.setText("$"+String.format("%.2f",Double.parseDouble(String.format("%.2f",totalPrice))));
 
+                //after removing update cart count
+                ((ShopDetailsActivity)context).cartCount();
 
             }
         });

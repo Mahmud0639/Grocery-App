@@ -44,6 +44,14 @@
             android:layout_toStartOf="@id/logoutBtn"
             android:background="@drawable/ic_edit_white" />
 
+        <ImageButton
+            android:id="@+id/settingsBtn"
+            android:layout_width="@dimen/_30mdp"
+            android:layout_height="@dimen/_30mdp"
+            android:layout_toStartOf="@id/editProfileBtn"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_settings_white" />
+
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileIV"
@@ -106,7 +114,6 @@
         android:id="@+id/shopsRl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
         android:layout_below="@id/toolbarRL">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -117,13 +124,18 @@
             tools:listitem="@layout/row_shop"/>
 
     </RelativeLayout>
+
+<!--get newest stackfromend and reversed-->
  <RelativeLayout
         android:id="@+id/ordersRl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:layout_below="@id/toolbarRL">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ordersRV"
+            app:stackFromEnd="true"
+            app:reverseLayout="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:listitem="@layout/row_order_user"/>

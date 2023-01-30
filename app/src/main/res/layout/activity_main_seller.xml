@@ -54,6 +54,24 @@
             android:layout_toStartOf="@id/editProfileBtn"
             android:background="@drawable/ic_shopping_cart_white" />
 
+        <ImageButton
+            android:id="@+id/reviewBtn"
+            android:layout_width="@dimen/_30mdp"
+            android:layout_height="@dimen/_30mdp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/_65mdp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_star_white" />
+
+        <ImageButton
+            android:id="@+id/settingsBtn"
+            android:layout_width="@dimen/_30mdp"
+            android:layout_height="@dimen/_30mdp"
+            android:layout_toStartOf="@id/reviewBtn"
+            android:src="@drawable/ic_settings_white"
+            android:background="@android:color/transparent"/>
+
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileIV"
             android:layout_width="@dimen/_70mdp"
@@ -115,6 +133,7 @@
     <RelativeLayout
         android:id="@+id/productsRL"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbarRL">
 
@@ -170,6 +189,45 @@
         android:id="@+id/ordersRL"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbarRL"/>
+        android:layout_below="@id/toolbarRL">
+
+        <TextView
+            android:id="@+id/filterOrderTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5mdp"
+            android:layout_marginTop="@dimen/_6mdp"
+            android:layout_marginEnd="@dimen/_5mdp"
+            android:layout_marginBottom="@dimen/_5mdp"
+            android:layout_toStartOf="@id/filterOrderBtn"
+            android:background="@drawable/shape_rect_02"
+            android:drawablePadding="@dimen/_10mdp"
+            android:padding="@dimen/_8mdp"
+            android:text="Showing All Orders" />
+
+        <ImageButton
+            android:id="@+id/filterOrderBtn"
+            android:layout_width="@dimen/_32mdp"
+            android:layout_height="@dimen/_32mdp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/_5mdp"
+            android:layout_marginEnd="@dimen/_5mdp"
+            android:layout_marginBottom="@dimen/_5mdp"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_filter_gray" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ordersRV"
+            android:layout_below="@id/filterOrderBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:reverseLayout="true"
+            app:stackFromEnd="true"
+            tools:listitem="@layout/row_order_seller"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+
+    </RelativeLayout>
 
 </RelativeLayout>

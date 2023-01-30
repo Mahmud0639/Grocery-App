@@ -86,6 +86,14 @@ public class MainUserActivity extends AppCompatActivity {
             }
         });
 
+        binding.settingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainUserActivity.this,SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
     }
 
@@ -188,7 +196,7 @@ public class MainUserActivity extends AppCompatActivity {
                 modelOrderUsers.clear();
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()){
                     String uid = ""+dataSnapshot.getRef().getKey();//eta holo specific vabe user er key er moddher orders ke pick kora...karon ei key er under a Products er child ti o ache.
-
+                        //je key er under a products are orders ache si key select kora..oi key dhore amra query korbo
                     DatabaseReference mydb = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("Orders");
                     mydb.orderByChild("orderBy").equalTo(auth.getUid())
                             .addValueEventListener(new ValueEventListener() {

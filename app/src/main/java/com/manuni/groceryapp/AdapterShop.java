@@ -9,6 +9,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.manuni.groceryapp.databinding.RowShopBinding;
 import com.squareup.picasso.Picasso;
 
@@ -52,6 +57,8 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.AdapterShopVie
         String profileImage = data.getProfileImage();
         String shopName = data.getShopName();
 
+        loadRatings(data,holder);
+
         holder.binding.shopNameTV.setText(shopName);
         holder.binding.addressTV.setText(address);
         holder.binding.phoneTV.setText(phone);
@@ -80,6 +87,38 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.AdapterShopVie
                 Intent intent = new Intent(context,ShopDetailsActivity.class);
                 intent.putExtra("shopUid",uid);
                 context.startActivity(intent);
+            }
+        });
+
+    }
+    private float ratingSum = 0;
+    private void loadRatings(ModelShop data, AdapterShopViewHolder holder) {
+
+        String shopUid = data.getUid();
+
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
+        reference.child(shopUid).child("Ratings").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ratingSum = 0;
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    float rating = Float.parseFloat(""+dataSnapshot.child("ratings").getValue());//e.g 4.5
+                    ratingSum = ratingSum+rating;
+
+
+                }
+
+
+                long numberOfReviews = snapshot.getChildrenCount();
+                float avgOfReviews = ratingSum/numberOfReviews;
+
+                holder.binding.ratingBar.setRating(avgOfReviews);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
