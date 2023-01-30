@@ -50,10 +50,10 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
             String buyerUid = message.getData().get("buyerUid");
 
             Intent myIntent = new Intent(this, OrderDetailsSellerActivity.class);
-            intent.putExtra("orderId",orderId);
-            intent.putExtra("orderBy",buyerUid);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            myIntent.putExtra("orderId",orderId);
+            myIntent.putExtra("orderBy",buyerUid);
+            myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            myIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
             NotificationManager myManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             int notificationIdfor = new Random().nextInt();
@@ -219,6 +219,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         NotificationChannel channel = new NotificationChannel(CHANNEL_ID,"channelName",NotificationManager.IMPORTANCE_HIGH);
         channel.setDescription("My description");
         channel.enableLights(true);
+        channel.setLockscreenVisibility(1);//0 means private message on lock screen,-1 means Do not reveal any part of this notification on a secure lockscreen.1 means show full message in the lock screen
         channel.setLightColor(Color.RED);
         channel.enableVibration(true);
         channel.setVibrationPattern(new long[] { 1000, 1000, 1000, 1000, 1000 });
