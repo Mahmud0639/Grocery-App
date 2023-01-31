@@ -351,15 +351,44 @@ public class ShopDetailsActivity extends AppCompatActivity {
                     hashMap1.put("quantity", quantity);
 
                     dbRef.child(timestamp).child("Items").child(pId).setValue(hashMap1);
+
                     //ei pId ta holo ekta timestamp jeta product ^add korar somoy neya hoyeche (AddProductActivity)--->addProductTodb-->177 no. lines
                 }
+
+                DatabaseReference myAdRef = FirebaseDatabase.getInstance().getReference().child("Admin").child(shopUid).child("Orders");
+                myAdRef.child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        for (int i = 0; i < modelCartItemsList.size(); i++) {
+                            String pId = modelCartItemsList.get(i).getpId();
+                            String id = modelCartItemsList.get(i).getId();
+                            String cost = modelCartItemsList.get(i).getCost();
+                            String price = modelCartItemsList.get(i).getPrice();
+                            String quantity = modelCartItemsList.get(i).getQuantity();
+                            String name = modelCartItemsList.get(i).getName();
+
+                            HashMap<String, String> hashMap1 = new HashMap<>();
+                            hashMap1.put("pId", pId);
+                            hashMap1.put("name", name);
+                            hashMap1.put("cost", cost);
+                            hashMap1.put("price", price);
+                            hashMap1.put("quantity", quantity);
+
+                            myAdRef.child(timestamp).child("Items").child(pId).setValue(hashMap1);
+
+                            //ei pId ta holo ekta timestamp jeta product ^add korar somoy neya hoyeche (AddProductActivity)--->addProductTodb-->177 no. lines
+                        }
+                    }
+                });
                 progressDialog.dismiss();
                 dialog.dismiss();
                 //binding.cartCountTV.setVisibility(View.GONE);
 
                 Toast.makeText(ShopDetailsActivity.this, "Product order placed to " + shopName + " successfully!", Toast.LENGTH_SHORT).show();
+                deleteCartData();
                 //sending notification after submitting order successfully.
                 prepareNotification(timestamp);
+
 
                 //nicher ei data gulo notification set er pore ekhan theke cut kore neya hoyeche...
 //                Intent intent = new Intent(ShopDetailsActivity.this,OrderDetailsUsersActivity.class);
