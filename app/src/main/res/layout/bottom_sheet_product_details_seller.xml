@@ -50,11 +50,11 @@
         android:id="@+id/productIconIV"
         android:layout_width="@dimen/_100mdp"
         android:layout_height="@dimen/_100mdp"
-        android:scaleType="centerCrop"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_40mdp"
         android:background="@color/background_theme"
         android:padding="@dimen/_5mdp"
+        android:scaleType="centerCrop"
         android:src="@drawable/ic_shopping_cart_white" />
 
     <LinearLayout

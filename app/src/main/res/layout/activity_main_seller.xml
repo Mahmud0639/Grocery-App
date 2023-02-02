@@ -78,8 +78,8 @@
             android:layout_height="@dimen/_70mdp"
             android:layout_marginEnd="@dimen/_10mdp"
             android:src="@drawable/ic_store_gray"
-           app:civ_border_width="@dimen/_2mdp"
-            app:civ_border_color="@color/colorGray02"/>
+            app:civ_border_color="@color/colorGray02"
+            app:civ_border_width="@dimen/_2mdp" />
 
         <TextView
             android:id="@+id/shopName"
@@ -219,13 +219,13 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ordersRV"
-            android:layout_below="@id/filterOrderBtn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@id/filterOrderBtn"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:reverseLayout="true"
             app:stackFromEnd="true"
-            tools:listitem="@layout/row_order_seller"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            tools:listitem="@layout/row_order_seller" />
 
 
     </RelativeLayout>

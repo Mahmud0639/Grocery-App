@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -132,6 +133,31 @@ public class EditProfileSellerActivity extends AppCompatActivity implements Loca
                 showImagePicDialog();
             }
         });
+    }
+
+
+   private void showImagePicDialog(){
+       ImagePicker.with(this)
+               .crop()	    			//Crop image(Optional), Check Customization for more option
+               .compress(1024)			//Final image size will be less than 1 MB(Optional)
+               .maxResultSize(1080, 1080)//Final image resolution will be less than 1080 x 1080(Optional)
+               .start();
+   }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==RESULT_OK){
+            imageUri = data.getData();
+
+            try {
+                binding.profileIV.setImageURI(imageUri);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else {
+            Toast.makeText(this, ""+ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private String name,shopName,deliveryFee,phone,country,state,city,address;
@@ -303,99 +329,99 @@ public class EditProfileSellerActivity extends AppCompatActivity implements Loca
         });
     }
 
-    private void showImagePicDialog(){
-        String[] options = {"Camera","Gallery"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Pick Images").setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (i==0){
-                    //camera
-                    if (checkCameraPermission()){
-                        pickFromCamera();
-                    }else {
-                        requestCameraPermission();
-                    }
-                }else {
-                    //gallery
-                    if (checkStoragePermission()){
-                        pickFromGallery();
-                    }else {
-                        requestStoragePermission();
-                    }
-                }
-            }
-        }).show();
-    }
+//    private void showImagePicDialog(){
+//        String[] options = {"Camera","Gallery"};
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle("Pick Images").setItems(options, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                if (i==0){
+//                    //camera
+//                    if (checkCameraPermission()){
+//                        pickFromCamera();
+//                    }else {
+//                        requestCameraPermission();
+//                    }
+//                }else {
+//                    //gallery
+//                    if (checkStoragePermission()){
+//                        pickFromGallery();
+//                    }else {
+//                        requestStoragePermission();
+//                    }
+//                }
+//            }
+//        }).show();
+//    }
 
-    private boolean checkStoragePermission() {
-        boolean result = ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)==(PackageManager.PERMISSION_GRANTED);
-        return result;
-    }
-    private void pickFromGallery(){
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-
-        resultLauncherForGallery.launch(intent);
-
-    }
-    private ActivityResultLauncher<Intent> resultLauncherForGallery = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            if (result.getResultCode()==RESULT_OK){
-               Intent data = result.getData();
-               imageUri = data.getData();
-
-                try {
-                    binding.profileIV.setImageURI(imageUri);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }else {
-                Toast.makeText(EditProfileSellerActivity.this, "Please try again!", Toast.LENGTH_SHORT).show();
-            }
-        }
-    });
-    private void requestStoragePermission(){
-        ActivityCompat.requestPermissions(this,storagePermissions,STORAGE_REQUEST_CODE);
-    }
-
-    private boolean checkCameraPermission(){
-        boolean result1 = ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED;
-        boolean result2 = ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED;
-
-        return result1 && result2;
-    }
-    private void pickFromCamera(){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(MediaStore.Images.Media.TITLE,"Temp_image Title");
-        contentValues.put(MediaStore.Images.Media.DESCRIPTION,"Temp_image Description");
-
-        imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,contentValues);
-
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
-
-        resultLauncherForCamera.launch(intent);
-
-    }
-    private ActivityResultLauncher<Intent> resultLauncherForCamera = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            if (result.getResultCode()==RESULT_OK){
-                try {
-                    binding.profileIV.setImageURI(imageUri);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }else {
-                Toast.makeText(EditProfileSellerActivity.this, "Try Again!", Toast.LENGTH_SHORT).show();
-            }
-        }
-    });
-    private void requestCameraPermission(){
-        ActivityCompat.requestPermissions(this,cameraPermissions,CAMERA_REQUEST_CODE);
-    }
+//    private boolean checkStoragePermission() {
+//        boolean result = ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)==(PackageManager.PERMISSION_GRANTED);
+//        return result;
+//    }
+//    private void pickFromGallery(){
+//        Intent intent = new Intent(Intent.ACTION_PICK);
+//        intent.setType("image/*");
+//
+//        resultLauncherForGallery.launch(intent);
+//
+//    }
+//    private ActivityResultLauncher<Intent> resultLauncherForGallery = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+//        @Override
+//        public void onActivityResult(ActivityResult result) {
+//            if (result.getResultCode()==RESULT_OK){
+//               Intent data = result.getData();
+//               imageUri = data.getData();
+//
+//                try {
+//                    binding.profileIV.setImageURI(imageUri);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }else {
+//                Toast.makeText(EditProfileSellerActivity.this, "Please try again!", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    });
+//    private void requestStoragePermission(){
+//        ActivityCompat.requestPermissions(this,storagePermissions,STORAGE_REQUEST_CODE);
+//    }
+//
+//    private boolean checkCameraPermission(){
+//        boolean result1 = ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED;
+//        boolean result2 = ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED;
+//
+//        return result1 && result2;
+//    }
+//    private void pickFromCamera(){
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put(MediaStore.Images.Media.TITLE,"Temp_image Title");
+//        contentValues.put(MediaStore.Images.Media.DESCRIPTION,"Temp_image Description");
+//
+//        imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,contentValues);
+//
+//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
+//
+//        resultLauncherForCamera.launch(intent);
+//
+//    }
+//    private ActivityResultLauncher<Intent> resultLauncherForCamera = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+//        @Override
+//        public void onActivityResult(ActivityResult result) {
+//            if (result.getResultCode()==RESULT_OK){
+//                try {
+//                    binding.profileIV.setImageURI(imageUri);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }else {
+//                Toast.makeText(EditProfileSellerActivity.this, "Try Again!", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    });
+//    private void requestCameraPermission(){
+//        ActivityCompat.requestPermissions(this,cameraPermissions,CAMERA_REQUEST_CODE);
+//    }
     private boolean checkLocationPermission(){
         boolean result = ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)==(PackageManager.PERMISSION_GRANTED);
         return result;
@@ -473,29 +499,29 @@ public class EditProfileSellerActivity extends AppCompatActivity implements Loca
                 }
             }
             break;
-            case CAMERA_REQUEST_CODE:{
-                if (grantResults.length>0){
-                    boolean cameraAccepted = grantResults[0]==PackageManager.PERMISSION_GRANTED;
-                    boolean storageAccepted = grantResults[1]==PackageManager.PERMISSION_GRANTED;
-
-                    if (cameraAccepted && storageAccepted){
-                        pickFromCamera();
-                    }else {
-                        Toast.makeText(this, "Camera permission required!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-            break;
-            case STORAGE_REQUEST_CODE:{
-                if (grantResults.length>0){
-                    boolean storageAccepted = grantResults[0]==PackageManager.PERMISSION_GRANTED;
-                    if (storageAccepted){
-                        pickFromGallery();
-                    }else {
-                        Toast.makeText(this, "Gallery Permission required!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
+//            case CAMERA_REQUEST_CODE:{
+//                if (grantResults.length>0){
+//                    boolean cameraAccepted = grantResults[0]==PackageManager.PERMISSION_GRANTED;
+//                    boolean storageAccepted = grantResults[1]==PackageManager.PERMISSION_GRANTED;
+//
+//                    if (cameraAccepted && storageAccepted){
+//                        pickFromCamera();
+//                    }else {
+//                        Toast.makeText(this, "Camera permission required!", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            }
+//            break;
+//            case STORAGE_REQUEST_CODE:{
+//                if (grantResults.length>0){
+//                    boolean storageAccepted = grantResults[0]==PackageManager.PERMISSION_GRANTED;
+//                    if (storageAccepted){
+//                        pickFromGallery();
+//                    }else {
+//                        Toast.makeText(this, "Gallery Permission required!", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            }
         }
     }
 

@@ -40,7 +40,7 @@
 
     </RelativeLayout>
 
-    <com.blogspot.atifsoftwares.circularimageview.CircularImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profileIV"
         android:layout_width="@dimen/_85mdp"
         android:layout_height="@dimen/_85mdp"
@@ -48,9 +48,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_10mdp"
         android:src="@drawable/ic_person_gray"
-        app:c_border="true"
-        app:c_border_color="@color/background_theme"
-        app:c_border_width="@dimen/_1mdp" />
+        app:civ_border_width="@dimen/_1mdp"
+        app:civ_border_color="@color/background_theme"
+      />
     <EditText
         android:id="@+id/fullNameET"
         android:layout_width="match_parent"

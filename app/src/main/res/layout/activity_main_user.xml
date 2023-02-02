@@ -59,8 +59,8 @@
             android:layout_height="@dimen/_70mdp"
             android:layout_marginEnd="@dimen/_10mdp"
             android:src="@drawable/ic_store_gray"
-            app:civ_border_width="@dimen/_2mdp"
-            app:civ_border_color="@color/colorGray02"/>
+            app:civ_border_color="@color/colorGray02"
+            app:civ_border_width="@dimen/_2mdp" />
 
         <TextView
             android:id="@+id/emailTV"

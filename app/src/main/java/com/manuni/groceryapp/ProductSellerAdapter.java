@@ -161,7 +161,11 @@ public class ProductSellerAdapter extends RecyclerView.Adapter<ProductSellerAdap
                 bottomSheetDialog.dismiss();
                 Intent intent = new Intent(context,EditProductActivity.class);
                 intent.putExtra("productId",id);
-                context.startActivity(intent);
+                try {
+                    context.startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         binding.deleteBtn.setOnClickListener(new View.OnClickListener() {
