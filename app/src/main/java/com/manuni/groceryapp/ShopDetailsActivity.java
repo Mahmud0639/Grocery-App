@@ -50,6 +50,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
     private ProductUserAdapter productUserAdapter;
     public String deliveryFee;
 
+
     AlertDialog dialog;
     int count;
 
@@ -274,9 +275,9 @@ public class ShopDetailsActivity extends AppCompatActivity {
         adapterCartItem = new AdapterCartItem(ShopDetailsActivity.this, modelCartItemsList);
         binding.cartItemRV.setAdapter(adapterCartItem);
 
-        binding.deliveryFeeTV.setText("$" + deliveryFee);
-        binding.subTotalTV.setText("" + String.format("%.2f", allTotalPrice));
-        binding.totalPriceTV.setText("$" + (allTotalPrice + Double.parseDouble(deliveryFee.replaceAll("$", ""))));
+        binding.deliveryFeeTV.setText("৳" + deliveryFee);
+        binding.subTotalTV.setText("৳" + String.format("%.2f", allTotalPrice));
+        binding.totalPriceTV.setText("৳" + String.format("%.2f",allTotalPrice + Double.parseDouble(deliveryFee.replaceAll("৳", ""))));
 
         dialog = builder.create();
         dialog.show();
@@ -316,8 +317,9 @@ public class ShopDetailsActivity extends AppCompatActivity {
         progressDialog.setMessage("Please wait...");
         progressDialog.show();
 
+
         String timestamp = "" + System.currentTimeMillis();
-        String cost = allTotalPriceTV.getText().toString().replace("$", "");//if contains $ then replace with ""
+        String cost = allTotalPriceTV.getText().toString().replace("৳", "");//if contains $ then replace with ""
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("orderId", "" + timestamp);
@@ -329,6 +331,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
         hashMap.put("latitude", "" + myLatitude);
         hashMap.put("longitude", "" + myLongitude);
         hashMap.put("deliveryFee", "" + deliveryFee);
+        hashMap.put("shopName",""+shopName);
 
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("Users").child(shopUid).child("Orders");
         dbRef.child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -465,7 +468,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
                 binding.emailTV.setText(shopEmail);
                 binding.addressTV.setText(shopAddress);
                 binding.phoneTV.setText(shopPhone);
-                binding.deliveryFeeTV.setText("Delivery Fee $" + deliveryFee);
+                binding.deliveryFeeTV.setText("Delivery Fee ৳" + deliveryFee);
 
                 if (shopOpen.equals("true")) {
                     binding.openCloseTV.setText("Open");

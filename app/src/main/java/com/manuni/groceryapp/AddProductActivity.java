@@ -60,7 +60,7 @@ public class AddProductActivity extends AppCompatActivity {
         binding = ActivityAddProductBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.discountPriceET.setVisibility(View.GONE);
+       // binding.discountPriceET.setVisibility(View.GONE);
         binding.discountNoteET.setVisibility(View.GONE);
 
         auth = FirebaseAuth.getInstance();
@@ -78,10 +78,10 @@ public class AddProductActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked){
-                    binding.discountPriceET.setVisibility(View.VISIBLE);
+                    //binding.discountPriceET.setVisibility(View.GONE);
                     binding.discountNoteET.setVisibility(View.VISIBLE);
                 }else {
-                    binding.discountPriceET.setVisibility(View.GONE);
+                   // binding.discountPriceET.setVisibility(View.GONE);
                     binding.discountNoteET.setVisibility(View.GONE);
                 }
             }
@@ -117,6 +117,7 @@ public class AddProductActivity extends AppCompatActivity {
     }
     private String productTitle,productDescription,productCategory,productQuantity,originalPrice,discountPrice,discountNote;
     private  boolean discountAvailable = false;
+    private double discountNoteSum=0.0;
 
     private void inputData(){
         productTitle = binding.titleET.getText().toString().trim();
@@ -150,13 +151,22 @@ public class AddProductActivity extends AppCompatActivity {
         }
         if (discountAvailable){//ekhane discountAvailable hocche true
 
-            discountPrice = binding.discountPriceET.getText().toString().trim();
+           //discountPrice = binding.discountPriceET.getText().toString().trim();
             discountNote = binding.discountNoteET.getText().toString().trim();
 
-            if (TextUtils.isEmpty(discountPrice)){
-                Toast.makeText(this, "Discount price required!", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            double disNote = Double.parseDouble(discountNote);
+            double oriPrice = Double.parseDouble(originalPrice);
+
+            double afterDiscount = disNote * oriPrice/100;
+
+            discountNoteSum = oriPrice - afterDiscount;
+
+
+
+//            if (TextUtils.isEmpty(discountPrice)){
+//                Toast.makeText(this, "Discount price required!", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
             if (TextUtils.isEmpty(discountNote)){
                 Toast.makeText(this, "Discount Note required!", Toast.LENGTH_SHORT).show();
                 return;
@@ -164,11 +174,11 @@ public class AddProductActivity extends AppCompatActivity {
 
 
 
-
         }else {
             //switchAvailable = true;
-            discountPrice="0";
+            //discountPrice="0";
             discountNote = "";
+            discountNoteSum = 0.0;
 
 
         }
@@ -190,7 +200,7 @@ public class AddProductActivity extends AppCompatActivity {
             hashMap.put("productQuantity",""+productQuantity);
             hashMap.put("productIcon","");
             hashMap.put("productOriginalPrice",""+originalPrice);
-            hashMap.put("productDiscountPrice",""+discountPrice);
+            hashMap.put("productDiscountPrice",""+discountNoteSum);
             hashMap.put("productDiscountNote",""+discountNote);
             hashMap.put("productDiscountAvailable",""+discountAvailable);
             hashMap.put("timestamp",""+timestamp);
@@ -232,7 +242,7 @@ public class AddProductActivity extends AppCompatActivity {
                         hashMap.put("productQuantity",""+productQuantity);
                         hashMap.put("productIcon",""+downloadUri);
                         hashMap.put("productOriginalPrice",""+originalPrice);
-                        hashMap.put("productDiscountPrice",""+discountPrice);
+                        hashMap.put("productDiscountPrice",""+discountNoteSum);
                         hashMap.put("productDiscountNote",""+discountNote);
                         hashMap.put("productDiscountAvailable",""+discountAvailable);
                         hashMap.put("timestamp",""+timestamp);
@@ -271,7 +281,7 @@ public class AddProductActivity extends AppCompatActivity {
         binding.categoryTV.setText("");
         binding.quantityET.setText("");
         binding.priceET.setText("");
-        binding.discountPriceET.setText("");
+        //binding.discountPriceET.setText("");
         binding.discountNoteET.setText("");
         binding.productIconIV.setImageResource(R.drawable.ic_shopping_cart_theme_color);
         imageUri = null;

@@ -46,9 +46,9 @@ public class AdapterCartItem extends RecyclerView.Adapter<AdapterCartItem.CartIt
         String quantity = data.getQuantity();
 
         holder.binding.itemTitleTV.setText(title);
-        holder.binding.itemPriceEachTV.setText(price);
-        holder.binding.itemPriceTV.setText(cost);
-        holder.binding.itemQuantityTV.setText(quantity);
+        holder.binding.itemPriceEachTV.setText("৳"+price);
+        holder.binding.itemPriceTV.setText("৳"+cost);
+        holder.binding.itemQuantityTV.setText("["+quantity+"]");
 
         holder.binding.removeTV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,13 +72,13 @@ public class AdapterCartItem extends RecyclerView.Adapter<AdapterCartItem.CartIt
                 notifyItemChanged(position);
                 notifyDataSetChanged();
 
-                double tx = Double.parseDouble((((ShopDetailsActivity)context).allTotalPriceTV.getText().toString().trim().replace("$","")));
-                double totalPrice = tx-Double.parseDouble(cost.replace("$",""));
-                double deliveryFee = Double.parseDouble((((ShopDetailsActivity)context).deliveryFee.replace("$","")));
+                double tx = Double.parseDouble((((ShopDetailsActivity)context).allTotalPriceTV.getText().toString().trim().replace("৳","")));
+                double totalPrice = tx-Double.parseDouble(cost.replace("৳",""));
+                double deliveryFee = Double.parseDouble((((ShopDetailsActivity)context).deliveryFee.replace("৳","")));
                 double subTotal = Double.parseDouble(String.format("%.2f",totalPrice))-Double.parseDouble(String.format("%.2f",deliveryFee));
                 ((ShopDetailsActivity)context).allTotalPrice=0.00;//shopdetails activity access kore oi public allTotalPrice er value update kora hoyece ekhane ei process a
-                ((ShopDetailsActivity)context).subTotalPriceTV.setText("$"+String.format("%.2f",subTotal));
-                ((ShopDetailsActivity)context).allTotalPriceTV.setText("$"+String.format("%.2f",Double.parseDouble(String.format("%.2f",totalPrice))));
+                ((ShopDetailsActivity)context).subTotalPriceTV.setText("৳"+String.format("%.2f",subTotal));
+                ((ShopDetailsActivity)context).allTotalPriceTV.setText("৳"+String.format("%.2f",Double.parseDouble(String.format("%.2f",totalPrice))));
 
                 //after removing update cart count
                 ((ShopDetailsActivity)context).cartCount();

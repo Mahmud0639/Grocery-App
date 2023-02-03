@@ -39,8 +39,8 @@ public class AdapterOrderedItems extends RecyclerView.Adapter<AdapterOrderedItem
         String quantity = data.getQuantity();
 
         holder.binding.itemTitleTV.setText(name);
-        holder.binding.itemPriceEachTV.setText("$"+price);
-        holder.binding.itemPriceTV.setText("$"+cost);
+        holder.binding.itemPriceEachTV.setText("৳"+price);
+        holder.binding.itemPriceTV.setText("৳"+cost);
         holder.binding.itemQuantityTV.setText("["+quantity+"]");
 
     }

@@ -146,8 +146,24 @@
                     android:layout_marginBottom="@dimen/_5mdp"
                     android:text="Discount" />
 
+<!--                <EditText-->
+<!--                    android:id="@+id/discountPriceET"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@id/discountSwitch"-->
+<!--                    android:layout_marginStart="@dimen/_5mdp"-->
+<!--                    android:layout_marginTop="@dimen/_5mdp"-->
+<!--                    android:layout_marginEnd="@dimen/_5mdp"-->
+<!--                    android:layout_marginBottom="@dimen/_5mdp"-->
+<!--                    android:background="@drawable/shape_rect_02"-->
+<!--                    android:drawableStart="@drawable/ic_cart_gray"-->
+<!--                    android:drawablePadding="@dimen/_10mdp"-->
+<!--                    android:hint="Discount Price"-->
+<!--                    android:inputType="numberDecimal"-->
+<!--                    android:padding="@dimen/_8mdp" />-->
+
                 <EditText
-                    android:id="@+id/discountPriceET"
+                    android:id="@+id/discountNoteET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/discountSwitch"
@@ -158,24 +174,8 @@
                     android:background="@drawable/shape_rect_02"
                     android:drawableStart="@drawable/ic_cart_gray"
                     android:drawablePadding="@dimen/_10mdp"
-                    android:hint="Discount Price"
-                    android:inputType="numberDecimal"
-                    android:padding="@dimen/_8mdp" />
-
-                <EditText
-                    android:id="@+id/discountNoteET"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/discountPriceET"
-                    android:layout_marginStart="@dimen/_5mdp"
-                    android:layout_marginTop="@dimen/_5mdp"
-                    android:layout_marginEnd="@dimen/_5mdp"
-                    android:layout_marginBottom="@dimen/_5mdp"
-                    android:background="@drawable/shape_rect_02"
-                    android:drawableStart="@drawable/ic_cart_gray"
-                    android:drawablePadding="@dimen/_10mdp"
                     android:hint="Discount Note e.g. 10% OFF"
-                    android:inputType="textCapSentences"
+                    android:inputType="numberDecimal"
                     android:padding="@dimen/_8mdp" />
 
                 <Button

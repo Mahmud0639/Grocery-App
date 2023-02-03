@@ -126,8 +126,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_10mdp"
-                android:text="$15"
                 android:layout_toEndOf="@id/discountPriceTV"
+                android:text="$15"
                 android:textColor="@color/colorGray02" />
 
         </RelativeLayout>

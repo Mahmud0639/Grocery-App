@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -66,6 +68,48 @@ public class MainUserActivity extends AppCompatActivity {
             }
         });
 
+        binding.searchForOrders.addTextChangeListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                try {
+                    adapterOrderUser.getFilter().filter(charSequence);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        binding.searchBar.addTextChangeListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                try {
+                    adapterShop.getFilter().filter(charSequence);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
         binding.editProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,12 +120,14 @@ public class MainUserActivity extends AppCompatActivity {
         binding.tabShopsTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 showShopsUI();
             }
         });
         binding.tabOrdersTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 showOrdersUI();
             }
         });
@@ -98,6 +144,11 @@ public class MainUserActivity extends AppCompatActivity {
     }
 
     private void showShopsUI() {
+
+        binding.searchBar.setVisibility(View.VISIBLE);
+        binding.searchForOrders.setVisibility(View.GONE);
+
+
         binding.shopsRl.setVisibility(View.VISIBLE);
         binding.ordersRl.setVisibility(View.GONE);
 
@@ -108,6 +159,9 @@ public class MainUserActivity extends AppCompatActivity {
         binding.tabOrdersTV.setBackgroundColor(getResources().getColor(android.R.color.transparent));
     }
     private void showOrdersUI(){
+
+        binding.searchBar.setVisibility(View.GONE);
+        binding.searchForOrders.setVisibility(View.VISIBLE);
 
         binding.ordersRl.setVisibility(View.VISIBLE);
         binding.shopsRl.setVisibility(View.GONE);
@@ -203,9 +257,10 @@ public class MainUserActivity extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     if (snapshot.exists()){
+                                        modelOrderUsers.clear();
                                         for (DataSnapshot dataSnapshot1: snapshot.getChildren()){
                                             ModelOrderUser user = dataSnapshot1.getValue(ModelOrderUser.class);
-                                            modelOrderUsers.add(user);
+                                            modelOrderUsers.add(0,user);
                                         }
                                         adapterOrderUser = new AdapterOrderUser(MainUserActivity.this,modelOrderUsers);
                                         binding.ordersRV.setLayoutManager(new LinearLayoutManager(MainUserActivity.this));

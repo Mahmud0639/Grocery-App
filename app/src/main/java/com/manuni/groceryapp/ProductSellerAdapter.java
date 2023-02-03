@@ -63,9 +63,9 @@ public class ProductSellerAdapter extends RecyclerView.Adapter<ProductSellerAdap
 
             holder.binding.titleTV.setText(title);
             holder.binding.quantityTV.setText(quantity);
-            holder.binding.discountNoteTV.setText(discountNote);
-            holder.binding.discountPriceTV.setText("$"+discountPrice);
-            holder.binding.originalPriceTV.setText("$"+productOriginalPrice);
+            holder.binding.discountNoteTV.setText(discountNote+"% OFF");
+            holder.binding.discountPriceTV.setText("৳"+discountPrice);
+            holder.binding.originalPriceTV.setText("৳"+productOriginalPrice);
 
             if (discountAvailable.equals("true")){
                 //product is on discount
@@ -127,9 +127,9 @@ public class ProductSellerAdapter extends RecyclerView.Adapter<ProductSellerAdap
         binding.descriptionTV.setText(productDescription);
         binding.categoryTV.setText(productCategory);
         binding.quantityTV.setText(quantity);
-        binding.discountNote.setText(discountNote);
-        binding.discountPriceTV.setText("$"+discountPrice);
-        binding.originalPriceTV.setText("$"+productOriginalPrice);
+        binding.discountNote.setText(discountNote+"% OFF");
+        binding.discountPriceTV.setText("৳"+discountPrice);
+        binding.originalPriceTV.setText("৳"+productOriginalPrice);
 
         if (discountAvailable.equals("true")){
             //product is on discount

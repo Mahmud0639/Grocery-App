@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainUserActivity">
+
     <RelativeLayout
         android:id="@+id/toolbarRL"
         android:layout_width="match_parent"
@@ -81,6 +82,7 @@
             android:textColor="@color/white" />
 
         <LinearLayout
+            android:id="@+id/tabLinear"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_30mdp"
             android:layout_below="@id/profileIV"
@@ -109,19 +111,64 @@
 
         </LinearLayout>
 
+
+
+
+
     </RelativeLayout>
+
+
+    <com.mancj.materialsearchbar.MaterialSearchBar
+        android:id="@+id/searchBar"
+        style="@style/MaterialSearchBarLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbarRL"
+        android:layout_marginBottom="@dimen/_5mdp"
+        android:padding="@dimen/_2mdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:mt_hint="Search a shop"
+        app:mt_maxSuggestionsCount="10"
+        app:mt_navIconEnabled="true"
+        app:mt_placeholder="Search by name,email or phone"
+        app:mt_placeholderColor="#E1DFDF"
+        app:mt_speechMode="false" />
+
+    <com.mancj.materialsearchbar.MaterialSearchBar
+        android:id="@+id/searchForOrders"
+        style="@style/MaterialSearchBarLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbarRL"
+        android:layout_marginBottom="@dimen/_5mdp"
+        android:padding="@dimen/_2mdp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:mt_hint="Search a order"
+        app:mt_maxSuggestionsCount="10"
+        app:mt_navIconEnabled="true"
+        app:mt_placeholder="Search by shop name or status"
+        app:mt_placeholderColor="#E1DFDF"
+        app:mt_speechMode="false" />
+
+
+
     <RelativeLayout
         android:id="@+id/shopsRl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbarRL">
+        android:layout_below="@id/searchBar">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/shopRV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/row_shop"/>
+            tools:listitem="@layout/row_shop" />
 
     </RelativeLayout>
 
@@ -131,14 +178,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        android:layout_below="@id/toolbarRL">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/ordersRV"
-            app:stackFromEnd="true"
-            app:reverseLayout="true"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/row_order_user"/>
+        android:layout_below="@id/searchForOrders">
+
+     <androidx.recyclerview.widget.RecyclerView
+         android:id="@+id/ordersRV"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         app:reverseLayout="true"
+         app:stackFromEnd="true"
+         tools:listitem="@layout/row_order_user" />
     </RelativeLayout>
 
 </RelativeLayout>

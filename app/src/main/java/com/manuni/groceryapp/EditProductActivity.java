@@ -55,6 +55,7 @@ public class EditProductActivity extends AppCompatActivity {
     private String[] storagePermission;
 
     private Uri imageUri;
+    String productIcon;
 
     private FirebaseAuth auth;
     private ProgressDialog progressDialog;
@@ -87,10 +88,10 @@ public class EditProductActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
-                    binding.discountPriceET.setVisibility(View.VISIBLE);
+                   // binding.discountPriceET.setVisibility(View.VISIBLE);
                     binding.discountNoteET.setVisibility(View.VISIBLE);
                 } else {
-                    binding.discountPriceET.setVisibility(View.GONE);
+                   // binding.discountPriceET.setVisibility(View.GONE);
                     binding.discountNoteET.setVisibility(View.GONE);
                 }
             }
@@ -134,7 +135,7 @@ public class EditProductActivity extends AppCompatActivity {
                 String productDesc = "" + snapshot.child("productDesc").getValue();
                 String productCategory = "" + snapshot.child("productCategory").getValue();
                 String productQuantity = "" + snapshot.child("productQuantity").getValue();
-                String productIcon = "" + snapshot.child("productIcon").getValue();
+                productIcon = "" + snapshot.child("productIcon").getValue();
                 String productOriginalPrice = "" + snapshot.child("productOriginalPrice").getValue();
                 String productDiscountPrice = "" + snapshot.child("productDiscountPrice").getValue();
                 String productDiscountNote = "" + snapshot.child("productDiscountNote").getValue();
@@ -145,16 +146,16 @@ public class EditProductActivity extends AppCompatActivity {
 
                 if (productDiscountAvailable.equals("true")) {
                     binding.discountSwitch.setChecked(true);
-                    binding.discountPriceET.setVisibility(View.VISIBLE);
+                   // binding.discountPriceET.setVisibility(View.VISIBLE);
                     binding.discountNoteET.setVisibility(View.VISIBLE);
                 } else {
                     binding.discountSwitch.setChecked(false);
-                    binding.discountPriceET.setVisibility(View.GONE);
+                   // binding.discountPriceET.setVisibility(View.GONE);
                     binding.discountNoteET.setVisibility(View.GONE);
                 }
                 binding.titleET.setText(productTitle);
                 binding.descriptionET.setText(productDesc);
-                binding.discountPriceET.setText(productDiscountPrice);
+               // binding.discountPriceET.setText(productDiscountPrice);
                 binding.discountNoteET.setText(productDiscountNote);
                 binding.categoryTV.setText(productCategory);
                 binding.priceET.setText(productOriginalPrice);
@@ -177,6 +178,7 @@ public class EditProductActivity extends AppCompatActivity {
 
     private String productTitle, productDescription, productCategory, productQuantity, originalPrice, discountPrice, discountNote;
     private boolean discountAvailable = false;
+    private double discountNoteSum=0.0;
 
     private void inputData() {
         productTitle = binding.titleET.getText().toString().trim();
@@ -210,13 +212,20 @@ public class EditProductActivity extends AppCompatActivity {
         }
         if (discountAvailable) {//ekhane discountAvailable hocche true
 
-            discountPrice = binding.discountPriceET.getText().toString().trim();
+          //  discountPrice = binding.discountPriceET.getText().toString().trim();
             discountNote = binding.discountNoteET.getText().toString().trim();
 
-            if (TextUtils.isEmpty(discountPrice)) {
-                Toast.makeText(this, "Discount price required!", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            double disNote = Double.parseDouble(discountNote);
+            double oriPrice = Double.parseDouble(originalPrice);
+
+            double afterDiscount = disNote * oriPrice/100;
+
+            discountNoteSum = oriPrice - afterDiscount;
+
+//            if (TextUtils.isEmpty(discountPrice)) {
+//                Toast.makeText(this, "Discount price required!", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
             if (TextUtils.isEmpty(discountNote)) {
                 Toast.makeText(this, "Discount Note required!", Toast.LENGTH_SHORT).show();
                 return;
@@ -225,8 +234,9 @@ public class EditProductActivity extends AppCompatActivity {
 
         } else {
             //switchAvailable = true;
-            discountPrice = "0";
+           // discountPrice = "0";
             discountNote = "";
+            discountNoteSum = 0.0;
 
 
         }
@@ -246,12 +256,12 @@ public class EditProductActivity extends AppCompatActivity {
             hashMap.put("productCategory", "" + productCategory);
             hashMap.put("productQuantity", "" + productQuantity);
             hashMap.put("productOriginalPrice", "" + originalPrice);
-            hashMap.put("productDiscountPrice", "" + discountPrice);
+            hashMap.put("productDiscountPrice", "" + discountNoteSum);
             hashMap.put("productDiscountNote",""+discountNote);
             hashMap.put("productDiscountAvailable", "" + discountAvailable);
             hashMap.put("timestamp",""+productId);
             hashMap.put("uid",""+auth.getUid());
-            hashMap.put("productIcon","");
+            hashMap.put("productIcon",""+productIcon);
             hashMap.put("productId",""+productId);
 
             //update to database
@@ -287,7 +297,7 @@ public class EditProductActivity extends AppCompatActivity {
                         hashMap.put("productCategory", "" + productCategory);
                         hashMap.put("productQuantity", "" + productQuantity);
                         hashMap.put("productOriginalPrice", "" + originalPrice);
-                        hashMap.put("productDiscountPrice", "" + discountPrice);
+                        hashMap.put("productDiscountPrice", "" + discountNoteSum);
                         hashMap.put("productIcon", "" + downloadUri);
                         hashMap.put("productDiscountNote",""+discountNote);
                         hashMap.put("productDiscountAvailable", "" + discountAvailable);
@@ -324,7 +334,7 @@ public class EditProductActivity extends AppCompatActivity {
         binding.categoryTV.setText("");
         binding.quantityET.setText("");
         binding.priceET.setText("");
-        binding.discountPriceET.setText("");
+        //binding.discountPriceET.setText("");
         binding.discountNoteET.setText("");
         binding.productIconIV.setImageResource(R.drawable.ic_shopping_cart_theme_color);
         imageUri = null;

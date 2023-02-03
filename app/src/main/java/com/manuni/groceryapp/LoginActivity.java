@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         dialog.setTitle("Please wait");
         dialog.setCanceledOnTouchOutside(false);
         dialog.setMessage("Logging in...");
-        dialog.show();
+
 
         email = binding.emailET.getText().toString().trim();
         password = binding.passET.getText().toString().trim();
@@ -77,25 +77,28 @@ public class LoginActivity extends AppCompatActivity {
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             Toast.makeText(this, "Invalid email address!", Toast.LENGTH_SHORT).show();
             return;
-        }
-        if (password.length()<6){
+        }else if (password.length()<6){
             Toast.makeText(this, "Password should be at least 6 characters!", Toast.LENGTH_SHORT).show();
             return;
+        }else {
+            dialog.show();
+            auth.signInWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                @Override
+                public void onSuccess(AuthResult authResult) {
+                    dialog.dismiss();
+                    makeMeOnline();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    dialog.dismiss();
+                    Toast.makeText(LoginActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
-        auth.signInWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                dialog.dismiss();
-                makeMeOnline();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                dialog.dismiss();
-                Toast.makeText(LoginActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+
+
 
 
     }

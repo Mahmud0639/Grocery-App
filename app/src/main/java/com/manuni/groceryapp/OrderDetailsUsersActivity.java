@@ -120,7 +120,7 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
 
                 binding.orderIdTV.setText(orderId);
                 binding.statusTV.setText(orderStatus);
-                binding.totalPriceTV.setText("$" + orderCost + "[Including delivery fee $" + deliveryFee + "]");
+                binding.totalPriceTV.setText("৳" + orderCost + "[Including delivery fee ৳" + deliveryFee + "]");
                 binding.dateTV.setText(dateTime);
 
                 findAddress(latitude, longitude);

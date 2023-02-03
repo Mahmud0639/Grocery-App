@@ -53,9 +53,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/titleTV"
+                android:layout_marginTop="@dimen/_5mdp"
                 android:maxLines="2"
                 android:minLines="2"
-                android:layout_marginTop="@dimen/_5mdp"
                 android:text="The product description The product descriptio"
                 android:textColor="@color/black" />
 

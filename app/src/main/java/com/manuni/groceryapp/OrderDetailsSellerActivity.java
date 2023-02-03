@@ -150,7 +150,7 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
                 //covert timestamp time to proper time
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(Long.parseLong(orderTime));
-                String dateTime = DateFormat.format("dd/MM/yyyy aa",calendar).toString();
+                String dateTime = DateFormat.format("dd/MM/yy hh:mm aa",calendar).toString();
 
                 binding.orderDateTV.setText(dateTime);
 
@@ -166,7 +166,8 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
                 }
 
                 binding.orderIdTV.setText(orderId);
-                binding.amountTV.setText("$"+orderCost+"[Including delivery fee "+deliveryFee+"]");
+                binding.amountTV.setText("৳"+orderCost+"[Including delivery fee ৳"+deliveryFee+"]");
+
 
                 findAddress(latitude,longitude);
             }

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,13 +21,15 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class AdapterShop extends RecyclerView.Adapter<AdapterShop.AdapterShopViewHolder>{
+public class AdapterShop extends RecyclerView.Adapter<AdapterShop.AdapterShopViewHolder> implements Filterable {
     private final Context context;
-    public ArrayList<ModelShop> list;
+    public ArrayList<ModelShop> list,filterList;
+    private FilterShop filter;
 
     public AdapterShop(Context context, ArrayList<ModelShop> list){
         this.context = context;
         this.list = list;
+        this.filterList = list;
     }
 
 
@@ -127,6 +131,14 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.AdapterShopVie
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (filter == null){
+            filter = new FilterShop(this,filterList);
+        }
+        return filter;
     }
 
     public class AdapterShopViewHolder extends RecyclerView.ViewHolder{

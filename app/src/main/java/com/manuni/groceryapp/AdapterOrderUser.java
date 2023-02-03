@@ -6,6 +6,8 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,13 +22,15 @@ import com.manuni.groceryapp.databinding.RowOrderUserBinding;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class AdapterOrderUser extends RecyclerView.Adapter<AdapterOrderUser.AdapterOrderUserViewHolder>{
+public class AdapterOrderUser extends RecyclerView.Adapter<AdapterOrderUser.AdapterOrderUserViewHolder> implements Filterable {
     private Context context;
-    private ArrayList<ModelOrderUser> list;
+    public ArrayList<ModelOrderUser> list,filterList;
+    private FilterOrderUser filter;
 
     public AdapterOrderUser(Context context, ArrayList<ModelOrderUser> list){
         this.context = context;
         this.list = list;
+        this.filterList = list;
     }
 
     @NonNull
@@ -50,7 +54,7 @@ public class AdapterOrderUser extends RecyclerView.Adapter<AdapterOrderUser.Adap
         //shop name paoyar jonno
         loadShopInfo(data,holder);
 
-        holder.binding.amountTV.setText("Amount $"+orderCost);
+        holder.binding.amountTV.setText("Amount ৳"+orderCost);
         holder.binding.orderIdTV.setText("Order Id: "+orderId);
         holder.binding.statusTV.setText(orderStatus);
 
@@ -99,6 +103,16 @@ public class AdapterOrderUser extends RecyclerView.Adapter<AdapterOrderUser.Adap
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (filter == null){
+            filter = new FilterOrderUser(this,filterList);
+        }
+
+
+        return filter;
     }
 
     public class AdapterOrderUserViewHolder extends RecyclerView.ViewHolder{

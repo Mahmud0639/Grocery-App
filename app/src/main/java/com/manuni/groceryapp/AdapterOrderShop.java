@@ -55,7 +55,7 @@ public class AdapterOrderShop extends RecyclerView.Adapter<AdapterOrderShop.Adap
 
 
         holder.binding.orderIdTV.setText("Order ID: "+orderId);
-        holder.binding.orderAmountTV.setText("Total Amount: $"+orderCost);
+        holder.binding.orderAmountTV.setText("Total Amount: ৳"+orderCost);
         holder.binding.statusTV.setText(orderStatus);
 
 
