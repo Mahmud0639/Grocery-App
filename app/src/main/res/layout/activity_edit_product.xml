@@ -107,7 +107,7 @@
                     android:id="@+id/quantityET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/categoryTV"
+                    android:layout_below="@id/productAvailableSwitch"
                     android:layout_marginStart="@dimen/_5mdp"
                     android:layout_marginTop="@dimen/_5mdp"
                     android:layout_marginEnd="@dimen/_5mdp"
@@ -136,12 +136,27 @@
                     android:padding="@dimen/_8mdp" />
 
                 <Switch
+                    android:id="@+id/productAvailableSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/categoryTV"
+                    android:layout_margin="@dimen/_5mdp"
+                    android:layout_marginStart="@dimen/_5mdp"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:text="Product Available"
+                    android:layout_marginEnd="@dimen/_5mdp"
+                    android:layout_marginBottom="@dimen/_5mdp" />
+
+                <Switch
                     android:id="@+id/discountSwitch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/priceET"
-                    android:text="Discount"
-                    android:layout_margin="@dimen/_5mdp"/>
+                    android:layout_marginStart="@dimen/_5mdp"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_marginEnd="@dimen/_5mdp"
+                    android:layout_marginBottom="@dimen/_5mdp"
+                    android:text="Discount" />
 
 <!--                <EditText-->
 <!--                    android:id="@+id/discountPriceET"-->

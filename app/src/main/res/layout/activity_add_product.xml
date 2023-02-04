@@ -135,6 +135,8 @@
                     android:inputType="numberDecimal"
                     android:padding="@dimen/_8mdp" />
 
+
+
                 <Switch
                     android:id="@+id/discountSwitch"
                     android:layout_width="match_parent"

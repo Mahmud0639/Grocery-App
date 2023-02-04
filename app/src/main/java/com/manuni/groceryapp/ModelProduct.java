@@ -2,12 +2,12 @@ package com.manuni.groceryapp;
 
 public class ModelProduct {
     private String productId,productTitle,productDesc,productCategory,productQuantity,productIcon,productOriginalPrice,productDiscountPrice,
-            productDiscountNote,productDiscountAvailable,timestamp,uid;
+            productDiscountNote,productDiscountAvailable,productAvailable,timestamp,uid;
 
     public ModelProduct() {
     }
 
-    public ModelProduct(String productId, String productTitle, String productDesc, String productCategory, String productQuantity, String productIcon, String productOriginalPrice, String productDiscountPrice, String productDiscountNote, String productDiscountAvailable, String timestamp, String uid) {
+    public ModelProduct(String productId, String productTitle, String productDesc, String productCategory, String productQuantity, String productIcon, String productOriginalPrice, String productDiscountPrice, String productDiscountNote, String productDiscountAvailable,String productAvailable, String timestamp, String uid) {
         this.productId = productId;
         this.productTitle = productTitle;
         this.productDesc = productDesc;
@@ -20,6 +20,15 @@ public class ModelProduct {
         this.productDiscountAvailable = productDiscountAvailable;
         this.timestamp = timestamp;
         this.uid = uid;
+        this.productAvailable = productAvailable;
+    }
+
+    public String getProductAvailable() {
+        return productAvailable;
+    }
+
+    public void setProductAvailable(String productAvailable) {
+        this.productAvailable = productAvailable;
     }
 
     public String getProductId() {

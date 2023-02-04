@@ -60,25 +60,42 @@ public class ProductSellerAdapter extends RecyclerView.Adapter<ProductSellerAdap
             String title = data.getProductTitle();
             String timestamp = data.getTimestamp();
             String productOriginalPrice = data.getProductOriginalPrice();
+            String productAvailable = data.getProductAvailable();
 
             holder.binding.titleTV.setText(title);
             holder.binding.quantityTV.setText(quantity);
-            holder.binding.discountNoteTV.setText(discountNote+"% OFF");
+
+
+
+
+
             holder.binding.discountPriceTV.setText("৳"+discountPrice);
             holder.binding.originalPriceTV.setText("৳"+productOriginalPrice);
+
+            if (productAvailable.equals("false")&&(discountAvailable.equals("true")||discountAvailable.equals("false"))){
+                holder.binding.productAvailableTV.setText("Not Available");
+                holder.binding.productAvailableTV.setTextColor(context.getResources().getColor(R.color.colorRed));
+               // holder.binding.discountNoteTV.setVisibility(View.GONE);
+                holder.binding.productAvailableTV.setVisibility(View.VISIBLE);
+            }else {
+                holder.binding.discountNoteTV.setText(discountNote+"% OFF");
+                holder.binding.productAvailableTV.setVisibility(View.GONE);
+            }
 
             if (discountAvailable.equals("true")){
                 //product is on discount
 
                 holder.binding.discountPriceTV.setVisibility(View.VISIBLE);
-                holder.binding.discountNoteTV.setVisibility(View.VISIBLE);
+                holder.binding.discountNoteTV.setText(discountNote+"% OFF");
+               // holder.binding.discountNoteTV.setVisibility(View.VISIBLE);
                 //to make strike original price when it is on discount state
                 holder.binding.originalPriceTV.setPaintFlags(holder.binding.originalPriceTV.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
             }else {
                 //product is not on discount
                 holder.binding.discountPriceTV.setVisibility(View.GONE);
-                holder.binding.discountNoteTV.setVisibility(View.GONE);
+                holder.binding.discountNoteTV.setText("0% OFF");
+                //holder.binding.discountNoteTV.setVisibility(View.GONE);
                 holder.binding.originalPriceTV.setPaintFlags(0);
             }
 
@@ -146,10 +163,10 @@ public class ProductSellerAdapter extends RecyclerView.Adapter<ProductSellerAdap
         }
 
         try {
-            Picasso.get().load(icon).placeholder(R.drawable.ic_shopping_cart_white).into(binding.productIconIV);
+            Picasso.get().load(icon).placeholder(R.drawable.impl1).into(binding.productIconIV);
 
         }catch (Exception e){
-           binding.productIconIV.setImageResource(R.drawable.ic_shopping_cart_theme_color);
+           binding.productIconIV.setImageResource(R.drawable.impl1);
 
         }
 

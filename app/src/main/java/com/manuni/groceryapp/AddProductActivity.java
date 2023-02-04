@@ -205,6 +205,7 @@ public class AddProductActivity extends AppCompatActivity {
             hashMap.put("productDiscountAvailable",""+discountAvailable);
             hashMap.put("timestamp",""+timestamp);
             hashMap.put("uid",""+auth.getUid());
+            hashMap.put("productAvailable","true");
 
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
             reference.child(auth.getUid()).child("Products").child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -247,6 +248,7 @@ public class AddProductActivity extends AppCompatActivity {
                         hashMap.put("productDiscountAvailable",""+discountAvailable);
                         hashMap.put("timestamp",""+timestamp);
                         hashMap.put("uid",""+auth.getUid());
+                        hashMap.put("productAvailable","true");
 
                         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
                         reference.child(auth.getUid()).child("Products").child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {

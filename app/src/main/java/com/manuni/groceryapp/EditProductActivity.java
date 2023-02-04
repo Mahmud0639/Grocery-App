@@ -57,6 +57,7 @@ public class EditProductActivity extends AppCompatActivity {
     private Uri imageUri;
     String productIcon;
 
+
     private FirebaseAuth auth;
     private ProgressDialog progressDialog;
 
@@ -96,6 +97,8 @@ public class EditProductActivity extends AppCompatActivity {
                 }
             }
         });
+
+
 
         binding.productIconIV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +145,7 @@ public class EditProductActivity extends AppCompatActivity {
                 String productDiscountAvailable = "" + snapshot.child("productDiscountAvailable").getValue();
                 String timestamp = "" + snapshot.child("timestamp").getValue();
                 String uid = "" + snapshot.child("uid").getValue();
+                String productAvailability = ""+snapshot.child("productAvailable").getValue();
 
 
                 if (productDiscountAvailable.equals("true")) {
@@ -153,6 +157,14 @@ public class EditProductActivity extends AppCompatActivity {
                    // binding.discountPriceET.setVisibility(View.GONE);
                     binding.discountNoteET.setVisibility(View.GONE);
                 }
+
+                if (productAvailability.equals("true")){
+                    binding.productAvailableSwitch.setChecked(true);
+                }else {
+                    binding.productAvailableSwitch.setChecked(false);
+                }
+
+
                 binding.titleET.setText(productTitle);
                 binding.descriptionET.setText(productDesc);
                // binding.discountPriceET.setText(productDiscountPrice);
@@ -161,11 +173,15 @@ public class EditProductActivity extends AppCompatActivity {
                 binding.priceET.setText(productOriginalPrice);
                 binding.quantityET.setText(productQuantity);
 
+
+
                 try {
                     Picasso.get().load(productIcon).placeholder(R.drawable.ic_shopping_cart_white).into(binding.productIconIV);
                 } catch (Exception e) {
                     binding.productIconIV.setImageResource(R.drawable.ic_shopping_cart_white);
                 }
+
+
             }
 
             @Override
@@ -179,6 +195,8 @@ public class EditProductActivity extends AppCompatActivity {
     private String productTitle, productDescription, productCategory, productQuantity, originalPrice, discountPrice, discountNote;
     private boolean discountAvailable = false;
     private double discountNoteSum=0.0;
+    private boolean productAvailable = false;
+    private String productAvailableSwitch;
 
     private void inputData() {
         productTitle = binding.titleET.getText().toString().trim();
@@ -189,59 +207,73 @@ public class EditProductActivity extends AppCompatActivity {
 
         discountAvailable = binding.discountSwitch.isChecked();//true or false...jodi check thake tahole discountAvailable false theke true te update hoye jabe
 
+        productAvailable = binding.productAvailableSwitch.isChecked();
 
-        if (TextUtils.isEmpty(productTitle)) {
-            Toast.makeText(this, "Title required!", Toast.LENGTH_SHORT).show();
-            return;//don't proceed further
-        }
-        if (TextUtils.isEmpty(productDescription)) {
-            Toast.makeText(this, "Description required!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (TextUtils.isEmpty(productCategory)) {
-            Toast.makeText(this, "Select a category!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (TextUtils.isEmpty(productQuantity)) {
-            Toast.makeText(this, "Put quantity!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (TextUtils.isEmpty(originalPrice)) {
-            Toast.makeText(this, "Original Price required!", Toast.LENGTH_SHORT).show();
-            return;
-        }
+
         if (discountAvailable) {//ekhane discountAvailable hocche true
 
-          //  discountPrice = binding.discountPriceET.getText().toString().trim();
+            //  discountPrice = binding.discountPriceET.getText().toString().trim();
             discountNote = binding.discountNoteET.getText().toString().trim();
+            if (TextUtils.isEmpty(discountNote)) {
+                Toast.makeText(this, "Discount Note required!", Toast.LENGTH_SHORT).show();
+                return;
+            }else {
+                double disNote = Double.parseDouble(discountNote);
+                double oriPrice = Double.parseDouble(originalPrice);
 
-            double disNote = Double.parseDouble(discountNote);
-            double oriPrice = Double.parseDouble(originalPrice);
+                double afterDiscount = disNote * oriPrice/100;
 
-            double afterDiscount = disNote * oriPrice/100;
+                discountNoteSum = oriPrice - afterDiscount;
+            }
 
-            discountNoteSum = oriPrice - afterDiscount;
+
+
 
 //            if (TextUtils.isEmpty(discountPrice)) {
 //                Toast.makeText(this, "Discount price required!", Toast.LENGTH_SHORT).show();
 //                return;
 //            }
-            if (TextUtils.isEmpty(discountNote)) {
-                Toast.makeText(this, "Discount Note required!", Toast.LENGTH_SHORT).show();
-                return;
-            }
+
 
 
         } else {
             //switchAvailable = true;
-           // discountPrice = "0";
-            discountNote = "";
+            // discountPrice = "0";
+            discountNote = "0";
             discountNoteSum = 0.0;
 
 
         }
 
-        updateProductToDb();
+        if (productAvailable){
+            productAvailableSwitch = "true";
+        }else {
+            productAvailableSwitch = "false";
+        }
+
+
+
+
+        if (TextUtils.isEmpty(productTitle)) {
+            Toast.makeText(this, "Title required!", Toast.LENGTH_SHORT).show();
+            return;//don't proceed further
+        } else if (TextUtils.isEmpty(productDescription)) {
+            Toast.makeText(this, "Description required!", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (TextUtils.isEmpty(productCategory)) {
+            Toast.makeText(this, "Select a category!", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (TextUtils.isEmpty(productQuantity)) {
+            Toast.makeText(this, "Put quantity!", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (TextUtils.isEmpty(originalPrice)) {
+            Toast.makeText(this, "Original Price required!", Toast.LENGTH_SHORT).show();
+            return;
+        }  else {
+            updateProductToDb();
+        }
+
+
 
     }
 
@@ -263,6 +295,8 @@ public class EditProductActivity extends AppCompatActivity {
             hashMap.put("uid",""+auth.getUid());
             hashMap.put("productIcon",""+productIcon);
             hashMap.put("productId",""+productId);
+            hashMap.put("productAvailable",""+productAvailableSwitch);
+
 
             //update to database
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -304,6 +338,7 @@ public class EditProductActivity extends AppCompatActivity {
                         hashMap.put("timestamp",""+productId);
                         hashMap.put("uid",""+auth.getUid());
                         hashMap.put("productId",""+productId);
+                        hashMap.put("productAvailable",""+productAvailableSwitch);
 
                         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
                         reference.child(auth.getUid()).child("Products").child(productId).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -9,7 +9,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_box">
 
         <ImageView
             android:id="@+id/productIconIV"
@@ -19,13 +20,12 @@
             android:layout_marginEnd="@dimen/_5mdp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_shopping_cart_theme_color" />
+            android:src="@drawable/impl1" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toStartOf="@id/nextIV"
             android:layout_toEndOf="@id/productIconIV"
             android:orientation="vertical">
 
@@ -36,8 +36,21 @@
                 android:layout_alignParentEnd="true"
                 android:background="@drawable/shape_rect05"
                 android:padding="@dimen/_5mdp"
+                android:visibility="gone"
                 android:text="10% OFF"
                 android:textColor="@color/colorGreen"
+                android:textSize="@dimen/_8font_mdp" />
+
+            <TextView
+                android:id="@+id/productAvailableTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/_10mdp"
+                android:background="@drawable/product_not_available"
+                android:padding="@dimen/_5mdp"
+                android:text="Not Available"
+                android:textColor="@color/colorRed"
                 android:textSize="@dimen/_8font_mdp" />
 
             <TextView
@@ -50,13 +63,12 @@
 
             <TextView
                 android:id="@+id/descriptionTV"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_160mdp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/titleTV"
-                android:layout_marginTop="@dimen/_5mdp"
+                android:layout_marginTop="@dimen/_3mdp"
                 android:maxLines="2"
-                android:minLines="2"
-                android:text="The product description The product descriptio"
+                android:text="Deshi fresh foodDeshi fresh foodDeshi fresh foodDeshi fresh fooDeshi fresh foodDeshi fresh food"
                 android:textColor="@color/black" />
 
             <TextView
@@ -64,7 +76,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/descriptionTV"
-                android:layout_marginTop="@dimen/_3mdp"
+                android:layout_marginTop="@dimen/_2mdp"
+                android:visibility="invisible"
                 android:drawableStart="@drawable/ic_shopping_cart_theme_color"
                 android:gravity="center_vertical"
                 android:text="Add To Cart"
@@ -75,8 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/addToCartTV"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="@dimen/_5mdp">
+                android:layout_marginTop="@dimen/_2mdp">
 
                 <TextView
                     android:id="@+id/discountPriceTV"
@@ -98,7 +110,7 @@
             </RelativeLayout>
         </RelativeLayout>
 
-        <ImageView
+      <!--  <ImageView
             android:id="@+id/nextIV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -108,7 +120,7 @@
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_next_gray" />
-
+-->
 
     </RelativeLayout>
 

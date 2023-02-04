@@ -19,7 +19,7 @@
             android:layout_marginEnd="@dimen/_5mdp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_shopping_cart_theme_color" />
+            android:src="@drawable/impl1" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,14 +28,33 @@
             android:layout_toEndOf="@id/productIconIV"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/discountNoteTV"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_rect05"
-                android:padding="@dimen/_5mdp"
-                android:text="10% OFF"
-                android:textColor="@color/colorGreen" />
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/discountNoteTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_rect05"
+                    android:padding="@dimen/_5mdp"
+                    android:text="10% OFF"
+                    android:textColor="@color/colorGreen" />
+
+                <TextView
+                    android:id="@+id/productAvailableTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10mdp"
+                    android:background="@drawable/product_not_available"
+                    android:padding="@dimen/_5mdp"
+                    android:text="Not Available"
+                    android:textColor="@color/colorRed" />
+
+
+            </LinearLayout>
+
+
 
             <TextView
                 android:id="@+id/titleTV"

@@ -55,14 +55,33 @@ public class ProductUserAdapter extends RecyclerView.Adapter<ProductUserAdapter.
         String productId = data.getProductId();
         String timestamp = data.getTimestamp();
         String productIcon = data.getProductIcon();
+        String productAvailable = data.getProductAvailable();
+
+
 
         holder.binding.titleTV.setText(productTitle);
         holder.binding.descriptionTV.setText(productDescription);
-        holder.binding.discountNoteTV.setText(discountNote+"% OFF");
+
         holder.binding.originalPriceTV.setText("৳"+originalPrice);
         holder.binding.discountPriceTV.setText("৳"+discountPrice);
 
-        if (discountAvailable.equals("true")){
+
+        if (productAvailable.equals("false")&&(discountAvailable.equals("true")||discountAvailable.equals("false"))){
+            holder.binding.productAvailableTV.setText("Not Available");
+            holder.binding.productAvailableTV.setTextColor(context.getResources().getColor(R.color.colorRed));
+            holder.binding.discountNoteTV.setVisibility(View.GONE);
+            holder.binding.productAvailableTV.setVisibility(View.VISIBLE);
+            holder.binding.addToCartTV.setVisibility(View.INVISIBLE);
+
+        }else {
+            holder.binding.discountNoteTV.setText(discountNote+"% OFF");
+            holder.binding.productAvailableTV.setVisibility(View.GONE);
+            holder.binding.discountNoteTV.setVisibility(View.VISIBLE);
+            holder.binding.addToCartTV.setVisibility(View.VISIBLE);
+
+        }
+
+        if (discountAvailable.equals("true") && productAvailable.equals("true")){
             holder.binding.discountPriceTV.setVisibility(View.VISIBLE);
             holder.binding.discountNoteTV.setVisibility(View.VISIBLE);
             holder.binding.originalPriceTV.setPaintFlags(holder.binding.discountPriceTV.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
@@ -72,9 +91,9 @@ public class ProductUserAdapter extends RecyclerView.Adapter<ProductUserAdapter.
             holder.binding.originalPriceTV.setPaintFlags(0);
         }
         try {
-            Picasso.get().load(productIcon).placeholder(R.drawable.ic_shopping_cart_theme_color).into(holder.binding.productIconIV);
+            Picasso.get().load(productIcon).placeholder(R.drawable.impl1).into(holder.binding.productIconIV);
         }catch (Exception e){
-            holder.binding.productIconIV.setImageResource(R.drawable.ic_shopping_cart_theme_color);
+            holder.binding.productIconIV.setImageResource(R.drawable.impl1);
         }
 
         holder.binding.addToCartTV.setOnClickListener(new View.OnClickListener() {
@@ -146,7 +165,7 @@ public class ProductUserAdapter extends RecyclerView.Adapter<ProductUserAdapter.
                finalCost = finalCost+cost;
                quantity++;
 
-               binding.finalTV.setText("৳"+String.format("%.2f",finalCost));
+               binding.finalTV.setText("৳"+String.format("%.1f",finalCost));
                binding.quantityTV.setText(""+quantity);
            }
        });
@@ -158,7 +177,7 @@ public class ProductUserAdapter extends RecyclerView.Adapter<ProductUserAdapter.
                    finalCost = finalCost-cost;
                    quantity--;
 
-                   binding.finalTV.setText("৳"+finalCost);
+                   binding.finalTV.setText("৳"+String.format("%.1f",finalCost));
                    binding.quantityTV.setText(""+quantity);
                }
            }
