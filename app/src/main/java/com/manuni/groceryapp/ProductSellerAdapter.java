@@ -68,9 +68,11 @@ public class ProductSellerAdapter extends RecyclerView.Adapter<ProductSellerAdap
 
 
 
+            double discountPriceDouble = Double.parseDouble(discountPrice);
+            double productOriginalPriceDouble = Double.parseDouble(productOriginalPrice);
 
-            holder.binding.discountPriceTV.setText("৳"+discountPrice);
-            holder.binding.originalPriceTV.setText("৳"+productOriginalPrice);
+            holder.binding.discountPriceTV.setText(String.format("৳%.2f",discountPriceDouble));
+            holder.binding.originalPriceTV.setText(String.format("৳%.2f",productOriginalPriceDouble));
 
             if (productAvailable.equals("false")&&(discountAvailable.equals("true")||discountAvailable.equals("false"))){
                 holder.binding.productAvailableTV.setText("Not Available");
@@ -94,16 +96,16 @@ public class ProductSellerAdapter extends RecyclerView.Adapter<ProductSellerAdap
             }else {
                 //product is not on discount
                 holder.binding.discountPriceTV.setVisibility(View.GONE);
-                holder.binding.discountNoteTV.setText("0% OFF");
-                //holder.binding.discountNoteTV.setVisibility(View.GONE);
+                //holder.binding.discountNoteTV.setText("0% OFF");
+                holder.binding.discountNoteTV.setVisibility(View.GONE);
                 holder.binding.originalPriceTV.setPaintFlags(0);
             }
 
             try {
-                Picasso.get().load(icon).placeholder(R.drawable.ic_shopping_cart_white).into(holder.binding.productIconIV);
+                Picasso.get().load(icon).placeholder(R.drawable.impl1).into(holder.binding.productIconIV);
 
             }catch (Exception e){
-                holder.binding.productIconIV.setImageResource(R.drawable.ic_shopping_cart_theme_color);
+                holder.binding.productIconIV.setImageResource(R.drawable.impl1);
 
             }
 
@@ -140,13 +142,16 @@ public class ProductSellerAdapter extends RecyclerView.Adapter<ProductSellerAdap
         String timestamp = data.getTimestamp();
         String productOriginalPrice = data.getProductOriginalPrice();
 
+        double discountPriceDouble = Double.parseDouble(discountPrice);
+        double productOriginalPriceDouble = Double.parseDouble(productOriginalPrice);
+
         binding.titleTV.setText(title);
         binding.descriptionTV.setText(productDescription);
         binding.categoryTV.setText(productCategory);
         binding.quantityTV.setText(quantity);
         binding.discountNote.setText(discountNote+"% OFF");
-        binding.discountPriceTV.setText("৳"+discountPrice);
-        binding.originalPriceTV.setText("৳"+productOriginalPrice);
+        binding.discountPriceTV.setText(String.format("৳%.2f",discountPriceDouble));
+        binding.originalPriceTV.setText(String.format("৳%.2f",productOriginalPriceDouble));
 
         if (discountAvailable.equals("true")){
             //product is on discount

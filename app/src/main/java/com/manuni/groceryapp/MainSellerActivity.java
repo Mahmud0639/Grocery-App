@@ -57,7 +57,7 @@ public class MainSellerActivity extends AppCompatActivity {
 
         checkUser();
         showProductsUI();
-        loadAllOrders();
+
         loadAllProducts();
 
         //searching
@@ -186,13 +186,20 @@ public class MainSellerActivity extends AppCompatActivity {
         reference.child(auth.getUid()).child("Orders").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                modelOrderShops.clear();
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    ModelOrderShop modelOrderShop = dataSnapshot.getValue(ModelOrderShop.class);
-                    modelOrderShops.add(modelOrderShop);
+                if (snapshot.exists()){
+                    modelOrderShops.clear();
+                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                        ModelOrderShop modelOrderShop = dataSnapshot.getValue(ModelOrderShop.class);
+                        try {
+                            modelOrderShops.add(modelOrderShop);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    adapterOrderShop = new AdapterOrderShop(MainSellerActivity.this,modelOrderShops);
+                    binding.ordersRV.setAdapter(adapterOrderShop);
                 }
-                adapterOrderShop = new AdapterOrderShop(MainSellerActivity.this,modelOrderShops);
-                binding.ordersRV.setAdapter(adapterOrderShop);
+
             }
 
             @Override
@@ -275,6 +282,8 @@ public class MainSellerActivity extends AppCompatActivity {
 
         binding.tabOrdersTV.setTextColor(getResources().getColor(R.color.black));
         binding.tabOrdersTV.setBackgroundResource(R.drawable.shape_rect04);
+
+        loadAllOrders();
     }
     private void makeMeOffLine(){
         dialog.setMessage("Logging out...");

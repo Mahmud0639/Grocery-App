@@ -48,7 +48,9 @@ import retrofit2.Callback;
 
 public class OrderDetailsSellerActivity extends AppCompatActivity {
     ActivityOrderDetailsSellerBinding binding;
-    private String orderId,orderBy;
+    private String orderId,orderBy,orderTo;
+
+    private  String orderCost,orderStatus,deliveryFee,latitude,longitude,orderTime;
 
     private FirebaseAuth auth;
     private String sourceLatitude,sourceLongitude;
@@ -65,15 +67,15 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
 
         orderId = getIntent().getStringExtra("orderId");
         orderBy = getIntent().getStringExtra("orderBy");
+        orderTo = getIntent().getStringExtra("orderTo");
 
         auth = FirebaseAuth.getInstance();
 
         FirebaseMessaging.getInstance().subscribeToTopic(TOPICS);
 
         loadMyInfo();
-        loadBuyerInfo();
-        loadOrderDetails();
-        loadOrderedItems();
+
+
 
         binding.backArrowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +125,7 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
                 Toast.makeText(OrderDetailsSellerActivity.this, message, Toast.LENGTH_SHORT).show();
 
                 prepareNotification(orderId,""+message);
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -137,36 +140,45 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
         dbRef.child(auth.getUid()).child("Orders").child(orderId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String deliveryFee = ""+snapshot.child("deliveryFee").getValue();
-                String latitude = ""+snapshot.child("latitude").getValue();
-                String longitude = ""+snapshot.child("longitude").getValue();
-                String orderBy = ""+snapshot.child("orderBy").getValue();
-                String orderCost = ""+snapshot.child("orderCost").getValue();
-                String orderId = ""+snapshot.child("orderId").getValue();
-                String orderStatus = ""+snapshot.child("orderStatus").getValue();
-                String orderTime = ""+snapshot.child("orderTime").getValue();
-                String orderTo = ""+snapshot.child("orderTo").getValue();
+                if (snapshot.exists()){
+                    deliveryFee = ""+snapshot.child("deliveryFee").getValue();
+                     latitude = ""+snapshot.child("latitude").getValue();
+                     longitude = ""+snapshot.child("longitude").getValue();
+                     orderBy = ""+snapshot.child("orderBy").getValue();
+                     orderCost = ""+snapshot.child("orderCost").getValue();
+                     orderId = ""+snapshot.child("orderId").getValue();
+                     orderStatus = ""+snapshot.child("orderStatus").getValue();
+                     orderTime = ""+snapshot.child("orderTime").getValue();
+                     orderTo = ""+snapshot.child("orderTo").getValue();
 
-                //covert timestamp time to proper time
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(Long.parseLong(orderTime));
-                String dateTime = DateFormat.format("dd/MM/yy hh:mm aa",calendar).toString();
+                    //covert timestamp time to proper time
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(Long.parseLong(orderTime));
+                    String dateTime = DateFormat.format("dd/MM/yy hh:mm aa",calendar).toString();
 
-                binding.orderDateTV.setText(dateTime);
+                    binding.orderDateTV.setText(dateTime);
+
+                    if (orderStatus.equals("In Progress")){
+                        binding.orderStatusTV.setTextColor(getResources().getColor(R.color.background_theme));
+                    }else if (orderStatus.equals("Completed")){
+                        binding.orderStatusTV.setTextColor(getResources().getColor(R.color.colorGreen));
+                    }else if (orderStatus.equals("Cancelled")){
+                        binding.orderStatusTV.setTextColor(getResources().getColor(R.color.colorRed));
+                    }
+
+                    binding.orderIdTV.setText(orderId);
+                    binding.orderStatusTV.setText(orderStatus);
+                    binding.amountTV.setText("৳"+orderCost+"[Including delivery fee ৳"+deliveryFee+"]");
+
+
+
+                }
+
 
                 //set status color
 
-                binding.orderStatusTV.setText(orderStatus);
-                if (orderStatus.equals("In Progress")){
-                    binding.orderStatusTV.setTextColor(getResources().getColor(R.color.background_theme));
-                }else if (orderStatus.equals("Completed")){
-                    binding.orderStatusTV.setTextColor(getResources().getColor(R.color.colorGreen));
-                }else if (orderStatus.equals("Cancelled")){
-                    binding.orderStatusTV.setTextColor(getResources().getColor(R.color.colorRed));
-                }
 
-                binding.orderIdTV.setText(orderId);
-                binding.amountTV.setText("৳"+orderCost+"[Including delivery fee ৳"+deliveryFee+"]");
+
 
 
                 findAddress(latitude,longitude);
@@ -179,9 +191,9 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
         });
     }
 
-    private void findAddress(String latitude, String longitude) {
-        double lat = Double.parseDouble(latitude);
-        double lon = Double.parseDouble(longitude);
+    private void findAddress(String myLatitude, String myLongitude) {
+        double lat = Double.parseDouble(myLatitude);
+        double lon = Double.parseDouble(myLongitude);
 
         Geocoder geocoder;
 
@@ -208,15 +220,18 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
         databaseReference.child(auth.getUid()).child("Orders").child(orderId).child("Items").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                modelOrderedItems.clear();
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    ModelOrderedItems items = dataSnapshot.getValue(ModelOrderedItems.class);
-                    modelOrderedItems.add(items);
-                }
-                adapterOrderedItems = new AdapterOrderedItems(OrderDetailsSellerActivity.this,modelOrderedItems);
-                binding.orderedItemsRV.setAdapter(adapterOrderedItems);
+                if (snapshot.exists()){
+                    modelOrderedItems.clear();
+                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                        ModelOrderedItems items = dataSnapshot.getValue(ModelOrderedItems.class);
+                        modelOrderedItems.add(items);
+                    }
+                    adapterOrderedItems = new AdapterOrderedItems(OrderDetailsSellerActivity.this,modelOrderedItems);
+                    binding.orderedItemsRV.setAdapter(adapterOrderedItems);
 
-                binding.itemsTV.setText(""+snapshot.getChildrenCount());
+                    binding.itemsTV.setText(""+snapshot.getChildrenCount());
+                }
+
             }
 
             @Override
@@ -231,7 +246,11 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
         //daddr means destination address
         String address = "https://maps.google.com/maps?saddr=" +sourceLatitude+","+sourceLongitude+"&daddr=" + sourceBuyerLatitude+","+sourceBuyerLongitude;//ekhane bola hocce kotha hote kothay map dekhabe
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(address));
-        startActivity(intent);
+        try {
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadMyInfo() {
@@ -242,6 +261,10 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 sourceLatitude = ""+snapshot.child("latitude").getValue();
                 sourceLongitude = ""+snapshot.child("longitude").getValue();
+
+                loadOrderDetails();
+                loadOrderedItems();
+                loadBuyerInfo();
             }
 
             @Override
@@ -256,13 +279,16 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
         ref.child(orderBy).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                sourceBuyerLatitude = ""+snapshot.child("latitude").getValue();
-                sourceBuyerLongitude = ""+snapshot.child("longitude").getValue();
-                String email = ""+snapshot.child("email").getValue();
-                String phone = ""+snapshot.child("phoneNumber").getValue();
+                if (snapshot.exists()){
+                    sourceBuyerLatitude = ""+snapshot.child("latitude").getValue();
+                    sourceBuyerLongitude = ""+snapshot.child("longitude").getValue();
+                    String email = ""+snapshot.child("email").getValue();
+                    String phone = ""+snapshot.child("phoneNumber").getValue();
 
-                binding.buyerEmailTV.setText(email);
-                binding.buyerPhoneTV.setText(phone);
+                    binding.buyerEmailTV.setText(email);
+                    binding.buyerPhoneTV.setText(phone);
+                }
+
             }
 
             @Override
@@ -347,6 +373,16 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
 
                     Toast.makeText(OrderDetailsSellerActivity.this, "Success", Toast.LENGTH_SHORT).show();
+
+                    Intent totalCostIntent = new Intent(OrderDetailsSellerActivity.this,TotalCostActivity.class);
+                    totalCostIntent.putExtra("orderToSeller",orderTo);
+                    try {
+                        startActivity(totalCostIntent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
                 } else {
                     Toast.makeText(OrderDetailsSellerActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 }

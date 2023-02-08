@@ -210,14 +210,32 @@ public class EditProductActivity extends AppCompatActivity {
         productAvailable = binding.productAvailableSwitch.isChecked();
 
 
-        if (discountAvailable) {//ekhane discountAvailable hocche true
+        if (discountAvailable) {
+
+
+            //ekhane discountAvailable hocche true
+
+
 
             //  discountPrice = binding.discountPriceET.getText().toString().trim();
             discountNote = binding.discountNoteET.getText().toString().trim();
+
+            double myDiscountNote = 0.0;
+           // int myDiscountNote = Integer.parseInt(discountNote);
+            if (!discountNote.equals("")){
+                 myDiscountNote = Double.parseDouble(discountNote);
+            }
+
             if (TextUtils.isEmpty(discountNote)) {
                 Toast.makeText(this, "Discount Note required!", Toast.LENGTH_SHORT).show();
                 return;
-            }else {
+          }
+            else if (myDiscountNote==0 || myDiscountNote<0 || myDiscountNote >100){
+                Toast.makeText(this, "Invalid Discount", Toast.LENGTH_SHORT).show();
+                return;
+            }
+//
+          else{
                 double disNote = Double.parseDouble(discountNote);
                 double oriPrice = Double.parseDouble(originalPrice);
 
@@ -239,7 +257,7 @@ public class EditProductActivity extends AppCompatActivity {
         } else {
             //switchAvailable = true;
             // discountPrice = "0";
-            discountNote = "0";
+            discountNote = "";
             discountNoteSum = 0.0;
 
 

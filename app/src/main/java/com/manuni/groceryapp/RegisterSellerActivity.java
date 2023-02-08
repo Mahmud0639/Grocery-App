@@ -211,6 +211,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
             hashMap.put("timestamp",""+System.currentTimeMillis());
             hashMap.put("online","true");
             hashMap.put("profileImage","");
+            hashMap.put("accountStatus","blocked");
 
             reference.child(auth.getUid()).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
@@ -257,6 +258,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
                      hashMap.put("timestamp",""+System.currentTimeMillis());
                      hashMap.put("online","true");
                      hashMap.put("profileImage",""+downloadUrl);
+                     hashMap.put("accountStatus","blocked");
 
                      reference.child(auth.getUid()).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                          @Override

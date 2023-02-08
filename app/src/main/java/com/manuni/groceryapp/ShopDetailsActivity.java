@@ -294,6 +294,10 @@ public class ShopDetailsActivity extends AppCompatActivity {
         binding.checkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                allTotalPrice = 0.00;
+
+
                 //first validate location address
                 if (myLatitude.equals("") || myLatitude.equals("null") || myLongitude.equals("") || myLongitude.equals("null")) {
                     Toast.makeText(ShopDetailsActivity.this, "Please set your location in your profile.", Toast.LENGTH_SHORT).show();
@@ -316,6 +320,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
     private void submitOrder() {
         progressDialog.setMessage("Please wait...");
         progressDialog.show();
+
 
 
         String timestamp = "" + System.currentTimeMillis();
@@ -388,6 +393,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
 
                 Toast.makeText(ShopDetailsActivity.this, "Product order placed to " + shopName + " successfully!", Toast.LENGTH_SHORT).show();
                 deleteCartData();
+               // Toast.makeText(ShopDetailsActivity.this, ""+modelCartItemsList.size(), Toast.LENGTH_SHORT).show();
                 //sending notification after submitting order successfully.
                 prepareNotification(timestamp);
 
@@ -612,4 +618,6 @@ public class ShopDetailsActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

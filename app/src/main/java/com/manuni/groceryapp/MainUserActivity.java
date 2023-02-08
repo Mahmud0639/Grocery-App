@@ -171,6 +171,8 @@ public class MainUserActivity extends AppCompatActivity {
 
         binding.tabShopsTV.setTextColor(getResources().getColor(R.color.white));
         binding.tabShopsTV.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+
+        loadOrders();
     }
 
     private void makeMeOffLine(){
@@ -199,6 +201,7 @@ public class MainUserActivity extends AppCompatActivity {
             startActivity(new Intent(MainUserActivity.this,LoginActivity.class));
         }else {
             loadMyInfo();
+            //Toast.makeText(this, "You are logged in.", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -228,7 +231,7 @@ public class MainUserActivity extends AppCompatActivity {
 
                     //load only those shops that are in the user area or city
                     loadShops(city);
-                    loadOrders();
+                    //loadOrders();
                 }
             }
 
@@ -260,7 +263,12 @@ public class MainUserActivity extends AppCompatActivity {
                                         modelOrderUsers.clear();
                                         for (DataSnapshot dataSnapshot1: snapshot.getChildren()){
                                             ModelOrderUser user = dataSnapshot1.getValue(ModelOrderUser.class);
-                                            modelOrderUsers.add(0,user);
+                                            try {
+                                                modelOrderUsers.add(0,user);
+                                            } catch (Exception e) {
+                                                Toast.makeText(MainUserActivity.this, "No records", Toast.LENGTH_SHORT).show();
+                                                e.printStackTrace();
+                                            }
                                         }
                                         adapterOrderUser = new AdapterOrderUser(MainUserActivity.this,modelOrderUsers);
                                         binding.ordersRV.setLayoutManager(new LinearLayoutManager(MainUserActivity.this));

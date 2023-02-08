@@ -45,9 +45,12 @@ public class AdapterCartItem extends RecyclerView.Adapter<AdapterCartItem.CartIt
         String cost = data.getCost();
         String quantity = data.getQuantity();
 
+        double priceDouble = Double.parseDouble(price);
+        double costDouble = Double.parseDouble(cost);
+
         holder.binding.itemTitleTV.setText(title);
-        holder.binding.itemPriceEachTV.setText("৳"+price);
-        holder.binding.itemPriceTV.setText("৳"+cost);
+        holder.binding.itemPriceEachTV.setText(String.format("৳%.2f",priceDouble));
+        holder.binding.itemPriceTV.setText(String.format("৳%.2f",costDouble));
         holder.binding.itemQuantityTV.setText("["+quantity+"]");
 
         holder.binding.removeTV.setOnClickListener(new View.OnClickListener() {

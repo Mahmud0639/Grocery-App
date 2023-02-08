@@ -53,9 +53,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_40mdp"
         android:background="@color/background_theme"
-        android:padding="@dimen/_5mdp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_shopping_cart_white" />
+        android:src="@drawable/impl1" />
 
     <LinearLayout
         android:layout_width="match_parent"

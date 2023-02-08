@@ -28,6 +28,8 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
     ActivityOrderDetailsUsersBinding binding;
     private String orderTo, orderId;
 
+    private String orderBy,orderCost,orderStatus,deliveryFee,latitude,longitude,orderTime;
+
     private FirebaseAuth auth;
     private ArrayList<ModelOrderedItems> modelOrderedItems;
     private AdapterOrderedItems adapterOrderedItems;
@@ -43,8 +45,7 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
         orderId = getIntent().getStringExtra("orderId");
 
         loadShopInfo();
-        loadOrderDetails();
-        loadOrderedItems();
+
 
 
         //Log.d("MyTag", "onCreate: "+orderTo);
@@ -71,15 +72,18 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
         dbRef.child(orderTo).child("Orders").child(orderId).child("Items").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                modelOrderedItems.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    ModelOrderedItems items = dataSnapshot.getValue(ModelOrderedItems.class);
-                    modelOrderedItems.add(items);
-                }
-                adapterOrderedItems = new AdapterOrderedItems(OrderDetailsUsersActivity.this, modelOrderedItems);
-                binding.orderedItemsRV.setAdapter(adapterOrderedItems);
+                if (snapshot.exists()){
+                    modelOrderedItems.clear();
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        ModelOrderedItems items = dataSnapshot.getValue(ModelOrderedItems.class);
+                        modelOrderedItems.add(items);
+                    }
+                    adapterOrderedItems = new AdapterOrderedItems(OrderDetailsUsersActivity.this, modelOrderedItems);
+                    binding.orderedItemsRV.setAdapter(adapterOrderedItems);
 
-                binding.totalItemsTV.setText("" + snapshot.getChildrenCount());
+                    binding.totalItemsTV.setText("" + snapshot.getChildrenCount());
+                }
+
             }
 
             @Override
@@ -94,21 +98,33 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
         ref.child(orderTo).child("Orders").child(orderId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String orderBy = "" + snapshot.child("orderBy").getValue();
-                String orderCost = "" + snapshot.child("orderCost").getValue();
-                String orderId = "" + snapshot.child("orderId").getValue();
-                String orderStatus = "" + snapshot.child("orderStatus").getValue();
-                String orderTime = "" + snapshot.child("orderTime").getValue();
-                String orderTo = "" + snapshot.child("orderTo").getValue();
-                String deliveryFee = "" + snapshot.child("deliveryFee").getValue();
-                String latitude = "" + snapshot.child("latitude").getValue();
-                String longitude = "" + snapshot.child("longitude").getValue();
+
+                if (snapshot.exists()){
+                    orderBy = "" + snapshot.child("orderBy").getValue();
+                    orderCost = "" + snapshot.child("orderCost").getValue();
+                     orderId = "" + snapshot.child("orderId").getValue();
+                     orderStatus = "" + snapshot.child("orderStatus").getValue();
+                     orderTo = "" + snapshot.child("orderTo").getValue();
+                     deliveryFee = "" + snapshot.child("deliveryFee").getValue();
+                     latitude = "" + snapshot.child("latitude").getValue();
+                     longitude = "" + snapshot.child("longitude").getValue();
+
+                     orderTime = "" + snapshot.child("orderTime").getValue();
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(Long.parseLong(orderTime));
+                    String dateTime = DateFormat.format("dd/MM/yy hh:mm aa", calendar).toString();
+
+                    binding.dateTV.setText(dateTime);
+
+
+
+                }
+
+
 
 
                 //convert time
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(Long.parseLong(orderTime));
-                String dateTime = DateFormat.format("dd/MM/yy hh:mm aa", calendar).toString();
+
 
                 if (orderStatus.equals("In Progress")) {
                     binding.statusTV.setTextColor(getResources().getColor(R.color.background_theme));
@@ -121,7 +137,7 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
                 binding.orderIdTV.setText(orderId);
                 binding.statusTV.setText(orderStatus);
                 binding.totalPriceTV.setText("৳" + orderCost + "[Including delivery fee ৳" + deliveryFee + "]");
-                binding.dateTV.setText(dateTime);
+
 
                 findAddress(latitude, longitude);
             }
@@ -161,6 +177,9 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String shopName = "" + snapshot.child("shopName").getValue();
                 binding.shopNameTV.setText(shopName);
+
+                loadOrderDetails();
+                loadOrderedItems();
             }
 
             @Override

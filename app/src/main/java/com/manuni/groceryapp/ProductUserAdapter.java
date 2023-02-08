@@ -156,45 +156,45 @@ public class ProductUserAdapter extends RecyclerView.Adapter<ProductUserAdapter.
         binding.discountPriceTV.setText("৳"+modelProduct.getProductDiscountPrice());
         binding.pQuantityTV.setText("["+productQuantity+"]");
 
-       AlertDialog dialog = builder.create();
-       dialog.show();
+        AlertDialog dialog = builder.create();
+        dialog.show();
 
-       binding.incrementBtn.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               finalCost = finalCost+cost;
-               quantity++;
+        binding.incrementBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finalCost = finalCost+cost;
+                quantity++;
 
-               binding.finalTV.setText("৳"+String.format("%.1f",finalCost));
-               binding.quantityTV.setText(""+quantity);
-           }
-       });
+                binding.finalTV.setText("৳"+String.format("%.1f",finalCost));
+                binding.quantityTV.setText(""+quantity);
+            }
+        });
 
-       binding.decrementBtn.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               if (quantity>1){
-                   finalCost = finalCost-cost;
-                   quantity--;
+        binding.decrementBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (quantity>1){
+                    finalCost = finalCost-cost;
+                    quantity--;
 
-                   binding.finalTV.setText("৳"+String.format("%.1f",finalCost));
-                   binding.quantityTV.setText(""+quantity);
-               }
-           }
-       });
-       binding.continueBtn.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               String title = binding.titleTV.getText().toString().trim();
-               String priceEach = price;
-               String totalPrice = binding.finalTV.getText().toString().trim().replace("৳","");
-               String quantity = binding.quantityTV.getText().toString().trim();
+                    binding.finalTV.setText("৳"+String.format("%.1f",finalCost));
+                    binding.quantityTV.setText(""+quantity);
+                }
+            }
+        });
+        binding.continueBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String title = binding.titleTV.getText().toString().trim();
+                String priceEach = price;
+                String totalPrice = binding.finalTV.getText().toString().trim().replace("৳","");
+                String quantity = binding.quantityTV.getText().toString().trim();
 
-               //add to database(sqlite)
-               addToCart(productId,title,priceEach,totalPrice,quantity);
-               dialog.dismiss();
-           }
-       });
+                //add to database(sqlite)
+                addToCart(productId,title,priceEach,totalPrice,quantity);
+                dialog.dismiss();
+            }
+        });
     }
 
     private int itemId = 1;

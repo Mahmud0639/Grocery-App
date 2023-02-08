@@ -50,6 +50,8 @@ public class AdapterOrderShop extends RecyclerView.Adapter<AdapterOrderShop.Adap
         String orderStatus = data.getOrderStatus();
         String orderTime = data.getOrderTime();
         String orderDeliveryFee = data.getDeliveryFee();
+        String latitude = data.getLatitude();
+        String longitude = data.getLongitude();
 
         loadBuyerInfos(data,holder);
 
@@ -79,7 +81,12 @@ public class AdapterOrderShop extends RecyclerView.Adapter<AdapterOrderShop.Adap
                 Intent intent = new Intent(context,OrderDetailsSellerActivity.class);
                 intent.putExtra("orderId",orderId);//to load order info
                 intent.putExtra("orderBy",orderBy);//to load user info
-                context.startActivity(intent);
+                intent.putExtra("orderTo",orderTo);
+                try {
+                    context.startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

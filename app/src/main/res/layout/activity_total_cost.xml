@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/_5mdp"
+    tools:context=".TotalCostActivity">
+
+    <TextView
+        android:id="@+id/shopNameTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5mdp"
+        android:text="Shop name"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="@dimen/_17font_mdp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/deliveryFee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delivery Fee"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="@dimen/_13font_mdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/shopNameTV" />
+
+    <TextView
+        android:id="@+id/accountStatusTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/deliveryFee"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Account Status"/>
+
+
+    <TextView
+        android:id="@+id/totalOrdersTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10mdp"
+        android:text="Total Orders"
+        android:layout_marginStart="@dimen/_5mdp"
+        android:textSize="@dimen/_14font_mdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/accountStatusTxt" />
+
+    <TextView
+        android:id="@+id/totalOrders"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5mdp"
+        android:text="256"
+        android:textColor="@color/colorRed"
+        android:textSize="@dimen/_14font_mdp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/totalOrdersTxt"
+        app:layout_constraintTop_toTopOf="@id/totalOrdersTxt" />
+
+    <TextView
+        android:id="@+id/completedTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Completed"
+        android:textSize="@dimen/_14font_mdp"
+        android:layout_marginStart="@dimen/_5mdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/totalOrdersTxt" />
+
+    <TextView
+        android:id="@+id/completedOrders"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5mdp"
+        android:text="20"
+        android:textColor="@color/colorRed"
+        android:textSize="@dimen/_14font_mdp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/completedTxt"
+        app:layout_constraintTop_toTopOf="@id/completedTxt" />
+
+    <TextView
+        android:id="@+id/cancelledTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Cancelled"
+        android:layout_marginStart="@dimen/_5mdp"
+        android:textSize="@dimen/_14font_mdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/completedTxt" />
+
+    <TextView
+        android:id="@+id/cancelledOrders"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5mdp"
+        android:text="40"
+        android:textColor="@color/colorRed"
+        android:textSize="@dimen/_14font_mdp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/cancelledTxt"
+        app:layout_constraintTop_toTopOf="@id/cancelledTxt" />
+
+
+    <TextView
+        android:id="@+id/inProgressTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total In Progress"
+        android:textSize="@dimen/_14font_mdp"
+        android:layout_marginStart="@dimen/_5mdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cancelledTxt" />
+
+    <TextView
+        android:id="@+id/inProgressOrders"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5mdp"
+        android:text="22"
+        android:textColor="@color/colorRed"
+        android:textSize="@dimen/_14font_mdp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/inProgressTxt"
+        app:layout_constraintTop_toTopOf="@id/inProgressTxt" />
+
+
+    <TextView
+        android:id="@+id/inProTotalCostTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Orders(In Progress)"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_15font_mdp"
+        android:layout_marginStart="@dimen/_5mdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inProgressTxt" />
+
+    <TextView
+        android:id="@+id/totalCostInProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5mdp"
+        android:text="230"
+        android:textColor="@android:color/holo_blue_light"
+        android:textSize="@dimen/_15font_mdp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/inProTotalCostTxt"
+        app:layout_constraintTop_toTopOf="@id/inProTotalCostTxt" />
+
+    <TextView
+        android:id="@+id/cancelledCostTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Orders(Cancelled)"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_15font_mdp"
+        android:layout_marginStart="@dimen/_5mdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inProTotalCostTxt" />
+
+    <TextView
+        android:id="@+id/totalCostCancelled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5mdp"
+        android:text="350"
+        android:textColor="@android:color/holo_blue_light"
+        android:textSize="@dimen/_15font_mdp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/cancelledCostTxt"
+        app:layout_constraintTop_toTopOf="@id/cancelledCostTxt" />
+
+    <TextView
+        android:id="@+id/completedCostTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Orders(Completed)"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_15font_mdp"
+        android:layout_marginStart="@dimen/_5mdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cancelledCostTxt" />
+
+    <TextView
+        android:id="@+id/totalCompleted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5mdp"
+        android:text="250"
+        android:textColor="@android:color/holo_blue_light"
+        android:textSize="@dimen/_15font_mdp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/completedCostTxt"
+        app:layout_constraintTop_toTopOf="@id/completedCostTxt" />
+
+    <TextView
+        android:id="@+id/totalCostTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Orders"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_15font_mdp"
+        android:layout_marginStart="@dimen/_5mdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/completedCostTxt" />
+
+    <TextView
+        android:id="@+id/totalCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5mdp"
+        android:text="2503"
+        android:textColor="@android:color/holo_blue_light"
+        android:textSize="@dimen/_15font_mdp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/totalCostTxt"
+        app:layout_constraintTop_toTopOf="@id/totalCostTxt" />
+
+    <View
+        android:id="@+id/viewOne"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/_5mdp"
+        android:background="#f1eded"
+        app:layout_constraintTop_toBottomOf="@id/totalCost" />
+
+    <TextView
+        android:id="@+id/deliveryFeeComTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_3mdp"
+        android:text="Delivery Fee(Completed):"
+        android:textSize="@dimen/_15font_mdp"
+        android:layout_marginStart="@dimen/_5mdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewOne" />
+
+    <TextView
+        android:id="@+id/deliFeeForCompleted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5mdp"
+        android:text="240 Taka"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="@dimen/_15font_mdp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/deliveryFeeComTxt"
+        app:layout_constraintTop_toTopOf="@id/deliveryFeeComTxt" />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
