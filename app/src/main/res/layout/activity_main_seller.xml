@@ -30,46 +30,55 @@
             android:textSize="@dimen/_15font_mdp"
             android:textStyle="bold" />
 
+<!--        <ImageButton-->
+<!--            android:id="@+id/logoutBtn"-->
+<!--            android:layout_width="@dimen/_20mdp"-->
+<!--            android:layout_height="@dimen/_20mdp"-->
+<!--            android:layout_toStartOf="@id/moreBtn"-->
+<!--            android:layout_marginTop="@dimen/_5mdp"-->
+<!--            android:background="@drawable/ic_logout_white" />-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/editProfileBtn"-->
+<!--            android:layout_width="@dimen/_20mdp"-->
+<!--            android:layout_height="@dimen/_20mdp"-->
+<!--            android:layout_marginTop="@dimen/_5mdp"-->
+<!--            android:layout_toStartOf="@id/logoutBtn"-->
+<!--            android:background="@drawable/ic_edit_white" />-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/addProductBtn"-->
+<!--            android:layout_width="@dimen/_20mdp"-->
+<!--            android:layout_height="@dimen/_20mdp"-->
+<!--            android:layout_marginTop="@dimen/_5mdp"-->
+<!--            android:layout_toStartOf="@id/editProfileBtn"-->
+<!--            android:background="@drawable/ic_shopping_cart_white" />-->
+
         <ImageButton
-            android:id="@+id/logoutBtn"
+            android:id="@+id/moreBtn"
             android:layout_width="@dimen/_20mdp"
             android:layout_height="@dimen/_20mdp"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="@dimen/_5mdp"
-            android:background="@drawable/ic_logout_white" />
-
-        <ImageButton
-            android:id="@+id/editProfileBtn"
-            android:layout_width="@dimen/_20mdp"
-            android:layout_height="@dimen/_20mdp"
-            android:layout_marginTop="@dimen/_5mdp"
-            android:layout_toStartOf="@id/logoutBtn"
-            android:background="@drawable/ic_edit_white" />
-
-        <ImageButton
-            android:id="@+id/addProductBtn"
-            android:layout_width="@dimen/_20mdp"
-            android:layout_height="@dimen/_20mdp"
-            android:layout_marginTop="@dimen/_5mdp"
-            android:layout_toStartOf="@id/editProfileBtn"
-            android:background="@drawable/ic_shopping_cart_white" />
-
-        <ImageButton
-            android:id="@+id/reviewBtn"
-            android:layout_width="@dimen/_30mdp"
-            android:layout_height="@dimen/_30mdp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="@dimen/_65mdp"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_star_white" />
+            android:src="@drawable/ic_more_white" />
 
-        <ImageButton
-            android:id="@+id/settingsBtn"
-            android:layout_width="@dimen/_30mdp"
-            android:layout_height="@dimen/_30mdp"
-            android:layout_toStartOf="@id/reviewBtn"
-            android:src="@drawable/ic_settings_white"
-            android:background="@android:color/transparent"/>
+<!--        <ImageButton-->
+<!--            android:id="@+id/reviewBtn"-->
+<!--            android:layout_width="@dimen/_30mdp"-->
+<!--            android:layout_height="@dimen/_30mdp"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_marginEnd="@dimen/_65mdp"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:src="@drawable/ic_star_white" />-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/settingsBtn"-->
+<!--            android:layout_width="@dimen/_30mdp"-->
+<!--            android:layout_height="@dimen/_30mdp"-->
+<!--            android:layout_toStartOf="@id/reviewBtn"-->
+<!--            android:src="@drawable/ic_settings_white"-->
+<!--            android:background="@android:color/transparent"/>-->
 
 
         <de.hdodenhof.circleimageview.CircleImageView

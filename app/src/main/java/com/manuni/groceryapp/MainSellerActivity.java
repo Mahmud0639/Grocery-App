@@ -3,6 +3,7 @@ package com.manuni.groceryapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -39,6 +41,9 @@ public class MainSellerActivity extends AppCompatActivity {
     private ArrayList<ModelOrderShop> modelOrderShops;
     private AdapterOrderShop adapterOrderShop;
 
+    String[] data;
+    ArrayList<String> dataList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +51,7 @@ public class MainSellerActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 
-        dialog = new ProgressDialog(this);
-        dialog.setTitle("Please wait");
-        dialog.setCanceledOnTouchOutside(false);
+
 
         auth = FirebaseAuth.getInstance();
 
@@ -56,9 +59,19 @@ public class MainSellerActivity extends AppCompatActivity {
 
 
         checkUser();
+
+        loadToSpinner();
+
         showProductsUI();
 
         loadAllProducts();
+
+
+        dialog = new ProgressDialog(this);
+        dialog.setTitle("Please wait");
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
 
         //searching
         binding.searchET.addTextChangedListener(new TextWatcher() {
@@ -82,27 +95,68 @@ public class MainSellerActivity extends AppCompatActivity {
             }
         });
 
-        binding.logoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                makeMeOffLine();
+//        binding.logoutBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//
+//            }
+//        });
 
+        PopupMenu popupMenu = new PopupMenu(MainSellerActivity.this,binding.moreBtn);
+        popupMenu.getMenu().add("Add Category");
+        popupMenu.getMenu().add("Edit Profile");
+        popupMenu.getMenu().add("Delete Category");
+        popupMenu.getMenu().add("Add Product");
+        popupMenu.getMenu().add("Reviews");
+        popupMenu.getMenu().add("Settings");
+        popupMenu.getMenu().add("Logout");
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getTitle()=="Edit Profile"){
+                    startActivity(new Intent(MainSellerActivity.this,EditProfileSellerActivity.class));
+                }else if (item.getTitle()=="Add Product"){
+                    startActivity(new Intent(MainSellerActivity.this,AddProductActivity.class));
+                }else if (item.getTitle()=="Reviews"){
+                    Intent intent = new Intent(MainSellerActivity.this,ShopReviewActivity.class);
+                    intent.putExtra("shopUid",auth.getUid());
+                    startActivity(intent);
+                }else if (item.getTitle()=="Settings"){
+                    Intent intent = new Intent(MainSellerActivity.this,SettingsActivity.class);
+                    startActivity(intent);
+                }else if (item.getTitle()=="Logout"){
+                    makeMeOffLine();
+                }else if (item.getTitle()=="Add Category"){
+                    startActivity(new Intent(MainSellerActivity.this,AddCategoryActivity.class));
+                }else if (item.getTitle()=="Delete Category"){
+                    startActivity(new Intent(MainSellerActivity.this,DeleteCategoryActivity.class));
+                }
+                return true;
             }
         });
 
-        binding.editProfileBtn.setOnClickListener(new View.OnClickListener() {
+        binding.moreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainSellerActivity.this,EditProfileSellerActivity.class));
+                popupMenu.show();
             }
         });
 
-        binding.addProductBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainSellerActivity.this,AddProductActivity.class));
-            }
-        });
+//        binding.editProfileBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
+
+//        binding.addProductBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
 
         binding.tabProductsTV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,10 +176,10 @@ public class MainSellerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainSellerActivity.this);
-                builder.setTitle("Choose Category").setItems(Constants.productCategories1, new DialogInterface.OnClickListener() {
+                builder.setTitle("Choose Category").setItems(data, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        String selected = Constants.productCategories1[i];
+                        String selected =data[i];
                         binding.filterProductTV.setText(selected);
                         if (selected.equals("All")){
                             loadAllProducts();
@@ -160,22 +214,19 @@ public class MainSellerActivity extends AppCompatActivity {
             }
         });
 
-        binding.reviewBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainSellerActivity.this,ShopReviewActivity.class);
-                intent.putExtra("shopUid",auth.getUid());
-                startActivity(intent);
-            }
-        });
+//        binding.reviewBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
 
-        binding.settingsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainSellerActivity.this,SettingsActivity.class);
-                startActivity(intent);
-            }
-        });
+//        binding.settingsBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
 
 
     }
@@ -345,5 +396,41 @@ public class MainSellerActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void loadToSpinner() {
+
+
+        DatabaseReference myDbRef = FirebaseDatabase.getInstance().getReference().child("Categories");
+        myDbRef.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                dataList = new ArrayList<>();
+                if (snapshot.exists()){
+                    dataList.clear();
+                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                        String categories = ""+dataSnapshot.child("category").getValue();
+                        dataList.add(categories);
+                    }
+                    dataList.add(0,"All");
+                    data = dataList.toArray(new String[dataList.size()]);
+
+
+
+                }
+                dialog.dismiss();
+
+
+                //adapter.notifyDataSetChanged();
+
+            }
+
+
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
     }
 }

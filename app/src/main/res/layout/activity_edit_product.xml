@@ -140,12 +140,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/categoryTV"
-                    android:layout_margin="@dimen/_5mdp"
                     android:layout_marginStart="@dimen/_5mdp"
                     android:layout_marginTop="@dimen/_5mdp"
-                    android:text="Product Available"
                     android:layout_marginEnd="@dimen/_5mdp"
-                    android:layout_marginBottom="@dimen/_5mdp" />
+                    android:layout_marginBottom="@dimen/_5mdp"
+                    android:text="Product Available" />
 
                 <Switch
                     android:id="@+id/discountSwitch"

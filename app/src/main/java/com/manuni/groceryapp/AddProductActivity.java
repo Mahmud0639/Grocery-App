@@ -30,19 +30,26 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.manuni.groceryapp.databinding.ActivityAddProductBinding;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AddProductActivity extends AppCompatActivity {
     ActivityAddProductBinding binding;
     private static final int CAMERA_REQUEST_CODE = 100;
     public static final int STORAGE_REQUEST_CODE = 200;
+
+    String[] data;
+    ArrayList<String> dataList;
 
 
     private String[] cameraPermissions;
@@ -64,6 +71,8 @@ public class AddProductActivity extends AppCompatActivity {
         binding.discountNoteET.setVisibility(View.GONE);
 
         auth = FirebaseAuth.getInstance();
+
+        loadToSpinner();
 
 
         cameraPermissions = new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -291,10 +300,10 @@ public class AddProductActivity extends AppCompatActivity {
 
     private void categoryDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Product Category").setItems(Constants.productCategories, new DialogInterface.OnClickListener() {
+        builder.setTitle("Product Category").setItems(data, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-             String category = Constants.productCategories[i];//ekhane kono category select kora hole seta ei variable er moddhe chole ashbe
+             String category = data[i];//ekhane kono category select kora hole seta ei variable er moddhe chole ashbe
                 binding.categoryTV.setText(category);
             }
         }).show();
@@ -322,6 +331,42 @@ public class AddProductActivity extends AppCompatActivity {
         }else {
             Toast.makeText(this, ""+ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void loadToSpinner() {
+
+
+        DatabaseReference myDbRef = FirebaseDatabase.getInstance().getReference().child("Categories");
+        myDbRef.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                dataList = new ArrayList<>();
+                if (snapshot.exists()){
+                    dataList.clear();
+                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                        String categories = ""+dataSnapshot.child("category").getValue();
+                        dataList.add(categories);
+                    }
+                    dataList.add(0,"All");
+                    data = dataList.toArray(new String[dataList.size()]);
+
+
+
+                }
+                progressDialog.dismiss();
+
+
+                //adapter.notifyDataSetChanged();
+
+            }
+
+
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
     }
 
 

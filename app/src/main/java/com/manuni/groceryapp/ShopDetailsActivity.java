@@ -50,6 +50,9 @@ public class ShopDetailsActivity extends AppCompatActivity {
     private ProductUserAdapter productUserAdapter;
     public String deliveryFee;
 
+    String[] data;
+    ArrayList<String> dataList;
+
 
     AlertDialog dialog;
     int count;
@@ -59,7 +62,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
     private ArrayList<ModelCartItem> modelCartItemsList;
     private AdapterCartItem adapterCartItem;
 
-    private ProgressDialog progressDialog;
+    private ProgressDialog progressDialog,cateProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,14 +74,24 @@ public class ShopDetailsActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        progressDialog = new ProgressDialog(ShopDetailsActivity.this);
-        progressDialog.setTitle("Placing an order");
-        progressDialog.setCanceledOnTouchOutside(false);
+
 
         loadMyInfo();
         loadShopDetails();
         loadShopProducts();
         loadRatings();
+
+        loadToSpinner();
+
+        progressDialog = new ProgressDialog(ShopDetailsActivity.this);
+        progressDialog.setTitle("Placing an order");
+        progressDialog.setCanceledOnTouchOutside(false);
+
+
+        cateProgressDialog = new ProgressDialog(ShopDetailsActivity.this);
+        cateProgressDialog.setMessage("Please wait...");
+        cateProgressDialog.show();
+
 
 
         easyDB = EasyDB.init(ShopDetailsActivity.this, "ITEMS_DB")
@@ -149,10 +162,10 @@ public class ShopDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ShopDetailsActivity.this);
-                builder.setTitle("Choose Category").setItems(Constants.productCategories1, new DialogInterface.OnClickListener() {
+                builder.setTitle("Choose Category").setItems(data, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        String selected = Constants.productCategories1[i];
+                        String selected = data[i];
                         binding.filterProductTV.setText(selected);
                         if (selected.equals("All")) {
                             loadShopProducts();
@@ -615,6 +628,42 @@ public class ShopDetailsActivity extends AppCompatActivity {
                 intent.putExtra("orderId", orderId);
                 startActivity(intent);
                 Toast.makeText(ShopDetailsActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadToSpinner() {
+
+
+        DatabaseReference myDbRef = FirebaseDatabase.getInstance().getReference().child("Categories");
+        myDbRef.child(shopUid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                dataList = new ArrayList<>();
+                if (snapshot.exists()){
+                    dataList.clear();
+                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                        String categories = ""+dataSnapshot.child("category").getValue();
+                        dataList.add(categories);
+                    }
+                    dataList.add(0,"All");
+                    data = dataList.toArray(new String[dataList.size()]);
+
+
+
+                }
+                cateProgressDialog.dismiss();
+
+
+                //adapter.notifyDataSetChanged();
+
+            }
+
+
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
             }
         });
     }

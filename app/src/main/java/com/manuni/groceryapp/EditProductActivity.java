@@ -41,6 +41,7 @@ import com.google.firebase.storage.UploadTask;
 import com.manuni.groceryapp.databinding.ActivityEditProductBinding;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class EditProductActivity extends AppCompatActivity {
@@ -49,6 +50,9 @@ public class EditProductActivity extends AppCompatActivity {
 
     private static final int CAMERA_REQUEST_CODE = 100;
     public static final int STORAGE_REQUEST_CODE = 200;
+
+    String[] data;
+    ArrayList<String> dataList;
 
 
     private String[] cameraPermissions;
@@ -71,6 +75,9 @@ public class EditProductActivity extends AppCompatActivity {
 
 
         auth = FirebaseAuth.getInstance();
+
+        loadToSpinner();
+
         productId = getIntent().getStringExtra("productId");
         loadProductDetails();
 
@@ -396,10 +403,10 @@ public class EditProductActivity extends AppCompatActivity {
 
     private void categoryDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(EditProductActivity.this);
-        builder.setTitle("Product Category").setItems(Constants.productCategories, new DialogInterface.OnClickListener() {
+        builder.setTitle("Product Category").setItems(data, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                String category = Constants.productCategories[i];//ekhane kono category select kora hole seta ei variable er moddhe chole ashbe
+                String category = data[i];//ekhane kono category select kora hole seta ei variable er moddhe chole ashbe
                 binding.categoryTV.setText(category);
             }
         }).show();
@@ -428,6 +435,42 @@ public class EditProductActivity extends AppCompatActivity {
         }else {
             Toast.makeText(this, ""+ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void loadToSpinner() {
+
+
+        DatabaseReference myDbRef = FirebaseDatabase.getInstance().getReference().child("Categories");
+        myDbRef.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                dataList = new ArrayList<>();
+                if (snapshot.exists()){
+                    dataList.clear();
+                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                        String categories = ""+dataSnapshot.child("category").getValue();
+                        dataList.add(categories);
+                    }
+                    dataList.add(0,"All");
+                    data = dataList.toArray(new String[dataList.size()]);
+
+
+
+                }
+                progressDialog.dismiss();
+
+
+                //adapter.notifyDataSetChanged();
+
+            }
+
+
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
     }
     //    private void showImagePickDialog() {
 //        String[] options = {"Camera", "Gallery"};
