@@ -16,11 +16,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Login"
+            android:layout_centerHorizontal="true"
+            android:text="@string/login"
             android:textColor="@color/white"
             android:textSize="@dimen/_14font_mdp"
-            android:textStyle="bold"
-            android:layout_centerHorizontal="true"/>
+            android:textStyle="bold" />
 
 
     </RelativeLayout>
@@ -47,7 +47,7 @@
         android:background="@drawable/shape_rect_02"
         android:drawableStart="@drawable/ic_mail_gray"
         android:drawablePadding="@dimen/_5mdp"
-        android:hint="Email"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:padding="@dimen/_10mdp" />
 
@@ -63,7 +63,7 @@
         android:background="@drawable/shape_rect_02"
         android:drawableStart="@drawable/ic_lock_gray"
         android:drawablePadding="@dimen/_5mdp"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPassword"
         android:padding="@dimen/_10mdp" />
 
@@ -71,7 +71,7 @@
         android:id="@+id/forgotTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Forgot Password"
+        android:text="@string/forgot_password"
         android:layout_below="@id/passET"
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/_5mdp"/>
@@ -84,14 +84,14 @@
         android:layout_below="@id/forgotTV"
         android:layout_centerHorizontal="true"
         android:minWidth="@dimen/_120mdp"
-        android:text="Login"
+        android:text="@string/login"
         android:textAllCaps="false" />
 
     <TextView
         android:id="@+id/notHaveAccountTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Don't have account? Register"
+        android:text="@string/don_t_have_account_register"
        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/_5mdp"/>

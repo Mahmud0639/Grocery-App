@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Product Details"
+            android:text="@string/product_details"
             android:textColor="@color/white"
             android:textSize="@dimen/_15font_mdp"
             android:textStyle="bold" />
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/shape_rect05"
             android:padding="@dimen/_5mdp"
-            android:text="10% OFF"
+            android:text="@string/_10_off"
             android:textColor="@color/colorGreen" />
 
         <TextView
@@ -78,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5mdp"
-            android:text="Product Title"
+            android:text="@string/product_title"
             android:textColor="@color/black"
             android:textSize="@dimen/_14font_mdp"
             android:textStyle="bold" />
@@ -88,7 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5mdp"
-            android:text="The Product Description"
+            android:text="@string/the_product_description"
             android:textColor="@color/black" />
 
         <TextView
@@ -96,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5mdp"
-            android:text="Category"
+            android:text="@string/category"
             android:textColor="@color/black" />
 
         <TextView
@@ -104,7 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5mdp"
-            android:text="Quantity"
+            android:text="@string/quantity"
             android:textColor="@color/black" />
 
         <RelativeLayout
@@ -117,7 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_10mdp"
-                android:text="$5"
+                android:text="@string/_0"
                 android:textColor="@color/colorGray02" />
 
             <TextView
@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_10mdp"
                 android:layout_toEndOf="@id/discountPriceTV"
-                android:text="$15"
+                android:text="@string/_0"
                 android:textColor="@color/colorGray02" />
 
         </RelativeLayout>

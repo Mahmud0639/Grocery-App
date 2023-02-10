@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Order Details"
+            android:text="@string/order_details"
             android:textColor="@color/white"
             android:textSize="@dimen/_14font_mdp"
             android:textStyle="bold" />
@@ -64,7 +64,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Order ID: "
+                    android:text="@string/order_id"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14font_mdp"
                     android:textStyle="bold" />
@@ -74,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="1234567"
+                    android:text="@string/_1234567"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14font_mdp" />
 
@@ -86,7 +86,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Order Date: "
+                    android:text="@string/order_date"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14font_mdp"
                     android:textStyle="bold" />
@@ -96,7 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="02/09/2023 02:56PM"
+                    android:text="@string/_02_09_2023_02_56pm"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14font_mdp" />
 
@@ -108,7 +108,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Order Status: "
+                    android:text="@string/order_status"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14font_mdp"
                     android:textStyle="bold" />
@@ -118,7 +118,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="In Progress"
+                    android:text="@string/in_progress"
                     android:textColor="@color/background_theme"
                     android:textSize="@dimen/_14font_mdp" />
 
@@ -130,7 +130,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Buyer Email: "
+                    android:text="@string/buyer_email"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14font_mdp"
                     android:textStyle="bold" />
@@ -140,7 +140,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="mahmud@gmail.com"
+                    android:text="@string/mahmud_gmail_com"
                     android:textColor="@color/background_theme"
                     android:textSize="@dimen/_14font_mdp" />
 
@@ -152,7 +152,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Buyer Phone: "
+                    android:text="@string/buyer_phone"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14font_mdp"
                     android:textStyle="bold" />
@@ -163,7 +163,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:autoLink="all"
-                    android:text="+8801774362950"
+                    android:text="@string/_8801774362950"
                     android:textColor="@color/background_theme"
                     android:textSize="@dimen/_14font_mdp" />
 
@@ -175,7 +175,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Items: "
+                    android:text="@string/items"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14font_mdp"
                     android:textStyle="bold" />
@@ -185,7 +185,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="14"
+                    android:text="@string/_14"
                     android:textColor="@color/background_theme"
                     android:textSize="@dimen/_14font_mdp" />
 
@@ -197,7 +197,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Amount: "
+                    android:text="@string/amount"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14font_mdp"
                     android:textStyle="bold" />
@@ -207,7 +207,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="$320.50"
+                    android:text="@string/_320_50"
                     android:textColor="@color/background_theme"
                     android:textSize="@dimen/_14font_mdp" />
 
@@ -219,7 +219,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Delivery Addres: "
+                    android:text="@string/delivery_addres"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14font_mdp"
                     android:textStyle="bold" />
@@ -229,7 +229,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Model Town, Daffodil Road, Dhaka(1207)"
+                    android:text="@string/model_town_daffodil_road_dhaka_1207"
                     android:textColor="@color/background_theme"
                     android:textSize="@dimen/_14font_mdp" />
 
@@ -248,7 +248,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background_theme"
-        android:text="Ordered Items"
+        android:text="@string/ordered_items"
         android:textColor="@color/white"
         android:textAlignment="center"
         android:textSize="@dimen/_13font_mdp"

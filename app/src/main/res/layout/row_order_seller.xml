@@ -15,7 +15,7 @@
             android:id="@+id/orderIdTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Order ID: 39393934"
+            android:text="@string/order_id_39393934"
             android:textColor="@color/black"
             android:textStyle="bold"/>
 
@@ -24,25 +24,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:text="02/11/2023" />
+            android:text="@string/_02_11_2023" />
         <TextView
             android:id="@+id/emailTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Email: mahmud@gmail.com"
+            android:text="@string/email_mahmud_gmail_com"
             android:layout_below="@id/orderIdTV"/>
 
         <TextView
             android:id="@+id/orderAmountTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total Amount: $66.04"
+            android:text="@string/total_amount_66_04"
             android:layout_below="@id/emailTV"/>
         <TextView
             android:id="@+id/statusTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="In Progress"
+            android:text="@string/in_progress"
             android:textColor="@color/background_theme"
             android:layout_below="@id/emailTV"
             android:layout_alignParentEnd="true"

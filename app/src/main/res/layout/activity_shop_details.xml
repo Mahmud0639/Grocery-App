@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_2mdp"
-                android:text="Shop Name"
+                android:text="@string/shop_name"
                 android:textColor="@color/white" />
 
             <TextView
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/shopNameTV"
                 android:layout_margin="@dimen/_2mdp"
-                android:text="Phone"
+                android:text="@string/phone_number"
                 android:textColor="@color/white" />
 
             <TextView
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/phoneTV"
                 android:layout_margin="@dimen/_2mdp"
-                android:text="Email"
+                android:text="@string/email"
                 android:textColor="@color/white" />
 
             <TextView
@@ -63,7 +63,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_margin="@dimen/_2mdp"
                 android:padding="@dimen/_5mdp"
-                android:text="Open"
+                android:text="@string/shop_open"
                 android:textColor="@color/white" />
 
             <TextView
@@ -76,7 +76,7 @@
                 android:layout_marginTop="@dimen/_2mdp"
                 android:layout_marginEnd="@dimen/_2mdp"
                 android:layout_marginBottom="@dimen/_2mdp"
-                android:text="Delivery Fee"
+                android:text="@string/delivery_fee"
                 android:textColor="@color/white" />
 
             <RatingBar
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/emailTV"
                 android:layout_marginTop="@dimen/_10mdp"
-                android:text="Address"
+                android:text="@string/complete_address"
                 android:textColor="@color/white" />
 
             <LinearLayout
@@ -159,7 +159,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Shop Details"
+            android:text="@string/shop_details"
             android:textColor="@color/white"
             android:textSize="@dimen/_15font_mdp" />
 
@@ -170,7 +170,7 @@
             android:layout_alignParentEnd="true"
             android:background="@drawable/shape_circle_03"
             android:gravity="center"
-            android:text="10"
+            android:text="@string/_10"
             android:textColor="@color/white"
             android:textSize="@dimen/_8mdp" />
 
@@ -205,7 +205,7 @@
             android:background="@drawable/shape_rect_02"
             android:drawableStart="@drawable/ic_search_gray"
             android:drawablePadding="@dimen/_10mdp"
-            android:hint="Search"
+            android:hint="@string/search"
             android:padding="@dimen/_8mdp" />
 
         <ImageButton
@@ -227,7 +227,7 @@
             android:layout_below="@id/searchET"
             android:layout_marginStart="@dimen/_5mdp"
             android:layout_marginBottom="@dimen/_5mdp"
-            android:text="Showing All"
+            android:text="@string/showing_all"
             android:textColor="@color/black" />
 
         <androidx.recyclerview.widget.RecyclerView

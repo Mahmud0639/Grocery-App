@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".NoInternetActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="@dimen/_75mdp"
+            android:layout_height="@dimen/_75mdp"
+            app:tint="#909197"
+            android:layout_marginBottom="@dimen/_20mdp"
+            android:src="@drawable/nowi"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No internet connection"
+            android:textColor="#C9CACE"
+            android:textSize="@dimen/_12font_mdp"
+            android:layout_marginBottom="@dimen/_10mdp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#909197"
+            android:textSize="@dimen/_10font_mdp"
+            android:text="Connect to the internet and try again"
+            android:layout_marginBottom="@dimen/_73mdp"
+
+            />
+        <TextView
+            android:layout_width="@dimen/_185mdp"
+            android:layout_height="@dimen/_34mdp"
+            android:layout_marginTop="@dimen/_40mdp"
+            android:background="#3A3A44"
+            android:text="Retry"
+            android:id="@+id/reloadit"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_11font_mdp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

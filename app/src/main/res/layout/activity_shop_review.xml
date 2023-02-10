@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Shop Details"
+            android:text="@string/review_details"
             android:textColor="@color/white"
             android:textSize="@dimen/_15font_mdp" />
 
@@ -53,7 +53,7 @@
             android:id="@+id/shopNameTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Shop Name"
+            android:text="@string/shop_name"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/_3mdp"
             android:textSize="@dimen/_14font_mdp"
@@ -72,7 +72,7 @@
             android:id="@+id/ratingsTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="4.5[26,393,202]"
+            android:text="@string/_4_5_26_393_202"
             android:textColor="#959292"
             android:textSize="@dimen/_8font_mdp"/>
 

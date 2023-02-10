@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Settings"
+            android:text="@string/settings"
             android:textColor="@color/white"
             android:layout_centerHorizontal="true"
             android:textSize="@dimen/_14font_mdp"
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/_5mdp"
-            android:text="Notification enable/disable"
+            android:text="@string/notification_enable_disable"
             android:textSize="@dimen/_14font_mdp"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
@@ -50,7 +50,7 @@
             android:id="@+id/notificationStatusTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Status: Notification disabled"
+            android:text="@string/status_notification_disabled"
             android:layout_below="@id/notificationSwitch"
             android:padding="@dimen/_5mdp"/>
 

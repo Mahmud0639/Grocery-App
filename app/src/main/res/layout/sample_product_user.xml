@@ -37,7 +37,7 @@
                 android:background="@drawable/shape_rect05"
                 android:padding="@dimen/_5mdp"
                 android:visibility="gone"
-                android:text="10% OFF"
+                android:text="@string/_10"
                 android:textColor="@color/colorGreen"
                 android:textSize="@dimen/_8font_mdp" />
 
@@ -49,7 +49,7 @@
                 android:layout_marginStart="@dimen/_10mdp"
                 android:background="@drawable/product_not_available"
                 android:padding="@dimen/_5mdp"
-                android:text="Not Available"
+                android:text="@string/not_available"
                 android:textColor="@color/colorRed"
                 android:textSize="@dimen/_8font_mdp" />
 
@@ -57,7 +57,7 @@
                 android:id="@+id/titleTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Title"
+                android:text="@string/title"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
@@ -68,7 +68,7 @@
                 android:layout_below="@id/titleTV"
                 android:layout_marginTop="@dimen/_3mdp"
                 android:maxLines="2"
-                android:text="Deshi fresh foodDeshi fresh foodDeshi fresh foodDeshi fresh fooDeshi fresh foodDeshi fresh food"
+                android:text="@string/deshi_fresh_fooddeshi_fresh_fooddeshi_fresh_fooddeshi_fresh_foodeshi_fresh_fooddeshi_fresh_food"
                 android:textColor="@color/black" />
 
             <TextView
@@ -80,7 +80,7 @@
                 android:visibility="invisible"
                 android:drawableStart="@drawable/ic_shopping_cart_theme_color"
                 android:gravity="center_vertical"
-                android:text="Add To Cart"
+                android:text="@string/add_to_cart"
                 android:textColor="@color/background_theme" />
 
 
@@ -95,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_8mdp"
-                    android:text="$5"
+                    android:text="@string/_0"
                     android:textColor="@color/colorGray02" />
 
                 <TextView
@@ -103,7 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/discountPriceTV"
-                    android:text="$10"
+                    android:text="@string/_0"
                     android:textColor="@color/colorGray02" />
 
 

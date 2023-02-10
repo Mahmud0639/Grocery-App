@@ -20,6 +20,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GroceryApp.NoActionBar">
         <activity
+            android:name=".TermsConditionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NoInternetActivity"
+            android:exported="false" />
+        <activity
             android:name=".DeleteCategoryActivity"
             android:exported="false" />
         <activity

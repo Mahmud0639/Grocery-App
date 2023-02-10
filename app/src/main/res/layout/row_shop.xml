@@ -42,7 +42,7 @@
             android:layout_toStartOf="@id/nextIV"
             android:background="@drawable/shape_rect06"
             android:padding="@dimen/_5mdp"
-            android:text="Closed"
+            android:text="@string/closed"
             android:textColor="@color/colorRed" />
 
         <LinearLayout
@@ -60,7 +60,7 @@
                 android:layout_marginTop="@dimen/_5mdp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Shop Name"
+                android:text="@string/shop_name"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Phone"
+                android:text="@string/phone_number"
                 android:textColor="@color/black" />
 
             <TextView
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Address"
+                android:text="@string/complete_address"
                 android:textColor="@color/black" />
 
             <RatingBar

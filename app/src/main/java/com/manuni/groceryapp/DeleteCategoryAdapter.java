@@ -70,6 +70,7 @@ public class DeleteCategoryAdapter extends RecyclerView.Adapter<DeleteCategoryAd
                         dbRef.child(auth.getUid()).child(categoryId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
+                                progressDialog.dismiss();
                                 Toast.makeText(context, ""+categoryName+" Removed successfully!", Toast.LENGTH_SHORT).show();
                                 deleteCategoryProduct(categoryName);
                             }
@@ -97,7 +98,7 @@ public class DeleteCategoryAdapter extends RecyclerView.Adapter<DeleteCategoryAd
     }
 
     private void deleteCategoryProduct(String cateName) {
-        progressDialog.setMessage("Deleting category product...");
+
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users");
         ref.child(auth.getUid()).child("Products").orderByChild("productCategory").equalTo(cateName).addValueEventListener(new ValueEventListener() {
             @Override
@@ -110,13 +111,13 @@ public class DeleteCategoryAdapter extends RecyclerView.Adapter<DeleteCategoryAd
                         dRef.child(auth.getUid()).child("Products").child(id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
-                                progressDialog.dismiss();
+
                                 Toast.makeText(context, "Deleted all category product!", Toast.LENGTH_SHORT).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                progressDialog.dismiss();
+
                                 Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });

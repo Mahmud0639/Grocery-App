@@ -31,7 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:text="Update Product"
+                    android:text="@string/update_product"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14font_mdp"
                     android:textStyle="bold" />
@@ -66,7 +66,7 @@
                     android:background="@drawable/shape_rect_02"
                     android:drawableStart="@drawable/ic_text_gray"
                     android:drawablePadding="@dimen/_10mdp"
-                    android:hint="Title"
+                    android:hint="@string/title"
                     android:inputType="textPersonName|textCapWords"
                     android:padding="@dimen/_8mdp" />
 
@@ -82,7 +82,7 @@
                     android:background="@drawable/shape_rect_02"
                     android:drawableStart="@drawable/ic_text_gray"
                     android:drawablePadding="@dimen/_10mdp"
-                    android:hint="Description"
+                    android:hint="@string/description"
                     android:inputType="textCapSentences|textMultiLine"
                     android:padding="@dimen/_8mdp" />
 
@@ -99,8 +99,7 @@
                     android:drawableStart="@drawable/ic_categories_gray"
                     android:drawableEnd="@drawable/ic_down_arrow_gray"
                     android:drawablePadding="@dimen/_10mdp"
-                    android:hint="Category"
-                    android:inputType="textCapSentences|textMultiLine"
+                    android:hint="@string/category"
                     android:padding="@dimen/_8mdp" />
 
                 <EditText
@@ -115,7 +114,7 @@
                     android:background="@drawable/shape_rect_02"
                     android:drawableStart="@drawable/ic_cart_gray"
                     android:drawablePadding="@dimen/_10mdp"
-                    android:hint="Quantity e.g. kg. g. etc."
+                    android:hint="@string/quantity_e_g_kg_g_etc"
                     android:inputType="textCapWords"
                     android:padding="@dimen/_8mdp" />
 
@@ -131,7 +130,7 @@
                     android:background="@drawable/shape_rect_02"
                     android:drawableStart="@drawable/ic_cart_gray"
                     android:drawablePadding="@dimen/_10mdp"
-                    android:hint="Price"
+                    android:hint="@string/price"
                     android:inputType="numberDecimal"
                     android:padding="@dimen/_8mdp" />
 
@@ -144,7 +143,7 @@
                     android:layout_marginTop="@dimen/_5mdp"
                     android:layout_marginEnd="@dimen/_5mdp"
                     android:layout_marginBottom="@dimen/_5mdp"
-                    android:text="Product Available" />
+                    android:text="@string/product_available" />
 
                 <Switch
                     android:id="@+id/discountSwitch"
@@ -155,7 +154,7 @@
                     android:layout_marginTop="@dimen/_5mdp"
                     android:layout_marginEnd="@dimen/_5mdp"
                     android:layout_marginBottom="@dimen/_5mdp"
-                    android:text="Discount" />
+                    android:text="@string/discount" />
 
 <!--                <EditText-->
 <!--                    android:id="@+id/discountPriceET"-->
@@ -184,7 +183,7 @@
                     android:background="@drawable/shape_rect_02"
                     android:drawableStart="@drawable/ic_cart_gray"
                     android:drawablePadding="@dimen/_10mdp"
-                    android:hint="Discount Note e.g. 10% OFF"
+                    android:hint="@string/discount_note_e_g_10_off"
                     android:inputType="numberDecimal"
                     android:padding="@dimen/_8mdp" />
 
@@ -194,7 +193,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/discountNoteET"
                     android:layout_centerHorizontal="true"
-                    android:text="Update Product"
+                    android:text="@string/update_product"
                     android:layout_margin="@dimen/_5mdp"
                     android:textAllCaps="false" />
 

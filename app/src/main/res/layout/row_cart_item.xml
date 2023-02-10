@@ -9,7 +9,7 @@
         android:id="@+id/itemTitleTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Item Title"
+        android:text="@string/item_title"
         android:textColor="@color/black" />
 
     <TextView
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/itemTitleTV"
         android:gravity="center"
-        android:text="10"
+        android:text="@string/_0"
         android:textColor="@color/black" />
 
     <LinearLayout
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="10/KG"
+            android:text="@string/_10_kg"
             android:textColor="@color/black"/>
 
         <TextView
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginStart="@dimen/_4mdp"
-            android:text="[2]"
+            android:text="@string/_2"
             android:textColor="@color/black"/>
 
     </LinearLayout>
@@ -50,7 +50,7 @@
         android:id="@+id/removeTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Remove"
+        android:text="@string/remove"
         android:layout_below="@id/itemTitleTV"
         android:layout_alignParentEnd="true"
         android:textColor="#A9FF2222"/>

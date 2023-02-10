@@ -24,6 +24,8 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -38,8 +40,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -84,6 +89,8 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         binding = ActivityRegisterSellerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+
+
         reference = FirebaseDatabase.getInstance().getReference().child("Users");
         storageReference = FirebaseStorage.getInstance().getReference();
         auth = FirebaseAuth.getInstance();
@@ -127,7 +134,10 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         binding.registerBtnUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                inputDataToDatabaseAndStorage();
+
+                    inputDataToDatabaseAndStorage();
+
+
             }
         });
     }
@@ -166,7 +176,22 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
             Toast.makeText(this, "Password doesn't match", Toast.LENGTH_SHORT).show();
             return;
         }
-        createAccount();
+        ConnectivityManager manager = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+        if (wifi.isConnected()){
+            createAccount();
+        }else if (mobile.isConnected()){
+            createAccount();
+        }else {
+            Toast.makeText(this, "No internet", Toast.LENGTH_SHORT).show();
+        }
+
+
+
+
+
     }
 
 
@@ -217,8 +242,8 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
                 @Override
                 public void onSuccess(Void unused) {
                     dialogForAccount.dismiss();
-                    startActivity(new Intent(RegisterSellerActivity.this,MainSellerActivity.class));
-                    finish();
+                    checkSellerStatus();
+
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -286,6 +311,30 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
 
         }
 
+    }
+
+    private void checkSellerStatus() {
+        reference.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    String status = ""+snapshot.child("accountStatus").getValue();
+                    if (status.equals("blocked")){
+                        binding.blockedTV.setVisibility(View.VISIBLE);
+                        Toast.makeText(RegisterSellerActivity.this, "You are blocked.Please contact with your admin.", Toast.LENGTH_SHORT).show();
+                    }else {
+                        binding.blockedTV.setVisibility(View.GONE);
+                        startActivity(new Intent(RegisterSellerActivity.this,MainSellerActivity.class));
+                        finish();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void showImagePickDialog(){

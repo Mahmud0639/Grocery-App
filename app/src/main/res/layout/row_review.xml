@@ -33,7 +33,7 @@
                 android:id="@+id/nameTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mahmud Islam"
+                android:text="@string/mahmud_islam"
                 android:textColor="@color/background_theme"
                 android:textSize="@dimen/_13font_mdp"/>
 
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/profileLL"
             android:layout_toEndOf="@id/ratingBar"
-            android:text="12/07/23"
+            android:text="@string/_12_07_23"
             android:textColor="#959292"
             android:textSize="@dimen/_8font_mdp" />
 
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/dateTV"
             android:layout_marginTop="@dimen/_5mdp"
-            android:text="The original review of the user"
+            android:text="@string/the_original_review_of_the_user"
             android:textColor="@color/black" />
 
 

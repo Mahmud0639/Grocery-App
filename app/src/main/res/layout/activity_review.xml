@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Reviews"
+            android:text="@string/reviews"
             android:textColor="@color/white"
             android:textSize="@dimen/_14font_mdp"
             android:textStyle="bold" />
@@ -50,7 +50,7 @@
         android:layout_below="@id/storeIV"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_5mdp"
-        android:text="Shop Name"
+        android:text="@string/shop_name"
         android:maxLines="1"
         android:ellipsize="end"
         android:textColor="#5E5F60"
@@ -66,7 +66,7 @@
         android:layout_marginStart="@dimen/_40mdp"
         android:layout_marginTop="@dimen/_10mdp"
         android:layout_marginEnd="@dimen/_10mdp"
-        android:text="How was your experience with seller? Your feedback is very important to improve our quality of services."
+        android:text="@string/how_was_your_experience_with_seller_your_feedback_is_very_important_to_improve_our_quality_of_services"
         android:textAlignment="textStart"
         android:textColor="#5C5B5B" />
 
@@ -90,7 +90,7 @@
         android:layout_marginBottom="@dimen/_15mdp"
         android:background="@drawable/shape_rect_02"
         android:gravity="top"
-        android:hint="Write your review..."
+        android:hint="@string/write_your_review"
         android:minHeight="@dimen/_80mdp"
         android:padding="@dimen/_8mdp" />
 

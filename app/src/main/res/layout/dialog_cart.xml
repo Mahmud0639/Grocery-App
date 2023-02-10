@@ -14,7 +14,7 @@
             style="@style/TextAppearance.AppCompat.Headline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Order To"
+            android:text="@string/order_to"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textColor="@color/black"
@@ -24,7 +24,7 @@
             android:id="@+id/shopNameTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Order To"
+            android:text="@string/order_to"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textColor="@color/black"
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_5mdp"
-                android:text="Sub Total:"
+                android:text="@string/sub_total"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:padding="@dimen/_5mdp"
-                android:text="$76"
+                android:text="@string/_0"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/subTotalLabelTV"
                 android:padding="@dimen/_5mdp"
-                android:text="Delivery Fee:"
+                android:text="@string/delivery_fee"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
@@ -85,7 +85,7 @@
                 android:layout_below="@id/subTotalTV"
                 android:layout_alignParentEnd="true"
                 android:padding="@dimen/_5mdp"
-                android:text="$7"
+                android:text="@string/_0"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/deliveryFeeLabelTV"
                 android:padding="@dimen/_5mdp"
-                android:text="Total:"
+                android:text="@string/total"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
@@ -106,7 +106,7 @@
                 android:layout_below="@id/deliveryFeeTV"
                 android:layout_alignParentEnd="true"
                 android:padding="@dimen/_5mdp"
-                android:text="$83"
+                android:text="@string/_0"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
@@ -117,7 +117,7 @@
             android:id="@+id/checkoutBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Confirm Order"
+            android:text="@string/confirm_order"
             android:background="@color/background_theme"
             android:textColor="@color/white"/>
 

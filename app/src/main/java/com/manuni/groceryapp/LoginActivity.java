@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -58,12 +61,26 @@ public class LoginActivity extends AppCompatActivity {
         binding.loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login();
+
+                ConnectivityManager manager = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+                NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+                if (wifi.isConnected()){
+                    login();
+                }else if (mobile.isConnected()){
+                    login();
+                }else {
+                    Toast.makeText(LoginActivity.this, "No internet", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
 
     }
+
+
     private String email,password;
     private void login(){
         dialog.setTitle("Please wait");
@@ -128,9 +145,45 @@ public class LoginActivity extends AppCompatActivity {
               for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                   String accountType = ""+dataSnapshot.child("accountType").getValue();
                   if (accountType.equals("Seller")){
-                        dialog.dismiss();
-                        startActivity(new Intent(LoginActivity.this,MainSellerActivity.class));
-                        finish();
+                      DatabaseReference myReference = FirebaseDatabase.getInstance().getReference().child("Users");
+
+                      myReference.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+                          @Override
+                          public void onDataChange(@NonNull DataSnapshot snapshot) {
+                              if (snapshot.exists()){
+                                  String status = ""+snapshot.child("accountStatus").getValue();
+                                  if (status.equals("blocked")){
+                                      HashMap<String,Object> hashMap = new HashMap<>();
+                                      hashMap.put("online","false");
+
+                                      dbRef.child(auth.getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                          @Override
+                                          public void onSuccess(Void unused) {
+                                              //checkUserType();
+                                              Toast.makeText(LoginActivity.this, "You are now in offline", Toast.LENGTH_SHORT).show();
+
+                                          }
+                                      }).addOnFailureListener(new OnFailureListener() {
+                                          @Override
+                                          public void onFailure(@NonNull Exception e) {
+
+                                          }
+                                      });
+                                      Toast.makeText(LoginActivity.this, "You are blocked.Please contact with your admin.", Toast.LENGTH_SHORT).show();
+
+                                  }else {
+                                      startActivity(new Intent(LoginActivity.this,MainSellerActivity.class));
+                                      finish();
+                                  }
+                              }
+                          }
+
+                          @Override
+                          public void onCancelled(@NonNull DatabaseError error) {
+
+                          }
+                      });
+
                   }else {
                       dialog.dismiss();
                       startActivity(new Intent(LoginActivity.this,MainUserActivity.class));
