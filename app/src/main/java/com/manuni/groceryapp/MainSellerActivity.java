@@ -360,6 +360,7 @@ public class MainSellerActivity extends AppCompatActivity {
     private void checkUser(){
         if (auth.getCurrentUser()==null){
             startActivity(new Intent(MainSellerActivity.this,LoginActivity.class));
+            finishAffinity();
         }else {
             loadMyInfo();
         }
@@ -432,5 +433,25 @@ public class MainSellerActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private static final int TIME_INTERVAL = 2000;
+    private long mBackPressed;
+    @Override
+    public void onBackPressed() {
+        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
+
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
+        } else {
+
+            Toast.makeText(getBaseContext(), "Press again to exit",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        mBackPressed = System.currentTimeMillis();
     }
 }

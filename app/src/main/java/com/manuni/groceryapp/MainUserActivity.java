@@ -2,6 +2,7 @@ package com.manuni.groceryapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.ProgressDialog;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -61,10 +63,31 @@ public class MainUserActivity extends AppCompatActivity {
 
         showShopsUI();
 
-        binding.logoutBtn.setOnClickListener(new View.OnClickListener() {
+        PopupMenu popupMenu = new PopupMenu(MainUserActivity.this,binding.moreBtn);
+        popupMenu.getMenu().add("Edit Profile");
+        popupMenu.getMenu().add("Settings");
+        popupMenu.getMenu().add("Logout");
+
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getTitle()=="Edit Profile"){
+                    startActivity(new Intent(MainUserActivity.this,EditeProfileUserActivity.class));
+                }else if (item.getTitle()=="Settings"){
+                    Intent intent = new Intent(MainUserActivity.this,SettingsActivity.class);
+                    startActivity(intent);
+                }else if (item.getTitle()=="Logout"){
+                    makeMeOffLine();
+                }
+                return true;
+            }
+        });
+
+        binding.moreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               makeMeOffLine();
+                popupMenu.show();
             }
         });
 
@@ -110,12 +133,6 @@ public class MainUserActivity extends AppCompatActivity {
             }
         });
 
-        binding.editProfileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainUserActivity.this,EditeProfileUserActivity.class));
-            }
-        });
 
         binding.tabShopsTV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,13 +149,6 @@ public class MainUserActivity extends AppCompatActivity {
             }
         });
 
-        binding.settingsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainUserActivity.this,SettingsActivity.class);
-                startActivity(intent);
-            }
-        });
 
 
     }
@@ -306,12 +316,35 @@ public class MainUserActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    //Log.e("TAG", "onDataChange: checkAfter ModelShop Object" );
+
                     String shopCity = ""+dataSnapshot1.child("city").getValue() ;
-                    //Log.e("TAG", "onDataChange: checkAfter shopCity" );
-                    if (Objects.requireNonNull(shopCity).equals(myCity)){
+                    String status = ""+dataSnapshot1.child("accountStatus").getValue();
+                    String onlineStatus = ""+dataSnapshot1.child("online").getValue();
+                    String shopOpen = ""+dataSnapshot1.child("shopOpen").getValue();
+
+                    if (Objects.requireNonNull(shopCity).equals(myCity) && status.equals("unblocked")&& shopOpen.equals("true")){
                         modelShopArrayList.add(modelShop);
                     }
+//                    reference.orderByChild("accountType").equalTo("seller").addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                            if (snapshot.exists()){
+//                                for (DataSnapshot dSnapShot: snapshot.getChildren()){
+//
+//
+//                                }
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError error) {
+//
+//                        }
+//                    });
+                    //Log.e("TAG", "onDataChange: checkAfter ModelShop Object" );
+
+                    //Log.e("TAG", "onDataChange: checkAfter shopCity" );
+
 
                 }
                 adapterShop = new AdapterShop(MainUserActivity.this,modelShopArrayList);
@@ -324,5 +357,25 @@ public class MainUserActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private static final int TIME_INTERVAL = 2000;
+    private long mBackPressed;
+    @Override
+    public void onBackPressed() {
+        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
+
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
+        } else {
+
+            Toast.makeText(getBaseContext(), "Press again to exit",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        mBackPressed = System.currentTimeMillis();
     }
 }
