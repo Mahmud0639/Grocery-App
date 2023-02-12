@@ -142,14 +142,14 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     deliveryFee = ""+snapshot.child("deliveryFee").getValue();
-                     latitude = ""+snapshot.child("latitude").getValue();
-                     longitude = ""+snapshot.child("longitude").getValue();
-                     orderBy = ""+snapshot.child("orderBy").getValue();
-                     orderCost = ""+snapshot.child("orderCost").getValue();
-                     orderId = ""+snapshot.child("orderId").getValue();
-                     orderStatus = ""+snapshot.child("orderStatus").getValue();
-                     orderTime = ""+snapshot.child("orderTime").getValue();
-                     orderTo = ""+snapshot.child("orderTo").getValue();
+                    latitude = ""+snapshot.child("latitude").getValue();
+                    longitude = ""+snapshot.child("longitude").getValue();
+                    orderBy = ""+snapshot.child("orderBy").getValue();
+                    orderCost = ""+snapshot.child("orderCost").getValue();
+                    orderId = ""+snapshot.child("orderId").getValue();
+                    orderStatus = ""+snapshot.child("orderStatus").getValue();
+                    orderTime = ""+snapshot.child("orderTime").getValue();
+                    orderTo = ""+snapshot.child("orderTo").getValue();
 
                     //covert timestamp time to proper time
                     Calendar calendar = Calendar.getInstance();
@@ -332,7 +332,7 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
         sendFcmNotification(NOTIFICATION_TYPE, orderBy, auth.getUid(), orderId, NOTIFICATION_TITLE, NOTIFICATION_MESSAGE);
     }
 
-//    private void sendFcmNotification(JSONObject notificationJO) {
+    //    private void sendFcmNotification(JSONObject notificationJO) {
 //
 ////        JsonObjectRequest jsonObjectRequest=new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", notificationJO, new Response.Listener<JSONObject>() {
 ////            @Override

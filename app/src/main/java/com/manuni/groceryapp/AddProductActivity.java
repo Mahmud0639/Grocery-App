@@ -67,7 +67,7 @@ public class AddProductActivity extends AppCompatActivity {
         binding = ActivityAddProductBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-       // binding.discountPriceET.setVisibility(View.GONE);
+        // binding.discountPriceET.setVisibility(View.GONE);
         binding.discountNoteET.setVisibility(View.GONE);
 
         auth = FirebaseAuth.getInstance();
@@ -90,7 +90,7 @@ public class AddProductActivity extends AppCompatActivity {
                     //binding.discountPriceET.setVisibility(View.GONE);
                     binding.discountNoteET.setVisibility(View.VISIBLE);
                 }else {
-                   // binding.discountPriceET.setVisibility(View.GONE);
+                    // binding.discountPriceET.setVisibility(View.GONE);
                     binding.discountNoteET.setVisibility(View.GONE);
                 }
             }
@@ -160,7 +160,7 @@ public class AddProductActivity extends AppCompatActivity {
         }
         if (discountAvailable){//ekhane discountAvailable hocche true
 
-           //discountPrice = binding.discountPriceET.getText().toString().trim();
+            //discountPrice = binding.discountPriceET.getText().toString().trim();
             discountNote = binding.discountNoteET.getText().toString().trim();
 
             double disNote = Double.parseDouble(discountNote);
@@ -239,7 +239,7 @@ public class AddProductActivity extends AppCompatActivity {
             storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                  Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                    Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                     while (!uriTask.isSuccessful());
                     Uri downloadUri = uriTask.getResult();
                     if (uriTask.isSuccessful()){
@@ -303,7 +303,7 @@ public class AddProductActivity extends AppCompatActivity {
         builder.setTitle("Product Category").setItems(data, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-             String category = data[i];//ekhane kono category select kora hole seta ei variable er moddhe chole ashbe
+                String category = data[i];//ekhane kono category select kora hole seta ei variable er moddhe chole ashbe
                 binding.categoryTV.setText(category);
             }
         }).show();

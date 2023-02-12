@@ -135,7 +135,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
             @Override
             public void onClick(View view) {
 
-                    inputDataToDatabaseAndStorage();
+                inputDataToDatabaseAndStorage();
 
 
             }
@@ -201,7 +201,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         auth.createUserWithEmailAndPassword(binding.emailEt.getText().toString().trim(),binding.passwordET.getText().toString().trim()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                     saveDataInfoToDatabase();
+                saveDataInfoToDatabase();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -257,48 +257,48 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
             storageReference.child(filePathAndName).putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                 Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                    Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
 
-                 while (!uriTask.isSuccessful());
-                 Uri downloadUrl = uriTask.getResult();
+                    while (!uriTask.isSuccessful());
+                    Uri downloadUrl = uriTask.getResult();
 
-                 if (uriTask.isSuccessful()){
-                     HashMap<String,Object> hashMap = new HashMap<>();
-                     hashMap.put("fullName",""+binding.fullNameET.getText().toString().trim());
-                     hashMap.put("shopName",""+binding.shopET.getText().toString().trim());
-                     hashMap.put("phoneNumber",""+binding.phoneET.getText().toString().trim());
-                     hashMap.put("deliveryFee",""+binding.deliveryET.getText().toString().trim());
-                     hashMap.put("countryName",""+binding.countryET.getText().toString().trim());
-                     hashMap.put("state",""+binding.stateET.getText().toString().trim());
-                     hashMap.put("city",""+binding.cityET.getText().toString().trim());
-                     hashMap.put("address",""+binding.completeAddressET.getText().toString().trim());
-                     hashMap.put("email",""+binding.emailEt.getText().toString().trim());
+                    if (uriTask.isSuccessful()){
+                        HashMap<String,Object> hashMap = new HashMap<>();
+                        hashMap.put("fullName",""+binding.fullNameET.getText().toString().trim());
+                        hashMap.put("shopName",""+binding.shopET.getText().toString().trim());
+                        hashMap.put("phoneNumber",""+binding.phoneET.getText().toString().trim());
+                        hashMap.put("deliveryFee",""+binding.deliveryET.getText().toString().trim());
+                        hashMap.put("countryName",""+binding.countryET.getText().toString().trim());
+                        hashMap.put("state",""+binding.stateET.getText().toString().trim());
+                        hashMap.put("city",""+binding.cityET.getText().toString().trim());
+                        hashMap.put("address",""+binding.completeAddressET.getText().toString().trim());
+                        hashMap.put("email",""+binding.emailEt.getText().toString().trim());
 //            hashMap.put("password",""+binding.passwordET.getText().toString().trim());
 //            hashMap.put("confirmPassword",""+binding.confirmPasswordET.getText().toString().trim());
-                     hashMap.put("uid",""+auth.getUid());
-                     hashMap.put("latitude",""+latitude);
-                     hashMap.put("longitude",""+longitude);
-                     hashMap.put("accountType","Seller");
-                     hashMap.put("shopOpen","true");
-                     hashMap.put("timestamp",""+System.currentTimeMillis());
-                     hashMap.put("online","true");
-                     hashMap.put("profileImage",""+downloadUrl);
-                     hashMap.put("accountStatus","blocked");
+                        hashMap.put("uid",""+auth.getUid());
+                        hashMap.put("latitude",""+latitude);
+                        hashMap.put("longitude",""+longitude);
+                        hashMap.put("accountType","Seller");
+                        hashMap.put("shopOpen","true");
+                        hashMap.put("timestamp",""+System.currentTimeMillis());
+                        hashMap.put("online","true");
+                        hashMap.put("profileImage",""+downloadUrl);
+                        hashMap.put("accountStatus","blocked");
 
-                     reference.child(auth.getUid()).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                         @Override
-                         public void onSuccess(Void unused) {
-                             dialogForAccount.dismiss();
-                             startActivity(new Intent(RegisterSellerActivity.this,MainSellerActivity.class));
-                             finish();
-                         }
-                     }).addOnFailureListener(new OnFailureListener() {
-                         @Override
-                         public void onFailure(@NonNull Exception e) {
-                             dialogForAccount.dismiss();
-                         }
-                     });
-                 }
+                        reference.child(auth.getUid()).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                dialogForAccount.dismiss();
+                                startActivity(new Intent(RegisterSellerActivity.this,MainSellerActivity.class));
+                                finish();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                dialogForAccount.dismiss();
+                            }
+                        });
+                    }
 
                 }
             }).addOnFailureListener(new OnFailureListener() {

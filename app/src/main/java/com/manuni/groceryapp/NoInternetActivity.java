@@ -3,12 +3,16 @@ package com.manuni.groceryapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -61,20 +65,73 @@ public class NoInternetActivity extends AppCompatActivity {
                 FirebaseUser user = auth.getCurrentUser();
                 
                 if (wifi.isConnected()){
-                    if (user==null){
-                        startActivity(new Intent(NoInternetActivity.this,LoginActivity.class));
-                        finish();
+                    WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                    int numberOfLevels = 5;
+                    WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+                    int level = WifiManager.calculateSignalLevel(wifiInfo.getRssi(),numberOfLevels);
+
+                    if (level < 2){
+                        Toast.makeText(NoInternetActivity.this, "Your internet is unstable to load", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(NoInternetActivity.this,NoInternetActivity.class));
                     }else {
-                        //checkUserStatus();
-                        checkUserType();
+                        if (user==null){
+                            startActivity(new Intent(NoInternetActivity.this,LoginActivity.class));
+                            finish();
+                        }else {
+                            checkUserType();
+                        }
                     }
+
                 }else if (mobile.isConnected()){
-                    if (user==null){
-                        startActivity(new Intent(NoInternetActivity.this,LoginActivity.class));
-                        finish();
-                    }else {
-                        checkUserType();
+
+                    TelephonyManager telephonyManager = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+                    @SuppressLint("MissingPermission") int networkType = telephonyManager.getNetworkType();
+                    switch (networkType){
+                        case TelephonyManager.NETWORK_TYPE_GPRS:
+                        case TelephonyManager.NETWORK_TYPE_EDGE:
+                        case TelephonyManager.NETWORK_TYPE_CDMA:
+                        case TelephonyManager.NETWORK_TYPE_1xRTT:
+                        case TelephonyManager.NETWORK_TYPE_IDEN:{
+                            Toast.makeText(NoInternetActivity.this, "You need a strong connection to load", Toast.LENGTH_LONG).show();
+                            break;
+                        }
+                        case TelephonyManager.NETWORK_TYPE_UMTS:
+                        case TelephonyManager.NETWORK_TYPE_EVDO_0:
+                        case TelephonyManager.NETWORK_TYPE_EVDO_A:
+                        case TelephonyManager.NETWORK_TYPE_HSDPA:
+                        case TelephonyManager.NETWORK_TYPE_HSUPA:
+                        case TelephonyManager.NETWORK_TYPE_HSPA:
+                        case TelephonyManager.NETWORK_TYPE_EVDO_B:
+                        case TelephonyManager.NETWORK_TYPE_EHRPD:
+                        case TelephonyManager.NETWORK_TYPE_HSPAP:{
+                            if (user==null){
+                                startActivity(new Intent(NoInternetActivity.this,LoginActivity.class));
+                                finish();
+                            }else {
+                                checkUserType();
+                            }
+                            break;
+                        }
+                        case TelephonyManager.NETWORK_TYPE_LTE:{
+                            if (user==null){
+                                startActivity(new Intent(NoInternetActivity.this,LoginActivity.class));
+                                finish();
+                            }else {
+                                checkUserType();
+                            }
+                            break;
+                        }
+
+
                     }
+                }else if (wifi.isFailover()||mobile.isFailover()){
+                    Toast.makeText(NoInternetActivity.this, "Check your connection", Toast.LENGTH_LONG).show();
+
+                }else if (wifi.isAvailable()||mobile.isAvailable()){
+                    Toast.makeText(NoInternetActivity.this, "Check your connection", Toast.LENGTH_LONG).show();
+                }else if (wifi.isConnectedOrConnecting()){
+                    Toast.makeText(NoInternetActivity.this, "Internet is slow to load", Toast.LENGTH_LONG).show();
+
                 }else {
                     Snackbar.make(view,"Check your internet connection to further proceed",Snackbar.LENGTH_LONG).show();
                 }

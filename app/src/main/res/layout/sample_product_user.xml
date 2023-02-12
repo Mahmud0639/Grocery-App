@@ -77,11 +77,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/descriptionTV"
                 android:layout_marginTop="@dimen/_2mdp"
-                android:visibility="invisible"
                 android:drawableStart="@drawable/ic_shopping_cart_theme_color"
                 android:gravity="center_vertical"
                 android:text="@string/add_to_cart"
-                android:textColor="@color/background_theme" />
+                android:textColor="@color/background_theme"
+                android:visibility="visible" />
 
 
             <RelativeLayout

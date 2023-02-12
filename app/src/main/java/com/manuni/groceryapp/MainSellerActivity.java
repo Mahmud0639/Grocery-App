@@ -5,10 +5,17 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
@@ -127,7 +134,66 @@ public class MainSellerActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainSellerActivity.this,SettingsActivity.class);
                     startActivity(intent);
                 }else if (item.getTitle()=="Logout"){
-                    makeMeOffLine();
+                    ConnectivityManager manager = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                    NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+                    NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+                    if (wifi.isConnected()){
+                        WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                        int numberOfLevels = 5;
+                        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+                        int level = WifiManager.calculateSignalLevel(wifiInfo.getRssi(),numberOfLevels);
+
+                        if (level < 2){
+                            Toast.makeText(MainSellerActivity.this, "Your internet is unstable to logout", Toast.LENGTH_SHORT).show();
+                        }else {
+                            makeMeOffLine();
+                        }
+
+                    }else if (mobile.isConnected()){
+                        TelephonyManager telephonyManager = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+                        @SuppressLint("MissingPermission") int networkType = telephonyManager.getNetworkType();
+                        switch (networkType){
+                            case TelephonyManager.NETWORK_TYPE_GPRS:
+                            case TelephonyManager.NETWORK_TYPE_EDGE:
+                            case TelephonyManager.NETWORK_TYPE_CDMA:
+                            case TelephonyManager.NETWORK_TYPE_1xRTT:
+                            case TelephonyManager.NETWORK_TYPE_IDEN:{
+                                Toast.makeText(MainSellerActivity.this, "You need a strong connection to logout", Toast.LENGTH_SHORT).show();
+                                break;
+                            }
+                            case TelephonyManager.NETWORK_TYPE_UMTS:
+                            case TelephonyManager.NETWORK_TYPE_EVDO_0:
+                            case TelephonyManager.NETWORK_TYPE_EVDO_A:
+                            case TelephonyManager.NETWORK_TYPE_HSDPA:
+                            case TelephonyManager.NETWORK_TYPE_HSUPA:
+                            case TelephonyManager.NETWORK_TYPE_HSPA:
+                            case TelephonyManager.NETWORK_TYPE_EVDO_B:
+                            case TelephonyManager.NETWORK_TYPE_EHRPD:
+                            case TelephonyManager.NETWORK_TYPE_HSPAP:{
+                                Toast.makeText(MainSellerActivity.this, "Your network is 3g need a strong connection to logout", Toast.LENGTH_SHORT).show();
+                                break;
+                            }
+                            case TelephonyManager.NETWORK_TYPE_LTE:{
+                                makeMeOffLine();
+                                break;
+                            }
+
+
+                        }
+
+
+                    }else if (wifi.isFailover()||mobile.isFailover()){
+                        Toast.makeText(MainSellerActivity.this, "Check your connection", Toast.LENGTH_SHORT).show();
+                    }else if (wifi.isAvailable()||mobile.isAvailable()){
+                        Toast.makeText(MainSellerActivity.this, "Check your connection", Toast.LENGTH_SHORT).show();
+                    }else if (wifi.isConnectedOrConnecting()){
+                        Toast.makeText(MainSellerActivity.this, "Internet is slow to logout", Toast.LENGTH_SHORT).show();
+                        
+                    }else{
+                        Toast.makeText(MainSellerActivity.this, "No internet", Toast.LENGTH_SHORT).show();
+                    }
+
                 }else if (item.getTitle()=="Add Category"){
                     startActivity(new Intent(MainSellerActivity.this,AddCategoryActivity.class));
                 }else if (item.getTitle()=="Delete Category"){

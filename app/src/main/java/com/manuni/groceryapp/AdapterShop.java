@@ -43,7 +43,7 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.AdapterShopVie
     @Override
     public void onBindViewHolder(@NonNull AdapterShopViewHolder holder, int position) {
         ModelShop data = list.get(position);
-       String accountType = data.getAccountType();
+        String accountType = data.getAccountType();
         String address = data.getAddress();
         String city = data.getCity();
         String country = data.getCountryName();

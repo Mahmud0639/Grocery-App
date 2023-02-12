@@ -182,7 +182,7 @@ public class MainUserActivity extends AppCompatActivity {
         binding.tabShopsTV.setTextColor(getResources().getColor(R.color.white));
         binding.tabShopsTV.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
-        loadOrders();
+        //loadOrders();
     }
 
     private void makeMeOffLine(){
@@ -241,7 +241,7 @@ public class MainUserActivity extends AppCompatActivity {
 
                     //load only those shops that are in the user area or city
                     loadShops(city);
-                    //loadOrders();
+                    loadOrders();
                 }
             }
 
@@ -255,42 +255,35 @@ public class MainUserActivity extends AppCompatActivity {
 
     private void loadOrders() {
         modelOrderUsers = new ArrayList<>();
-
-        DatabaseReference dbR = FirebaseDatabase.getInstance().getReference().child("Users");
-        dbR.addValueEventListener(new ValueEventListener() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users");
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 modelOrderUsers.clear();
-                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
-                    String uid = ""+dataSnapshot.getRef().getKey();//eta holo specific vabe user er key er moddher orders ke pick kora...karon ei key er under a Products er child ti o ache.
-                        //je key er under a products are orders ache si key select kora..oi key dhore amra query korbo
-                    DatabaseReference mydb = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("Orders");
-                    mydb.orderByChild("orderBy").equalTo(auth.getUid())
-                            .addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    if (snapshot.exists()){
-                                        modelOrderUsers.clear();
-                                        for (DataSnapshot dataSnapshot1: snapshot.getChildren()){
-                                            ModelOrderUser user = dataSnapshot1.getValue(ModelOrderUser.class);
-                                            try {
-                                                modelOrderUsers.add(0,user);
-                                            } catch (Exception e) {
-                                                Toast.makeText(MainUserActivity.this, "No records", Toast.LENGTH_SHORT).show();
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                        adapterOrderUser = new AdapterOrderUser(MainUserActivity.this,modelOrderUsers);
-                                        binding.ordersRV.setLayoutManager(new LinearLayoutManager(MainUserActivity.this));
-                                        binding.ordersRV.setAdapter(adapterOrderUser);
-                                    }
-                                }
+                for (DataSnapshot ds: snapshot.getChildren()){
+                    String uid = ""+ds.getRef().getKey();
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("Orders");
+                    ref.orderByChild("orderBy").equalTo(auth.getUid()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()){
+                                for (DataSnapshot ds: snapshot.getChildren()){
+                                    ModelOrderUser orderUser = ds.getValue(ModelOrderUser.class);
 
+                                    modelOrderUsers.add(orderUser);
                                 }
-                            });
+                                adapterOrderUser = new AdapterOrderUser(MainUserActivity.this,modelOrderUsers);
+                                binding.ordersRV.setAdapter(adapterOrderUser);
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
             }
 
