@@ -28,7 +28,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class MainUserActivity extends AppCompatActivity {
     ActivityMainUserBinding binding;
@@ -42,6 +44,7 @@ public class MainUserActivity extends AppCompatActivity {
     private ModelShop modelShop;
 
 
+    //private ArrayList<ModelOrderUser> modelOrderUsers;
     private ArrayList<ModelOrderUser> modelOrderUsers;
     private AdapterOrderUser adapterOrderUser;
 
@@ -101,6 +104,7 @@ public class MainUserActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 try {
                     adapterOrderUser.getFilter().filter(charSequence);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -268,10 +272,11 @@ public class MainUserActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (snapshot.exists()){
+                               // modelOrderUsers.clear(); ei line tir jonno onno store er order dekhato na.
                                 for (DataSnapshot ds: snapshot.getChildren()){
                                     ModelOrderUser orderUser = ds.getValue(ModelOrderUser.class);
 
-                                    modelOrderUsers.add(orderUser);
+                                    modelOrderUsers.add(0,orderUser);
                                 }
                                 adapterOrderUser = new AdapterOrderUser(MainUserActivity.this,modelOrderUsers);
                                 binding.ordersRV.setAdapter(adapterOrderUser);

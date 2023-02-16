@@ -81,7 +81,7 @@
     <string name="total_cancelled">Total Cancelled</string>
     <string name="total_in_progress">Total In Progress</string>
     <string name="_0">0</string>
-    <string name="total_orders_in_progress">Total Orders(In Progress)</string>
+    <string name="total_orders_in_progress">Total Orders(In Progress):</string>
     <string name="total_orders_cancelled">Total Orders(Cancelled)</string>
     <string name="total_orders_completed">Total Orders(Completed)</string>
     <string name="delivery_fee_completed">Delivery Fee(Completed):</string>

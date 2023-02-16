@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/_5mdp"
+    app:cardBackgroundColor="@color/white"
+    app:cardElevation="@dimen/_3mdp"
+    app:contentPadding="@dimen/_5mdp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/productIV"
+            android:layout_width="@dimen/_150mdp"
+            android:layout_height="@dimen/_150mdp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/chinigura_polao"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5% OFF"
+            android:background="@drawable/shape_rect05"
+            android:padding="@dimen/_5mdp"
+            android:layout_marginStart="@dimen/_5mdp"
+            android:textColor="@color/colorGreen"
+            app:layout_constraintTop_toTopOf="@id/productIV"
+           app:layout_constraintStart_toEndOf="@id/productIV"
+            android:layout_marginTop="@dimen/_10mdp"/>
+
+
+        <TextView
+            android:id="@+id/productName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center_horizontal"
+            android:maxLines="1"
+            android:text="Product: Chinigura Polao Rice"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_13font_mdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/productIV" />
+
+        <TextView
+            android:id="@+id/pDiscount"
+            android:layout_width="0dp"
+            android:textColor="#919090"
+            android:layout_height="wrap_content"
+            android:text="Discount Price: 140 tk"
+            app:layout_constraintEnd_toStartOf="@+id/textView"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_5mdp"
+            app:layout_constraintTop_toBottomOf="@id/productName" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Original Price: 148 tk"
+            android:gravity="center_horizontal"
+            android:textColor="#919090"
+            android:layout_marginTop="@dimen/_5mdp"
+            app:layout_constraintStart_toEndOf="@+id/pDiscount"
+            app:layout_constraintTop_toBottomOf="@id/productName"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="This is Chinigura Chal. This is very energetic and authentic product.You can buy it without any thinking."
+            app:layout_constraintTop_toBottomOf="@id/pDiscount"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/_10mdp"
+            android:layout_marginEnd="@dimen/_5mdp"
+            android:layout_marginTop="@dimen/_5mdp"
+            android:textSize="@dimen/_13font_mdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="@dimen/_5mdp"
+            android:textColor="#393636"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

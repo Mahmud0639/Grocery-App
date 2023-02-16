@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f1eded"
+    tools:context=".AccountInfoActivity">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/toolbarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40mdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/shape_rect_01">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Info"
+            android:textSize="@dimen/_14font_mdp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/backBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/backBtn"/>
+        <ImageButton
+            android:id="@+id/backBtn"
+            android:layout_width="@dimen/_30mdp"
+            android:layout_height="@dimen/_30mdp"
+            android:src="@drawable/ic_arrow_left_white"
+            android:background="@android:color/transparent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbarLayout">
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="@dimen/_5mdp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:weightSum="2">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/totalTakaBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/total_taka_btn"
+                    android:text="Total Taka"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
+
+                <com.mancj.materialsearchbar.MaterialSearchBar
+                    android:id="@+id/searchCalculation"
+                    style="@style/MaterialSearchBarLight"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    app:mt_placeholder="Search by date..."
+                    app:mt_hint="Search here"
+                    app:mt_maxSuggestionsCount="10"/>
+
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/totalLinear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/total_bg"
+                android:padding="@dimen/_5mdp"
+                android:visibility="visible"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/_5mdp"
+                app:layout_constraintTop_toBottomOf="@id/linearLayout"
+                app:layout_constraintStart_toStartOf="@id/linearLayout"
+                app:layout_constraintEnd_toEndOf="@id/linearLayout">
+
+                <TextView
+                    android:id="@+id/totalEarnedTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total Earned: 0.00Tk"
+                    android:textColor="@color/black"
+                    android:padding="@dimen/_5mdp"/>
+                <TextView
+                    android:id="@+id/totalDeliveryTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total Delivery: 0"
+                    android:textColor="@color/black"
+                    android:padding="@dimen/_5mdp"/>
+                <TextView
+                    android:id="@+id/totalFullDayDelTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total Delivery Charge: 0.00Tk"
+                    android:textColor="@color/black"
+                    android:padding="@dimen/_5mdp"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/gotItBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_30mdp"
+                    android:text="Got It!"
+                    android:textColor="@color/black"
+                    android:textAllCaps="false"
+                    android:layout_marginTop="@dimen/_3mdp"
+                    android:background="@drawable/total_bg"/>
+
+            </LinearLayout>
+
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/calculationRV"
+                app:layout_constraintTop_toBottomOf="@id/totalLinear"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_width="match_parent"
+                android:background="#f1eded"
+                tools:listitem="@layout/calculation_row"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="0dp"/>
+
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -289,8 +289,9 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
                             @Override
                             public void onSuccess(Void unused) {
                                 dialogForAccount.dismiss();
-                                startActivity(new Intent(RegisterSellerActivity.this,MainSellerActivity.class));
-                                finish();
+                                checkSellerStatus();
+                                //startActivity(new Intent(RegisterSellerActivity.this,MainSellerActivity.class));
+                                //finish();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override

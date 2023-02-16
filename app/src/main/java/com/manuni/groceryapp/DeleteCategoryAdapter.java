@@ -1,5 +1,6 @@
 package com.manuni.groceryapp;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -47,7 +48,7 @@ public class DeleteCategoryAdapter extends RecyclerView.Adapter<DeleteCategoryAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DeleteCategoryAdapterViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DeleteCategoryAdapterViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         DeleteCategoryModel data = list.get(position);
 
@@ -72,7 +73,7 @@ public class DeleteCategoryAdapter extends RecyclerView.Adapter<DeleteCategoryAd
                             public void onSuccess(Void unused) {
                                 progressDialog.dismiss();
                                 Toast.makeText(context, ""+categoryName+" Removed successfully!", Toast.LENGTH_SHORT).show();
-                                deleteCategoryProduct(categoryName);
+                                deleteCategoryProduct(categoryName,position);
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -97,7 +98,7 @@ public class DeleteCategoryAdapter extends RecyclerView.Adapter<DeleteCategoryAd
 
     }
 
-    private void deleteCategoryProduct(String cateName) {
+    private void deleteCategoryProduct(String cateName,int pos) {
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users");
         ref.child(auth.getUid()).child("Products").orderByChild("productCategory").equalTo(cateName).addValueEventListener(new ValueEventListener() {
@@ -113,6 +114,10 @@ public class DeleteCategoryAdapter extends RecyclerView.Adapter<DeleteCategoryAd
                             public void onSuccess(Void unused) {
 
                                 Toast.makeText(context, "Deleted all category product!", Toast.LENGTH_SHORT).show();
+                               notifyItemRemoved(pos);
+                                notifyItemChanged(pos);
+                                notifyDataSetChanged();
+                                list.clear();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override

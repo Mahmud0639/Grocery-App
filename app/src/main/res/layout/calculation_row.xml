@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/_3mdp"
+    app:cardElevation="@dimen/_3mdp"
+    app:cardUseCompatPadding="true"
+    app:contentPadding="@dimen/_5mdp">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/paid"
+            android:layout_width="@dimen/_50mdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_3mdp"
+            android:background="@drawable/total_bg_paid"
+            android:gravity="center"
+            android:padding="@dimen/_3mdp"
+            android:text="Paid"
+            android:textColor="@color/colorGreen"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tableLayout" />
+
+        <TextView
+            android:id="@+id/unpaid"
+            android:layout_width="@dimen/_50mdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_3mdp"
+            android:background="@drawable/total_bg_unpaid"
+            android:gravity="center"
+            android:padding="@dimen/_3mdp"
+            android:text="Unpaid"
+            android:textColor="@color/colorRed"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tableLayout" />
+
+
+        <TableLayout
+            android:id="@+id/tableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_marginEnd="@dimen/_5mdp"
+                    android:text="Shop Name:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13font_mdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/shopNameTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:minLines="2"
+                    android:text="mahmud grocery"
+                    android:textColor="@color/black" />
+
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_marginEnd="@dimen/_5mdp"
+                    android:text="In Progress:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13font_mdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/inProgressTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_weight="1"
+                    android:text="5"
+                    android:textColor="@color/black" />
+
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_marginEnd="@dimen/_5mdp"
+                    android:text="Completed:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13font_mdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/completedTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_weight="1"
+                    android:text="3"
+                    android:textColor="@color/black" />
+
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_marginEnd="@dimen/_5mdp"
+                    android:text="Cancelled:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13font_mdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/cancelledTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_weight="1"
+                    android:text="2"
+                    android:textColor="@color/black" />
+
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_marginEnd="@dimen/_5mdp"
+                    android:text="Total Order Price:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13font_mdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/totalCostTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_weight="1"
+                    android:text="390 Tk"
+                    android:textColor="@color/black" />
+
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_marginEnd="@dimen/_5mdp"
+                    android:text="Cancelled Price:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13font_mdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/totalCancelledTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_weight="1"
+                    android:text="122 Tk"
+                    android:textColor="@color/black" />
+
+
+            </TableRow>
+
+
+            <TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_marginEnd="@dimen/_5mdp"
+                    android:text="Total Earned:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13font_mdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/totalCompletedTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_weight="1"
+                    android:text="268 Tk"
+                    android:textColor="@color/black" />
+
+
+            </TableRow>
+
+
+            <TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_marginEnd="@dimen/_5mdp"
+                    android:text="Delivery Fee:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13font_mdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/deliveryFeeTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_weight="1"
+                    android:text="25.30 Tk"
+                    android:textColor="@color/black" />
+
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_marginEnd="@dimen/_5mdp"
+                    android:text="Total Delivery:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13font_mdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/fullDayDeliveryTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_weight="1"
+                    android:text="75.90 Tk"
+                    android:textColor="@color/black" />
+
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_marginEnd="@dimen/_5mdp"
+                    android:text="Address:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13font_mdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/addressTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:minLines="2"
+                    android:text="S Tejkuni Para,Dhaka-1213,Bangladesh"
+                    android:textColor="@color/black" />
+
+
+            </TableRow>
+
+
+            <TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_marginEnd="@dimen/_5mdp"
+                    android:text="Date:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13font_mdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/dateTimeTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_weight="1"
+                    android:text="02/08/2023"
+                    android:textColor="@color/black" />
+
+
+            </TableRow>
+
+
+        </TableLayout>
+
+<!--        <Button-->
+<!--            android:id="@+id/makeUnpaid"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="@dimen/_30mdp"-->
+<!--            android:layout_marginTop="@dimen/_5mdp"-->
+<!--            android:layout_marginBottom="@dimen/_5mdp"-->
+<!--            android:background="@drawable/total_bg"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="@dimen/_3mdp"-->
+<!--            android:text="Unpaid"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:textSize="@dimen/_8font_mdp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/makePaid"-->
+<!--            app:layout_constraintHorizontal_bias="0.5"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/tableLayout"-->
+<!--            app:layout_goneMarginTop="@dimen/_30mdp" />-->
+
+<!--        <Button-->
+<!--            android:id="@+id/makePaid"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="@dimen/_30mdp"-->
+<!--            android:layout_marginTop="@dimen/_5mdp"-->
+<!--            android:layout_marginBottom="@dimen/_5mdp"-->
+<!--            android:background="@drawable/total_bg"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="@dimen/_3mdp"-->
+<!--            android:text="Paid"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:textSize="@dimen/_8font_mdp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+
+<!--            app:layout_constraintEnd_toStartOf="@+id/deleteBtn"-->
+<!--            app:layout_constraintHorizontal_bias="0.5"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/makeUnpaid"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/tableLayout" />-->
+
+<!--        <Button-->
+<!--            android:id="@+id/deleteBtn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="@dimen/_30mdp"-->
+<!--            android:layout_marginTop="@dimen/_5mdp"-->
+<!--            android:layout_marginBottom="@dimen/_5mdp"-->
+<!--            android:background="@drawable/total_bg"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="@dimen/_3mdp"-->
+<!--            android:text="Delete"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:textSize="@dimen/_8font_mdp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+
+<!--            app:layout_constraintHorizontal_bias="0.5"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/makePaid"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/tableLayout" />-->
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

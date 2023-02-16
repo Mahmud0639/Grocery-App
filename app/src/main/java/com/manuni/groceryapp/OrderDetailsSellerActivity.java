@@ -374,13 +374,13 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
 
                     Toast.makeText(OrderDetailsSellerActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
-                    Intent totalCostIntent = new Intent(OrderDetailsSellerActivity.this,TotalCostActivity.class);
-                    totalCostIntent.putExtra("orderToSeller",orderTo);
-                    try {
-                        startActivity(totalCostIntent);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+//                    Intent totalCostIntent = new Intent(OrderDetailsSellerActivity.this,TotalCostActivity.class);
+//                    totalCostIntent.putExtra("orderToSeller",orderTo);
+//                    try {
+//                        startActivity(totalCostIntent);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
 
 
                 } else {

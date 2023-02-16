@@ -2,6 +2,7 @@ package com.manuni.groceryapp;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,7 +107,17 @@ public class ProductUserAdapter extends RecyclerView.Adapter<ProductUserAdapter.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(context,ProductInfoActivity.class);
+                intent.putExtra("productIcon",productIcon);
+                intent.putExtra("originalPrice",originalPrice);
+                intent.putExtra("discountPrice",discountPrice);
+                intent.putExtra("productTitle",productTitle);
+                intent.putExtra("discountNote",discountNote);
+                try {
+                    context.startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

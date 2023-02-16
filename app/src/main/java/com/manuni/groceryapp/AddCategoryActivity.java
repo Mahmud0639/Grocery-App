@@ -42,25 +42,35 @@ public class AddCategoryActivity extends AppCompatActivity {
         binding.addCategoryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String key = dbRef.push().getKey();
 
                 String category = binding.textInputLayout.getEditText().getText().toString().trim();
 
-                HashMap<String,Object> hashMap = new HashMap<>();
-                hashMap.put("category",""+category);
-                hashMap.put("categoryId",""+key);
+                if (category.isEmpty()){
+                    binding.textInputLayout.setError("Field can't be empty");
+                }else {
+                    binding.textInputLayout.getEditText().setText("");
+                    binding.textInputLayout.setError(null);
 
-                dbRef.child(auth.getUid()).child(key).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(AddCategoryActivity.this, "Category added successfully!", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(AddCategoryActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    HashMap<String,Object> hashMap = new HashMap<>();
+                    hashMap.put("category",""+category);
+                    hashMap.put("categoryId",""+key);
+
+                    dbRef.child(auth.getUid()).child(key).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(AddCategoryActivity.this, "Category added successfully!", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(AddCategoryActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+
 
 
 

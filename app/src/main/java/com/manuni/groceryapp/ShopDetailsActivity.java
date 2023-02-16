@@ -53,6 +53,8 @@ public class ShopDetailsActivity extends AppCompatActivity {
     String[] data;
     ArrayList<String> dataList;
 
+    private String selected;
+
 
     AlertDialog dialog;
     int count;
@@ -146,7 +148,9 @@ public class ShopDetailsActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 try {
-                    productUserAdapter.getFilter().filter(charSequence);
+                        productUserAdapter.getFilter().filter(charSequence);
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -161,19 +165,24 @@ public class ShopDetailsActivity extends AppCompatActivity {
         binding.filterProductBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ShopDetailsActivity.this);
-                builder.setTitle("Choose Category").setItems(data, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        String selected = data[i];
-                        binding.filterProductTV.setText(selected);
-                        if (selected.equals("All")) {
-                            loadShopProducts();
-                        } else {
-                            productUserAdapter.getFilter().filter(selected);
+                if (dataList.size()==0){
+                    Toast.makeText(ShopDetailsActivity.this, "No items available!", Toast.LENGTH_SHORT).show();
+                }else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ShopDetailsActivity.this);
+                    builder.setTitle("Choose Category").setItems(data, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            selected = data[i];
+                            binding.filterProductTV.setText(selected);
+                            if (selected.equals("All")) {
+                                loadShopProducts();
+                            } else {
+                                productUserAdapter.getFilter().filter(selected);
+                            }
                         }
-                    }
-                }).show();
+                    }).show();
+                }
+
             }
         });
 

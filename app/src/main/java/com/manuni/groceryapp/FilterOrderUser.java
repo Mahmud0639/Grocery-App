@@ -3,6 +3,7 @@ package com.manuni.groceryapp;
 import android.widget.Filter;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class FilterOrderUser extends Filter {
     private AdapterOrderUser adapterOrderUser;

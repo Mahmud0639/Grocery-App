@@ -41,6 +41,7 @@ public class MainSellerActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseReference dbRef;
     private ProgressDialog dialog;
+    private String selected;
 
     private ArrayList<ModelProduct> list;
     private ProductSellerAdapter productSellerAdapter;
@@ -90,7 +91,12 @@ public class MainSellerActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 try {
-                    productSellerAdapter.getFilter().filter(charSequence);
+                    if (charSequence.equals("")){
+                        loadFilteredProducts(selected);
+                    }else {
+                        productSellerAdapter.getFilter().filter(charSequence);
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -115,6 +121,8 @@ public class MainSellerActivity extends AppCompatActivity {
         popupMenu.getMenu().add("Edit Profile");
         popupMenu.getMenu().add("Delete Category");
         popupMenu.getMenu().add("Add Product");
+        popupMenu.getMenu().add("Account Info");
+        popupMenu.getMenu().add("Today Balance");
         popupMenu.getMenu().add("Reviews");
         popupMenu.getMenu().add("Settings");
         popupMenu.getMenu().add("Logout");
@@ -124,9 +132,13 @@ public class MainSellerActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getTitle()=="Edit Profile"){
                     startActivity(new Intent(MainSellerActivity.this,EditProfileSellerActivity.class));
-                }else if (item.getTitle()=="Add Product"){
+                }else if (item.getTitle()=="Account Info"){
+                    startActivity(new Intent(MainSellerActivity.this,AccountInfoActivity.class));
+                }  else if (item.getTitle()=="Add Product"){
                     startActivity(new Intent(MainSellerActivity.this,AddProductActivity.class));
-                }else if (item.getTitle()=="Reviews"){
+                }else if (item.getTitle()=="Today Balance"){
+                   startActivity(new Intent(MainSellerActivity.this,TotalCostActivity.class));
+                } else if (item.getTitle()=="Reviews"){
                     Intent intent = new Intent(MainSellerActivity.this,ShopReviewActivity.class);
                     intent.putExtra("shopUid",auth.getUid());
                     startActivity(intent);
@@ -241,19 +253,26 @@ public class MainSellerActivity extends AppCompatActivity {
         binding.filterProductBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainSellerActivity.this);
-                builder.setTitle("Choose Category").setItems(data, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        String selected =data[i];
-                        binding.filterProductTV.setText(selected);
-                        if (selected.equals("All")){
-                            loadAllProducts();
-                        }else {
-                            loadFilteredProducts(selected);
+                if (dataList.size()==0){
+                    Toast.makeText(MainSellerActivity.this, "Please add category first", Toast.LENGTH_SHORT).show();
+                }else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainSellerActivity.this);
+                    builder.setTitle("Choose Category").setItems(data, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            selected =data[i];
+                            binding.filterProductTV.setText(selected);
+                            if (selected.equals("All")){
+                                loadAllProducts();
+                            }else {
+                                loadFilteredProducts(selected);
+                            }
+
+
                         }
-                    }
-                }).show();
+                    }).show();
+                }
+
             }
         });
 

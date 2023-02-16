@@ -3,7 +3,9 @@ package com.manuni.groceryapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -16,6 +18,7 @@ public class TotalCostActivity extends AppCompatActivity {
     private String orderToSeller;
     private String deliFee;
     private String shopName;
+    private FirebaseAuth auth;
     private double totalOrderCost = 0.0, totalOrderCostForCancelled = 0.0, totalOrderCostForCompleted = 0.0, totalOrderCostForAll = 0.0;
 
 
@@ -25,7 +28,9 @@ public class TotalCostActivity extends AppCompatActivity {
         binding = ActivityTotalCostBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        orderToSeller = getIntent().getStringExtra("orderToSeller");
+        auth = FirebaseAuth.getInstance();
+
+      //  orderToSeller = getIntent().getStringExtra("orderToSeller");
         loadAccountStatus();
         loadThisShopDeliveryFee();
         loadAllCompletedOrders();
@@ -38,7 +43,7 @@ public class TotalCostActivity extends AppCompatActivity {
     }
     private void loadAllShopsInfo() {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users");
-        db.child(orderToSeller).child("Orders").addValueEventListener(new ValueEventListener() {
+        db.child(auth.getUid()).child("Orders").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 long totalOrders = snapshot.getChildrenCount();
@@ -61,10 +66,17 @@ public class TotalCostActivity extends AppCompatActivity {
 
             }
         });
+
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
     private void loadAllCancelledOrders() {
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        dbRef.child(orderToSeller).child("Orders").orderByChild("orderStatus").equalTo("Cancelled").addValueEventListener(new ValueEventListener() {
+        dbRef.child(auth.getUid()).child("Orders").orderByChild("orderStatus").equalTo("Cancelled").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 long cancelledOrders = snapshot.getChildrenCount();
@@ -89,7 +101,7 @@ public class TotalCostActivity extends AppCompatActivity {
     }
     private void loadAllInProgressOrder() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users");
-        ref.child(orderToSeller).child("Orders").orderByChild("orderStatus").equalTo("In Progress").addValueEventListener(new ValueEventListener() {
+        ref.child(auth.getUid()).child("Orders").orderByChild("orderStatus").equalTo("In Progress").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 long inProgressOrders = snapshot.getChildrenCount();
@@ -119,7 +131,7 @@ public class TotalCostActivity extends AppCompatActivity {
     }
     private void loadAccountStatus(){
         DatabaseReference dref = FirebaseDatabase.getInstance().getReference().child("Users");
-        dref.child(orderToSeller).addValueEventListener(new ValueEventListener() {
+        dref.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 String accountStatus = ""+snapshot.child("accountStatus").getValue();
@@ -140,7 +152,7 @@ public class TotalCostActivity extends AppCompatActivity {
     }
     private void loadAllCompletedOrders() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
-        reference.child(orderToSeller).child("Orders").orderByChild("orderStatus").equalTo("Completed").addValueEventListener(new ValueEventListener() {
+        reference.child(auth.getUid()).child("Orders").orderByChild("orderStatus").equalTo("Completed").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 long completedOrder = snapshot.getChildrenCount();
@@ -184,7 +196,7 @@ public class TotalCostActivity extends AppCompatActivity {
     }
     private void loadThisShopDeliveryFee() {
         DatabaseReference dRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        dRef.child(orderToSeller).addValueEventListener(new ValueEventListener() {
+        dRef.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 deliFee = "" + snapshot.child("deliveryFee").getValue();
