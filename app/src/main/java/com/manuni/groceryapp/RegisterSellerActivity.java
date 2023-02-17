@@ -50,17 +50,21 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.manuni.groceryapp.databinding.ActivityRegisterSellerBinding;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 public class RegisterSellerActivity extends AppCompatActivity implements LocationListener {
     ActivityRegisterSellerBinding binding;
-    ProgressDialog dialog,dialogForAccount;
+    ProgressDialog dialog,dialogForAccount,progressDialog;
+
+
 
     private FirebaseAuth auth;
     private DatabaseReference reference;
     private StorageReference storageReference;
+
 
 
     private static final int LOCATION_REQUEST_CODE = 100;
@@ -90,14 +94,20 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         setContentView(binding.getRoot());
 
 
-
         reference = FirebaseDatabase.getInstance().getReference().child("Users");
         storageReference = FirebaseStorage.getInstance().getReference();
         auth = FirebaseAuth.getInstance();
 
+       // loadToSpinner();
+
+
         dialog = new ProgressDialog(RegisterSellerActivity.this);
         dialog.setMessage("Please wait...");
         dialog.setCanceledOnTouchOutside(false);
+
+        progressDialog = new ProgressDialog(this);
+
+
 
         dialogForAccount = new ProgressDialog(RegisterSellerActivity.this);
         dialogForAccount.setTitle("Account");
@@ -118,6 +128,10 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
                 }
             }
         });
+
+
+
+
 
         binding.personImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,6 +251,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
             hashMap.put("online","true");
             hashMap.put("profileImage","");
             hashMap.put("accountStatus","blocked");
+            hashMap.put("shopCategory","false");
 
             reference.child(auth.getUid()).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
@@ -284,6 +299,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
                         hashMap.put("online","true");
                         hashMap.put("profileImage",""+downloadUrl);
                         hashMap.put("accountStatus","blocked");
+                        hashMap.put("shopCategory","false");
 
                         reference.child(auth.getUid()).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -321,12 +337,23 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
                 if (snapshot.exists()){
                     String status = ""+snapshot.child("accountStatus").getValue();
                     if (status.equals("blocked")){
-                        binding.blockedTV.setVisibility(View.VISIBLE);
+
+                        startActivity(new Intent(RegisterSellerActivity.this,TermsConditionActivity.class));
+
+                        //binding.blockedTV.setVisibility(View.VISIBLE);
                         Toast.makeText(RegisterSellerActivity.this, "You are blocked.Please contact with your admin.", Toast.LENGTH_SHORT).show();
                     }else {
-                        binding.blockedTV.setVisibility(View.GONE);
-                        startActivity(new Intent(RegisterSellerActivity.this,MainSellerActivity.class));
-                        finish();
+                            String shopCat = ""+snapshot.child("shopCategory").getValue();
+                            if (shopCat.equals("false")){
+                                startActivity(new Intent(RegisterSellerActivity.this,TermsConditionActivity.class));
+                            }else {
+                               // binding.blockedTV.setVisibility(View.GONE);
+                                startActivity(new Intent(RegisterSellerActivity.this,MainSellerActivity.class));
+                                finish();
+                            }
+
+
+
                     }
                 }
             }
@@ -337,6 +364,8 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
             }
         });
     }
+
+
 
     private void showImagePickDialog(){
         ImagePicker.with(this)
@@ -563,4 +592,6 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         dialog.dismiss();
         Toast.makeText(this, "Please enable location service.", Toast.LENGTH_SHORT).show();
     }
+
+
 }

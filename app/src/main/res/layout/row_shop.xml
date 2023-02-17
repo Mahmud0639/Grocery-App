@@ -46,10 +46,11 @@
             android:textColor="@color/colorRed" />
 
         <LinearLayout
+            android:id="@+id/linearL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_3mdp"
-            android:layout_toStartOf="@id/nextIV"
+            android:layout_toStartOf="@id/closedTV"
             android:layout_toEndOf="@id/shopIV"
             android:orientation="vertical">
 
@@ -60,7 +61,7 @@
                 android:layout_marginTop="@dimen/_5mdp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@string/shop_name"
+                android:text="mahmud islam shop what is yhour sh"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
@@ -78,23 +79,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:text="@string/complete_address"
                 android:textColor="@color/black" />
 
-            <RatingBar
-                android:id="@+id/ratingBar"
-                style="@style/Widget.AppCompat.RatingBar.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:numStars="5"
-                android:progressBackgroundTint="@color/black"
-                android:progressTint="@color/background_theme" />
+
 
 
         </LinearLayout>
 
+        <RatingBar
+            android:id="@+id/ratingBar"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/linearL"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/_20mdp"
+            android:numStars="5"
+            android:layout_marginTop="@dimen/_5mdp"
+            android:progressBackgroundTint="@color/black"
+            android:progressTint="@color/background_theme" />
     </RelativeLayout>
 
 

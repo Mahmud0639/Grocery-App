@@ -76,47 +76,54 @@ public class SplashActivity extends AppCompatActivity {
 
                 }else if (mobile.isConnected()){
 
-                    TelephonyManager telephonyManager = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-                    @SuppressLint("MissingPermission") int networkType = telephonyManager.getNetworkType();
-                    switch (networkType){
-                        case TelephonyManager.NETWORK_TYPE_GPRS:
-                        case TelephonyManager.NETWORK_TYPE_EDGE:
-                        case TelephonyManager.NETWORK_TYPE_CDMA:
-                        case TelephonyManager.NETWORK_TYPE_1xRTT:
-                        case TelephonyManager.NETWORK_TYPE_IDEN:{
-                            Toast.makeText(SplashActivity.this, "You need a strong connection to load", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(SplashActivity.this,NoInternetActivity.class));
-                            break;
-                        }
-                        case TelephonyManager.NETWORK_TYPE_UMTS:
-                        case TelephonyManager.NETWORK_TYPE_EVDO_0:
-                        case TelephonyManager.NETWORK_TYPE_EVDO_A:
-                        case TelephonyManager.NETWORK_TYPE_HSDPA:
-                        case TelephonyManager.NETWORK_TYPE_HSUPA:
-                        case TelephonyManager.NETWORK_TYPE_HSPA:
-                        case TelephonyManager.NETWORK_TYPE_EVDO_B:
-                        case TelephonyManager.NETWORK_TYPE_EHRPD:
-                        case TelephonyManager.NETWORK_TYPE_HSPAP:{
-                            if (user==null){
-                                startActivity(new Intent(SplashActivity.this,LoginActivity.class));
-                                finish();
-                            }else {
-                                checkUserType();
-                            }
-                            break;
-                        }
-                        case TelephonyManager.NETWORK_TYPE_LTE:{
-                            if (user==null){
-                                startActivity(new Intent(SplashActivity.this,LoginActivity.class));
-                                finish();
-                            }else {
-                                checkUserType();
-                            }
-                            break;
-                        }
-
-
+                    if (user==null){
+                        startActivity(new Intent(SplashActivity.this,LoginActivity.class));
+                        finish();
+                    }else {
+                        checkUserType();
                     }
+
+//                    TelephonyManager telephonyManager = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+//                    @SuppressLint("MissingPermission") int networkType = telephonyManager.getNetworkType();
+//                    switch (networkType){
+//                        case TelephonyManager.NETWORK_TYPE_GPRS:
+//                        case TelephonyManager.NETWORK_TYPE_EDGE:
+//                        case TelephonyManager.NETWORK_TYPE_CDMA:
+//                        case TelephonyManager.NETWORK_TYPE_1xRTT:
+//                        case TelephonyManager.NETWORK_TYPE_IDEN:{
+//                            Toast.makeText(SplashActivity.this, "You need a strong connection to load", Toast.LENGTH_LONG).show();
+//                            startActivity(new Intent(SplashActivity.this,NoInternetActivity.class));
+//                            break;
+//                        }
+//                        case TelephonyManager.NETWORK_TYPE_UMTS:
+//                        case TelephonyManager.NETWORK_TYPE_EVDO_0:
+//                        case TelephonyManager.NETWORK_TYPE_EVDO_A:
+//                        case TelephonyManager.NETWORK_TYPE_HSDPA:
+//                        case TelephonyManager.NETWORK_TYPE_HSUPA:
+//                        case TelephonyManager.NETWORK_TYPE_HSPA:
+//                        case TelephonyManager.NETWORK_TYPE_EVDO_B:
+//                        case TelephonyManager.NETWORK_TYPE_EHRPD:
+//                        case TelephonyManager.NETWORK_TYPE_HSPAP:{
+//                            if (user==null){
+//                                startActivity(new Intent(SplashActivity.this,LoginActivity.class));
+//                                finish();
+//                            }else {
+//                                checkUserType();
+//                            }
+//                            break;
+//                        }
+//                        case TelephonyManager.NETWORK_TYPE_LTE:{
+//                            if (user==null){
+//                                startActivity(new Intent(SplashActivity.this,LoginActivity.class));
+//                                finish();
+//                            }else {
+//                                checkUserType();
+//                            }
+//                            break;
+//                        }
+//
+//
+//                    }
 
                 }else if (wifi.isFailover()||mobile.isFailover()){
                     Toast.makeText(SplashActivity.this, "Check your connection", Toast.LENGTH_LONG).show();
@@ -160,8 +167,15 @@ public class SplashActivity extends AppCompatActivity {
                                         startActivity(new Intent(SplashActivity.this,TermsConditionActivity.class));
                                         finish();
                                     }else {
-                                        startActivity(new Intent(SplashActivity.this,MainSellerActivity.class));
-                                        finish();
+                                        String shopCat = ""+snapshot.child("shopCategory").getValue();
+
+                                        if (shopCat.equals("false")){
+                                            startActivity(new Intent(SplashActivity.this,TermsConditionActivity.class));
+                                        }else {
+                                            startActivity(new Intent(SplashActivity.this,MainSellerActivity.class));
+                                            finish();
+                                        }
+
                                     }
                                 }
                             }

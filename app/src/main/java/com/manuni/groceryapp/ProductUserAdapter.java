@@ -62,6 +62,7 @@ public class ProductUserAdapter extends RecyclerView.Adapter<ProductUserAdapter.
 
         holder.binding.titleTV.setText(productTitle);
         holder.binding.descriptionTV.setText(productDescription);
+        holder.binding.quantityTV.setText("পরিমাণঃ "+"("+productQuantity+")");
 
         holder.binding.originalPriceTV.setText("৳"+originalPrice);
         holder.binding.discountPriceTV.setText("৳"+discountPrice);
@@ -113,6 +114,7 @@ public class ProductUserAdapter extends RecyclerView.Adapter<ProductUserAdapter.
                 intent.putExtra("discountPrice",discountPrice);
                 intent.putExtra("productTitle",productTitle);
                 intent.putExtra("discountNote",discountNote);
+                intent.putExtra("productDes",productDescription);
                 try {
                     context.startActivity(intent);
                 } catch (Exception e) {
@@ -124,6 +126,7 @@ public class ProductUserAdapter extends RecyclerView.Adapter<ProductUserAdapter.
 
     private double cost = 0.0,finalCost = 0.0;
     private int quantity = 0;
+    private String productQuantity;
 
     private void showQuantityDialog(ModelProduct modelProduct) {
         DialogQuantityBinding binding;
@@ -132,7 +135,7 @@ public class ProductUserAdapter extends RecyclerView.Adapter<ProductUserAdapter.
 
         String productId = modelProduct.getProductId();
         String title = modelProduct.getProductTitle();
-        String productQuantity = modelProduct.getProductQuantity();
+        productQuantity = modelProduct.getProductQuantity();
         String description = modelProduct.getProductDesc();
         String discountNote = modelProduct.getProductDiscountNote();
         String image = modelProduct.getProductIcon();
@@ -200,18 +203,19 @@ public class ProductUserAdapter extends RecyclerView.Adapter<ProductUserAdapter.
                 String priceEach = price;
                 String totalPrice = binding.finalTV.getText().toString().trim().replace("৳","");
                 String quantity = binding.quantityTV.getText().toString().trim();
+                String pQuantity = binding.pQuantityTV.getText().toString().trim();
 
                 //add to database(sqlite)
-                addToCart(productId,title,priceEach,totalPrice,quantity);
+                addToCart(productId,title,priceEach,totalPrice,quantity,pQuantity);
                 dialog.dismiss();
             }
         });
     }
 
     private int itemId = 1;
-    private void addToCart(String productId, String title, String priceEach, String price, String quantity) {
+    private void addToCart(String productId, String title, String priceEach, String price, String quantity,String proQuantity) {
         itemId++;
-        EasyDB easyDB = EasyDB.init(context,"ITEMS_DB")
+     /*   EasyDB easyDB = EasyDB.init(context,"ITEMS_DB")
                 .setTableName("ITEMS_TABLE")
                 .addColumn(new Column("Item_Id",new String[]{"text","unique"}))
                 .addColumn(new Column("Item_PID",new String[]{"text","not null"}))
@@ -227,6 +231,26 @@ public class ProductUserAdapter extends RecyclerView.Adapter<ProductUserAdapter.
                 .addData("Item_Each_Price",priceEach)
                 .addData("Item_Price",price)
                 .addData("Item_Quantity",quantity)
+                .doneDataAdding();*/
+
+        EasyDB easyDB = EasyDB.init(context,"ITEM_DB")
+                .setTableName("ITEM_TABLE")
+                .addColumn(new Column("Items_Id",new String[]{"text","unique"}))
+                .addColumn(new Column("Items_PID",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Name",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Each_Price",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Price",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Quantity",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Pro_Quantity",new String[]{"text","not null"}))
+                .doneTableColumn();
+
+        Boolean b = easyDB.addData("Items_Id",itemId)
+                .addData("Items_PID",productId)
+                .addData("Items_Name",title)
+                .addData("Items_Each_Price",priceEach)
+                .addData("Items_Price",price)
+                .addData("Items_Quantity",quantity)
+                .addData("Items_Pro_Quantity",proQuantity)
                 .doneDataAdding();
 
         Toast.makeText(context, "Product Added.", Toast.LENGTH_SHORT).show();

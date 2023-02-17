@@ -64,6 +64,7 @@
         <activity
             android:name=".ShopDetailsActivity"
             android:exported="false"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".EditProductActivity"
@@ -93,7 +94,10 @@
         <activity
             android:name=".RegisterSellerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
-            android:exported="true" />
+            android:exported="true">
+
+
+        </activity>
         <activity
             android:name=".LoginActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"

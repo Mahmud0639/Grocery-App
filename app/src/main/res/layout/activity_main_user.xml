@@ -23,8 +23,11 @@
             android:id="@+id/nameTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/moreBtn"
             android:layout_toEndOf="@id/profileIV"
-            android:text="Name"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Mahmud Islam Bappi Mahmud Islam Bappi"
             android:textColor="@color/white"
             android:textSize="@dimen/_15font_mdp"
             android:textStyle="bold" />
@@ -77,7 +80,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/nameTxt"
             android:layout_toEndOf="@id/profileIV"
-            android:text="Email"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_toStartOf="@id/moreBtn"
+            android:text="email"
             android:textColor="@color/white" />
 
         <TextView
@@ -87,6 +93,8 @@
             android:layout_below="@id/emailTV"
             android:layout_toEndOf="@id/profileIV"
             android:text="Phone"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textColor="@color/white" />
 
         <LinearLayout
@@ -134,11 +142,9 @@
         android:layout_below="@id/toolbarRL"
         android:layout_marginBottom="@dimen/_5mdp"
         android:padding="@dimen/_2mdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:mt_hint="Search a shop"
         app:mt_maxSuggestionsCount="10"
+        android:layout_toStartOf="@id/filterProductBtn"
         app:mt_navIconEnabled="true"
         app:mt_placeholder="Search by name,email or phone"
         app:mt_placeholderColor="#E1DFDF"
@@ -152,16 +158,27 @@
         android:layout_below="@id/toolbarRL"
         android:layout_marginBottom="@dimen/_5mdp"
         android:padding="@dimen/_2mdp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="visible"
         app:mt_hint="Search a order"
         app:mt_maxSuggestionsCount="10"
         app:mt_navIconEnabled="true"
         app:mt_placeholder="Search by shop name or status"
         app:mt_placeholderColor="#E1DFDF"
         app:mt_speechMode="false" />
+
+    <ImageButton
+        android:id="@+id/filterProductBtn"
+        android:layout_width="@dimen/_35mdp"
+        android:layout_height="@dimen/_35mdp"
+        android:layout_below="@id/toolbarRL"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/_5mdp"
+        android:layout_marginEnd="@dimen/_5mdp"
+        android:layout_marginBottom="@dimen/_5mdp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:visibility="gone"
+        android:src="@drawable/ic_filter_gray" />
 
 
 

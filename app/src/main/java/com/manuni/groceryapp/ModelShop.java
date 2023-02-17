@@ -1,12 +1,12 @@
 package com.manuni.groceryapp;
 
 public class ModelShop {
-    private String fullName, shopName, phoneNumber, deliveryFee, countryName, state, city, address, email, uid, latitude, longitude, accountType, shopOpen, timestamp, online, profileImage,accountStatus;
+    private String fullName, shopName, phoneNumber, deliveryFee, countryName, state, city, address, email, uid, latitude, longitude, accountType, shopOpen, timestamp, online, profileImage,accountStatus,shopCategory;
 
     public ModelShop() {
     }
 
-    public ModelShop(String fullName, String shopName, String phoneNumber, String deliveryFee, String countryName, String state, String city, String address, String email, String uid, String latitude, String longitude, String accountType, String shopOpen, String timestamp, String online, String profileImage,String accountStatus) {
+    public ModelShop(String fullName, String shopName, String phoneNumber, String deliveryFee, String countryName, String state, String city, String address, String email, String uid, String latitude, String longitude, String accountType, String shopOpen, String timestamp, String online, String profileImage,String accountStatus,String shopCategory) {
         this.fullName = fullName;
         this.shopName = shopName;
         this.phoneNumber = phoneNumber;
@@ -25,6 +25,15 @@ public class ModelShop {
         this.online = online;
         this.profileImage = profileImage;
         this.accountStatus = accountStatus;
+        this.shopCategory = shopCategory;
+    }
+
+    public String getShopCategory() {
+        return shopCategory;
+    }
+
+    public void setShopCategory(String shopCategory) {
+        this.shopCategory = shopCategory;
     }
 
     public String getAccountStatus() {

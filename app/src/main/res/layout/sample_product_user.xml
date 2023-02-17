@@ -36,10 +36,10 @@
                 android:layout_alignParentEnd="true"
                 android:background="@drawable/shape_rect05"
                 android:padding="@dimen/_5mdp"
-                android:visibility="gone"
                 android:text="@string/_10"
                 android:textColor="@color/colorGreen"
-                android:textSize="@dimen/_8font_mdp" />
+                android:textSize="@dimen/_8font_mdp"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/productAvailableTV"
@@ -55,11 +55,14 @@
 
             <TextView
                 android:id="@+id/titleTV"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_120mdp"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@string/title"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
+
 
             <TextView
                 android:id="@+id/descriptionTV"
@@ -79,7 +82,7 @@
                 android:layout_marginTop="@dimen/_2mdp"
                 android:drawableStart="@drawable/ic_shopping_cart_theme_color"
                 android:gravity="center_vertical"
-                android:text="@string/add_to_cart"
+                android:text="@string/order_korun"
                 android:textColor="@color/background_theme"
                 android:visibility="visible" />
 
@@ -105,6 +108,15 @@
                     android:layout_toEndOf="@id/discountPriceTV"
                     android:text="@string/_0"
                     android:textColor="@color/colorGray02" />
+
+                <TextView
+                    android:id="@+id/quantityTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_20mdp"
+                    android:layout_toEndOf="@id/originalPriceTV"
+                    android:text="Quantity:(500 g)"
+                    android:textColor="#919090" />
 
 
             </RelativeLayout>

@@ -28,6 +28,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_5mdp"
             android:text="@string/product_title"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textColor="@color/white"
             android:textSize="@dimen/_14font_mdp" />
 
@@ -37,6 +39,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/titleTV"
             android:layout_centerHorizontal="true"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:minLines="2"
             android:text="@string/quantity"
             android:textColor="@color/white"
             android:textSize="@dimen/_11font_mdp" />

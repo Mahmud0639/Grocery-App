@@ -16,7 +16,7 @@
             android:id="@+id/orderIdTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/order_123456"
+            android:text=""
             android:textColor="@color/black"
             android:textStyle="bold" />
 
@@ -24,8 +24,8 @@
             android:id="@+id/dateTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/_03_07_23"
             android:layout_toStartOf="@id/nextIV"
+            android:text=""
             android:textSize="@dimen/_8font_mdp" />
 
         <TextView
@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/orderIdTV"
-            android:text="@string/nusrat_confectionary"
+            android:text=""
             android:textColor="@color/black"
             android:textStyle="bold" />
 
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/shopNameTV"
-            android:text="@string/total_amount_66_04"
+            android:text=""
             android:textSize="@dimen/_10font_mdp" />
 
         <TextView
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/shopNameTV"
             android:layout_toStartOf="@id/nextIV"
-            android:text="@string/in_progress"
+            android:text=""
             android:textColor="@color/colorGreen" />
         <ImageView
             android:id="@+id/nextIV"

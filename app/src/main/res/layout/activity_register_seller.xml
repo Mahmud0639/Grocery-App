@@ -43,6 +43,7 @@
                 android:background="@drawable/ic_gps_white" />
 
 
+
         </RelativeLayout>
 
         <ImageView
@@ -99,6 +100,7 @@
             android:hint="@string/shop_name"
             android:inputType="textPersonName|textCapWords"
             android:padding="@dimen/_10mdp" />
+
 
 
         <EditText
@@ -267,26 +269,26 @@
 
 
 
-        <TextView
-            android:id="@+id/blockedTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/registerBtnUser"
-            android:background="#FADFDF"
-             android:padding="@dimen/_5mdp"
-            android:text="You are blocked.Please contact with your admin to proceed further."
-            android:textColor="#DA4C4C"
-            android:visibility="gone" />
-<!--
-        <TextView
-            android:id="@+id/termsConditionsTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="@dimen/_5mdp"
-            android:layout_marginEnd="@dimen/_5mdp"
-            android:text="By signing up you are agree to our terms and conditions" />-->
+<!--        <TextView-->
+<!--            android:id="@+id/blockedTV"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/registerBtnUser"-->
+<!--            android:background="#FADFDF"-->
+<!--             android:padding="@dimen/_5mdp"-->
+<!--            android:text="You are blocked.Please contact with your admin to proceed further."-->
+<!--            android:textColor="#DA4C4C"-->
+<!--            android:visibility="gone" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/termsConditionsTV"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_marginStart="@dimen/_5mdp"-->
+<!--            android:layout_marginEnd="@dimen/_5mdp"-->
+<!--            android:text="By signing up you are agree to our terms and conditions" />-->
 
     </RelativeLayout>
 

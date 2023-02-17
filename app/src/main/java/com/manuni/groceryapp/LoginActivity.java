@@ -170,10 +170,27 @@ public class LoginActivity extends AppCompatActivity {
                                           }
                                       });
                                       Toast.makeText(LoginActivity.this, "You are blocked.Please contact with your admin.", Toast.LENGTH_SHORT).show();
+                                      startActivity(new Intent(LoginActivity.this,TermsConditionActivity.class));
+                                      finish();
 
                                   }else {
-                                      startActivity(new Intent(LoginActivity.this,MainSellerActivity.class));
-                                      finish();
+                                      String shopCat = ""+snapshot.child("shopCategory").getValue();
+
+                                      if (shopCat.equals("false")){
+                                          HashMap<String,Object> hashMap = new HashMap<>();
+                                          hashMap.put("online","true");
+                                          DatabaseReference myRR = FirebaseDatabase.getInstance().getReference().child("Users");
+                                          myRR.child(auth.getUid()).updateChildren(hashMap);
+                                          startActivity(new Intent(LoginActivity.this,TermsConditionActivity.class));
+
+
+                                      }else {
+
+                                          startActivity(new Intent(LoginActivity.this,MainSellerActivity.class));
+                                          finish();
+
+
+                                      }
                                   }
                               }
                           }

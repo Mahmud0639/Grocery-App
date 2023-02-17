@@ -73,6 +73,12 @@ public class DeleteCategoryAdapter extends RecyclerView.Adapter<DeleteCategoryAd
                             public void onSuccess(Void unused) {
                                 progressDialog.dismiss();
                                 Toast.makeText(context, ""+categoryName+" Removed successfully!", Toast.LENGTH_SHORT).show();
+
+                                notifyItemRemoved(position);
+                                notifyItemChanged(position);
+                                notifyDataSetChanged();
+                                list.clear();
+
                                 deleteCategoryProduct(categoryName,position);
                             }
                         }).addOnFailureListener(new OnFailureListener() {

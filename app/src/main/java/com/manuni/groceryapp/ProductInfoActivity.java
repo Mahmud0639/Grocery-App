@@ -11,7 +11,7 @@ import com.squareup.picasso.Picasso;
 
 public class ProductInfoActivity extends AppCompatActivity {
     ActivityProductInfoBinding binding;
-    private String productIcon,originalPrice,discountPrice,discountNote,productTitle;
+    private String productIcon,originalPrice,discountPrice,discountNote,productTitle,productDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +24,8 @@ public class ProductInfoActivity extends AppCompatActivity {
         discountPrice = getIntent().getStringExtra("discountPrice");
         discountNote = getIntent().getStringExtra("discountNote");
         productTitle = getIntent().getStringExtra("productTitle");
+        productDescription = getIntent().getStringExtra("productDes");
+
 
 
         try {
@@ -40,7 +42,7 @@ public class ProductInfoActivity extends AppCompatActivity {
         binding.pDiscount.setText("Discount price : "+discountPrice+" tk");
         binding.productName.setText("Product: "+productTitle);
         binding.textView.setText("Original price: "+originalPrice+" tk");
-        binding.descriptionTV.setText("This is "+productTitle+".This product is very energetic and authentic.You can take it without any thinking.We are always trusted.");
+        binding.descriptionTV.setText(productDescription+".You can take it without any thinking.We are always trusted.");
         if (discountNote.equals("")){
             binding.discountNoteTV.setVisibility(View.GONE);
         }else {

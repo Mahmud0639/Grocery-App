@@ -1,11 +1,13 @@
 package com.manuni.groceryapp;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -35,9 +37,13 @@ import java.util.Set;
 public class MainUserActivity extends AppCompatActivity {
     ActivityMainUserBinding binding;
     private FirebaseAuth auth;
+   private String city;
+
+    String[] data;
+    ArrayList<String> dataList;
 
     private DatabaseReference dbRef;
-    private ProgressDialog dialog;
+    private ProgressDialog dialog,progressDialog;
 
     private ArrayList<ModelShop> modelShopArrayList;
     private AdapterShop adapterShop;
@@ -58,11 +64,16 @@ public class MainUserActivity extends AppCompatActivity {
         dialog.setTitle("Please wait");
         dialog.setCanceledOnTouchOutside(false);
 
+        progressDialog = new ProgressDialog(MainUserActivity.this);
+
+
         auth = FirebaseAuth.getInstance();
 
         dbRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
         checkUser();
+
+        loadToSpinner();
 
         showShopsUI();
 
@@ -113,6 +124,13 @@ public class MainUserActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
 
+            }
+        });
+
+        binding.filterProductBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                categoryDialog();
             }
         });
 
@@ -171,6 +189,7 @@ public class MainUserActivity extends AppCompatActivity {
 
         binding.tabOrdersTV.setTextColor(getResources().getColor(R.color.white));
         binding.tabOrdersTV.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        binding.filterProductBtn.setVisibility(View.VISIBLE);
     }
     private void showOrdersUI(){
 
@@ -186,7 +205,11 @@ public class MainUserActivity extends AppCompatActivity {
         binding.tabShopsTV.setTextColor(getResources().getColor(R.color.white));
         binding.tabShopsTV.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
-        //loadOrders();
+        binding.filterProductBtn.setVisibility(View.GONE);
+
+        loadOrders();//ekhane rakhar karone duplicate ashe na
+
+
     }
 
     private void makeMeOffLine(){
@@ -231,7 +254,7 @@ public class MainUserActivity extends AppCompatActivity {
                     String email = ""+dataSnapshot.child("email").getValue();
                     String phoneNumber = ""+dataSnapshot.child("phoneNumber").getValue();
                     String profileImage = ""+dataSnapshot.child("profileImage").getValue();
-                    String city = ""+dataSnapshot.child("city").getValue();
+                    city = ""+dataSnapshot.child("city").getValue();
 
                     binding.nameTxt.setText(name+"("+accountType+")");
                     binding.emailTV.setText(email);
@@ -245,7 +268,7 @@ public class MainUserActivity extends AppCompatActivity {
 
                     //load only those shops that are in the user area or city
                     loadShops(city);
-                    loadOrders();
+
                 }
             }
 
@@ -272,11 +295,13 @@ public class MainUserActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (snapshot.exists()){
-                               // modelOrderUsers.clear(); ei line tir jonno onno store er order dekhato na.
+                               // modelOrderUsers.clear(); //ei line tir jonno onno store er order dekhato na.
                                 for (DataSnapshot ds: snapshot.getChildren()){
                                     ModelOrderUser orderUser = ds.getValue(ModelOrderUser.class);
 
                                     modelOrderUsers.add(0,orderUser);
+
+
                                 }
                                 adapterOrderUser = new AdapterOrderUser(MainUserActivity.this,modelOrderUsers);
                                 binding.ordersRV.setAdapter(adapterOrderUser);
@@ -375,5 +400,88 @@ public class MainUserActivity extends AppCompatActivity {
         }
 
         mBackPressed = System.currentTimeMillis();
+    }
+
+    private void categoryDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Shop Category").setItems(data, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String category = data[i];//ekhane kono category select kora hole seta ei variable er moddhe chole ashbe
+                if (category.equals("All")){
+
+                    loadShops(city);
+                }else{
+                    loadAllShops(category);
+                }
+            }
+        }).show();
+    }
+
+    private void loadAllShops(String selected) {
+        modelShopArrayList = new ArrayList<>();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        databaseReference.orderByChild("accountType").equalTo("Seller").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                modelShopArrayList.clear();
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    String shopCat = ""+dataSnapshot.child("shopCategory").getValue();
+                    String myCity = ""+dataSnapshot.child("city").getValue();
+
+                    if (selected.equals(shopCat) && myCity.equals(city)){
+                       ModelShop modelShop = dataSnapshot.getValue(ModelShop.class);
+                        modelShopArrayList.add(modelShop);
+                    }
+                }
+
+                adapterShop = new AdapterShop(MainUserActivity.this,modelShopArrayList);
+                binding.shopRV.setAdapter(adapterShop);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void loadToSpinner() {
+        progressDialog.setTitle("Please wait");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+
+        DatabaseReference myDbRef = FirebaseDatabase.getInstance().getReference().child("ShopCategory");
+        myDbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                dataList = new ArrayList<>();
+                if (snapshot.exists()){
+                    dataList.clear();
+                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                        String categories = ""+dataSnapshot.child("category").getValue();
+                        dataList.add(categories);
+                    }
+                    dataList.add(0,"All");
+                    data = dataList.toArray(new String[dataList.size()]);
+
+
+
+                }
+                progressDialog.dismiss();
+
+
+                //adapter.notifyDataSetChanged();
+
+            }
+
+
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
     }
 }

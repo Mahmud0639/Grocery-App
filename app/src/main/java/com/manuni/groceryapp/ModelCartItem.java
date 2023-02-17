@@ -1,18 +1,29 @@
 package com.manuni.groceryapp;
 
 public class ModelCartItem {
-    private String id, pId, name,price,cost,quantity;
+    private String id, pId, name,price,cost,quantity,proQuantity;
 
     public ModelCartItem() {
     }
 
-    public ModelCartItem(String id, String pId, String name, String price, String cost, String quantity) {
+    public ModelCartItem(String id, String pId, String name, String price, String cost, String quantity,String proQuantity) {
         this.id = id;
         this.pId = pId;
         this.name = name;
         this.price = price;
         this.cost = cost;
         this.quantity = quantity;
+        this.proQuantity = proQuantity;
+
+
+    }
+
+    public String getProQuantity() {
+        return proQuantity;
+    }
+
+    public void setProQuantity(String proQuantity) {
+        this.proQuantity = proQuantity;
     }
 
     public String getId() {

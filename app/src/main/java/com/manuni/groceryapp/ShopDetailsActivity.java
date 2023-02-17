@@ -49,6 +49,8 @@ public class ShopDetailsActivity extends AppCompatActivity {
     private ArrayList<ModelProduct> modelProducts;
     private ProductUserAdapter productUserAdapter;
     public String deliveryFee;
+    String productQuantity;
+    String quantity;
 
     String[] data;
     ArrayList<String> dataList;
@@ -96,14 +98,25 @@ public class ShopDetailsActivity extends AppCompatActivity {
 
 
 
-        easyDB = EasyDB.init(ShopDetailsActivity.this, "ITEMS_DB")
-                .setTableName("ITEMS_TABLE")
-                .addColumn(new Column("Item_Id", new String[]{"text", "unique"}))
-                .addColumn(new Column("Item_PID", new String[]{"text", "not null"}))
-                .addColumn(new Column("Item_Name", new String[]{"text", "not null"}))
-                .addColumn(new Column("Item_Each_Price", new String[]{"text", "not null"}))
-                .addColumn(new Column("Item_Price", new String[]{"text", "not null"}))
-                .addColumn(new Column("Item_Quantity", new String[]{"text", "not null"}))
+//        easyDB = EasyDB.init(ShopDetailsActivity.this, "ITEMS_DB")
+//                .setTableName("ITEMS_TABLE")
+//                .addColumn(new Column("Item_Id", new String[]{"text", "unique"}))
+//                .addColumn(new Column("Item_PID", new String[]{"text", "not null"}))
+//                .addColumn(new Column("Item_Name", new String[]{"text", "not null"}))
+//                .addColumn(new Column("Item_Each_Price", new String[]{"text", "not null"}))
+//                .addColumn(new Column("Item_Price", new String[]{"text", "not null"}))
+//                .addColumn(new Column("Item_Quantity", new String[]{"text", "not null"}))
+//                .doneTableColumn();
+
+         easyDB = EasyDB.init(ShopDetailsActivity.this,"ITEM_DB")
+                .setTableName("ITEM_TABLE")
+                .addColumn(new Column("Items_Id",new String[]{"text","unique"}))
+                .addColumn(new Column("Items_PID",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Name",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Each_Price",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Price",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Quantity",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Pro_Quantity",new String[]{"text","not null"}))
                 .doneTableColumn();
 
         //each shop have its own products and orders
@@ -268,14 +281,25 @@ public class ShopDetailsActivity extends AppCompatActivity {
         builder.setView(view);
 
 
-        EasyDB easyDB = EasyDB.init(ShopDetailsActivity.this, "ITEMS_DB")
-                .setTableName("ITEMS_TABLE")
-                .addColumn(new Column("Item_Id", new String[]{"text", "unique"}))
-                .addColumn(new Column("Item_PID", new String[]{"text", "not null"}))
-                .addColumn(new Column("Item_Name", new String[]{"text", "not null"}))
-                .addColumn(new Column("Item_Each_Price", new String[]{"text", "not null"}))
-                .addColumn(new Column("Item_Price", new String[]{"text", "not null"}))
-                .addColumn(new Column("Item_Quantity", new String[]{"text", "not null"}))
+//        EasyDB easyDB = EasyDB.init(ShopDetailsActivity.this, "ITEMS_DB")
+//                .setTableName("ITEMS_TABLE")
+//                .addColumn(new Column("Item_Id", new String[]{"text", "unique"}))
+//                .addColumn(new Column("Item_PID", new String[]{"text", "not null"}))
+//                .addColumn(new Column("Item_Name", new String[]{"text", "not null"}))
+//                .addColumn(new Column("Item_Each_Price", new String[]{"text", "not null"}))
+//                .addColumn(new Column("Item_Price", new String[]{"text", "not null"}))
+//                .addColumn(new Column("Item_Quantity", new String[]{"text", "not null"}))
+//                .doneTableColumn();
+
+        EasyDB easyDB = EasyDB.init(ShopDetailsActivity.this,"ITEM_DB")
+                .setTableName("ITEM_TABLE")
+                .addColumn(new Column("Items_Id",new String[]{"text","unique"}))
+                .addColumn(new Column("Items_PID",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Name",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Each_Price",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Price",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Quantity",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Pro_Quantity",new String[]{"text","not null"}))
                 .doneTableColumn();
 
         //get all data from db
@@ -286,17 +310,20 @@ public class ShopDetailsActivity extends AppCompatActivity {
             String name = result.getString(3);
             String price = result.getString(4);
             String cost = result.getString(5);
-            String quantity = result.getString(6);
+            quantity = result.getString(6);
+            String proQuantity = result.getString(7);
 
             allTotalPrice = allTotalPrice + Double.parseDouble(cost);
 
-            ModelCartItem modelCartItem = new ModelCartItem("" + id, "" + pId, "" + name, "" + price, "" + cost, "" + quantity);
+            ModelCartItem modelCartItem = new ModelCartItem("" + id, "" + pId, "" + name, "" + price, "" + cost, "" + quantity,""+proQuantity);
             modelCartItemsList.add(modelCartItem);
         }
 
         adapterCartItem = new AdapterCartItem(ShopDetailsActivity.this, modelCartItemsList);
         binding.cartItemRV.setAdapter(adapterCartItem);
 
+
+        //binding.productTotalDesc.setText(productQuantity+" এর "+quantity+" টি");
         binding.deliveryFeeTV.setText("৳" + deliveryFee);
         binding.subTotalTV.setText("৳" + String.format("%.2f", allTotalPrice));
         binding.totalPriceTV.setText("৳" + String.format("%.2f",allTotalPrice + Double.parseDouble(deliveryFee.replaceAll("৳", ""))));
@@ -372,6 +399,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
                     String price = modelCartItemsList.get(i).getPrice();
                     String quantity = modelCartItemsList.get(i).getQuantity();
                     String name = modelCartItemsList.get(i).getName();
+                    String productQuantity = modelCartItemsList.get(i).getProQuantity();
 
                     HashMap<String, String> hashMap1 = new HashMap<>();
                     hashMap1.put("pId", pId);
@@ -379,6 +407,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
                     hashMap1.put("cost", cost);
                     hashMap1.put("price", price);
                     hashMap1.put("quantity", quantity);
+                    hashMap1.put("proQuantity",productQuantity);
 
                     dbRef.child(timestamp).child("Items").child(pId).setValue(hashMap1);
                     //ei pId ta holo ekta timestamp jeta product ^add korar somoy neya hoyeche (AddProductActivity)--->addProductTodb-->177 no. lines
@@ -527,6 +556,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 modelProducts.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    productQuantity = ""+dataSnapshot.child("productQuantity").getValue();
                     ModelProduct data = dataSnapshot.getValue(ModelProduct.class);
                     modelProducts.add(data);
                 }

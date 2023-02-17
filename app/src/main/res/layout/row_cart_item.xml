@@ -7,10 +7,17 @@
 
     <TextView
         android:id="@+id/itemTitleTV"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/item_title"
         android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/productTotalDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/itemTitleTV"
+        android:text="" />
 
     <TextView
         android:id="@+id/itemPriceTV"

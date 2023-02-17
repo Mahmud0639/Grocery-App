@@ -78,40 +78,73 @@
                 android:padding="@dimen/_3mdp"
                 android:text="By default you're blocked while creating an account automatically without our permission to create a seller account.You may be blocked by your admin if you violet any rules.Please contact your admin to unblock your account and make sure that you are definitely opening the account on your own volition. In any circumstances you may be contacted, you will immediately join us in contacting you. In any problem you can contact our admin. So if you are agree then please click on the I agree button."
                 android:textSize="@dimen/_12font_mdp"
+                android:textColor="#919090"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/termsTxt" />
+
+            <TextView
+                android:id="@+id/categoryTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+               app:layout_constraintTop_toBottomOf="@id/termsInfo"
+                android:layout_marginStart="@dimen/_5mdp"
+                android:layout_marginTop="@dimen/_5mdp"
+                android:layout_marginEnd="@dimen/_5mdp"
+                android:layout_marginBottom="@dimen/_5mdp"
+                android:background="@drawable/shape_rect_02"
+                android:drawableStart="@drawable/ic_categories_gray"
+                android:drawableEnd="@drawable/ic_down_arrow_gray"
+                android:drawablePadding="@dimen/_10mdp"
+                android:text="Shop category"
+                android:textColor="#919090"
+
+                android:padding="@dimen/_8mdp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/saveBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30mdp"
+                android:background="@drawable/total_taka_btn"
+                android:backgroundTint="#6DE1DDDD"
+                android:text="Save"
+                android:layout_marginTop="@dimen/_10mdp"
+                android:textAllCaps="false"
+                app:layout_constraintTop_toBottomOf="@id/categoryTV"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/agreeBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_30mdp"
-                android:layout_marginTop="@dimen/_10mdp"
                 android:background="@drawable/total_taka_btn"
                 android:backgroundTint="@color/colorGreen"
                 android:text="I agree"
                 android:textAllCaps="false"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/goBackBtn"
-                app:layout_constraintTop_toBottomOf="@id/termsInfo" />
+                tools:layout_editor_absoluteY="262dp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/goBackBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_30mdp"
-                android:layout_marginTop="@dimen/_10mdp"
                 android:background="@drawable/total_taka_btn"
                 android:backgroundTint="#6C5C5C"
                 android:text="Go back"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/agreeBtn"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/termsInfo" />
+                tools:layout_editor_absoluteY="262dp" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

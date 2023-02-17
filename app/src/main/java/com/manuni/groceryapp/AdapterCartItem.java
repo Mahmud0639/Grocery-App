@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.manuni.groceryapp.databinding.RowCartItemBinding;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ public class AdapterCartItem extends RecyclerView.Adapter<AdapterCartItem.CartIt
 
     private Context context;
     public ArrayList<ModelCartItem> list;
+
 
     public AdapterCartItem(Context context, ArrayList<ModelCartItem> list){
         this.context = context;
@@ -44,27 +47,47 @@ public class AdapterCartItem extends RecyclerView.Adapter<AdapterCartItem.CartIt
         String price = data.getPrice();
         String cost = data.getCost();
         String quantity = data.getQuantity();
+        String prodQuantity = data.getProQuantity();
+
+
+
 
         double priceDouble = Double.parseDouble(price);
         double costDouble = Double.parseDouble(cost);
+
+
+
+        holder.binding.productTotalDesc.setText(prodQuantity+" এর "+quantity+" টি");
 
         holder.binding.itemTitleTV.setText(title);
         holder.binding.itemPriceEachTV.setText(String.format("৳%.2f",priceDouble));
         holder.binding.itemPriceTV.setText(String.format("৳%.2f",costDouble));
         holder.binding.itemQuantityTV.setText("["+quantity+"]");
 
+
         holder.binding.removeTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //create table if not exists but in that case insha Allah must exists
-                EasyDB easyDB = EasyDB.init(context,"ITEMS_DB")
-                        .setTableName("ITEMS_TABLE")
-                        .addColumn(new Column("Item_Id",new String[]{"text","unique"}))
-                        .addColumn(new Column("Item_PID",new String[]{"text","not null"}))
-                        .addColumn(new Column("Item_Name",new String[]{"text","not null"}))
-                        .addColumn(new Column("Item_Each_Price",new String[]{"text","not null"}))
-                        .addColumn(new Column("Item_Price",new String[]{"text","not null"}))
-                        .addColumn(new Column("Item_Quantity",new String[]{"text","not null"}))
+//                EasyDB easyDB = EasyDB.init(context,"ITEMS_DB")
+//                        .setTableName("ITEMS_TABLE")
+//                        .addColumn(new Column("Item_Id",new String[]{"text","unique"}))
+//                        .addColumn(new Column("Item_PID",new String[]{"text","not null"}))
+//                        .addColumn(new Column("Item_Name",new String[]{"text","not null"}))
+//                        .addColumn(new Column("Item_Each_Price",new String[]{"text","not null"}))
+//                        .addColumn(new Column("Item_Price",new String[]{"text","not null"}))
+//                        .addColumn(new Column("Item_Quantity",new String[]{"text","not null"}))
+//                        .doneTableColumn();
+
+                EasyDB easyDB = EasyDB.init(context,"ITEM_DB")
+                        .setTableName("ITEM_TABLE")
+                        .addColumn(new Column("Items_Id",new String[]{"text","unique"}))
+                        .addColumn(new Column("Items_PID",new String[]{"text","not null"}))
+                        .addColumn(new Column("Items_Name",new String[]{"text","not null"}))
+                        .addColumn(new Column("Items_Each_Price",new String[]{"text","not null"}))
+                        .addColumn(new Column("Items_Price",new String[]{"text","not null"}))
+                        .addColumn(new Column("Items_Quantity",new String[]{"text","not null"}))
+                        .addColumn(new Column("Items_Pro_Quantity",new String[]{"text","not null"}))
                         .doneTableColumn();
 
                 easyDB.deleteRow(1,id);
