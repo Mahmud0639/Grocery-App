@@ -11,42 +11,47 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/orderIdTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/order_id_39393934"
             android:textColor="@color/black"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/dateTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:textColor="#919090"
             android:text="@string/_02_11_2023" />
+
         <TextView
             android:id="@+id/emailTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/email_mahmud_gmail_com"
-            android:layout_below="@id/orderIdTV"/>
+            android:layout_below="@id/orderIdTV"
+            android:textColor="#919090"
+            android:text="@string/email_mahmud_gmail_com" />
 
         <TextView
             android:id="@+id/orderAmountTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/total_amount_66_04"
-            android:layout_below="@id/emailTV"/>
+            android:layout_below="@id/emailTV"
+            android:textColor="#919090"
+            android:text="@string/total_amount_66_04" />
+
         <TextView
             android:id="@+id/statusTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/in_progress"
-            android:textColor="@color/background_theme"
             android:layout_below="@id/emailTV"
             android:layout_alignParentEnd="true"
-           />
+            android:text="@string/in_progress"
+            android:textColor="@color/background_theme" />
 
 
         <ImageButton

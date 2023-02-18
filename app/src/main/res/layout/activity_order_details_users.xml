@@ -48,7 +48,8 @@
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:padding="@dimen/_5mdp">
 
             <TableRow>
 
@@ -64,7 +65,7 @@
                     android:id="@+id/orderIdTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/_3933939"
+                    android:text="fetching..."
                     android:layout_marginTop="@dimen/_5mdp"
                     android:textColor="@color/black"
                     android:layout_weight="1"/>
@@ -84,7 +85,7 @@
                     android:id="@+id/dateTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/_03_09_23"
+                    android:text="fetching..."
                     android:layout_marginTop="@dimen/_5mdp"
                     android:textColor="@color/black"
                     android:layout_weight="1"/>
@@ -104,7 +105,7 @@
                     android:id="@+id/statusTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/in_progress"
+                    android:text="fetching..."
                     android:layout_marginTop="@dimen/_5mdp"
                     android:textColor="@color/background_theme"
                     android:layout_weight="1"/>
@@ -125,7 +126,7 @@
                     android:id="@+id/shopNameTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/nusrat_confectionary"
+                    android:text="fetching..."
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:layout_marginTop="@dimen/_5mdp"
@@ -147,7 +148,7 @@
                     android:id="@+id/totalItemsTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/_14"
+                    android:text="fetching..."
                     android:layout_marginTop="@dimen/_5mdp"
                     android:textColor="@color/black"
                     android:layout_weight="1"/>
@@ -167,7 +168,7 @@
                     android:id="@+id/totalPriceTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/_348_79"
+                    android:text="fetching..."
                     android:layout_marginTop="@dimen/_5mdp"
                     android:textColor="@color/black"
                     android:layout_weight="1"/>
@@ -187,7 +188,7 @@
                     android:id="@+id/deliveryAddressTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/plot_77_daffodil_road_khagan"
+                    android:text="fetching..."
                     android:layout_marginTop="@dimen/_5mdp"
                     android:textColor="@color/black"
                     android:layout_weight="1"/>

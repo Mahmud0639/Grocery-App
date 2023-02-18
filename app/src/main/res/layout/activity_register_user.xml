@@ -9,6 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/_80mdp"
@@ -27,6 +28,7 @@
                 android:layout_centerHorizontal="true"
                 android:text="@string/register_user"
                 android:textColor="@color/white"
+                android:gravity="center"
                 android:textSize="@dimen/_15font_mdp"
                 android:textStyle="bold" />
 
@@ -52,25 +54,48 @@
             android:padding="@dimen/_5mdp"
             android:src="@drawable/ic_key_white" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/personImage"
-            android:layout_width="@dimen/_80mdp"
-            android:layout_height="@dimen/_80mdp"
-            android:layout_below="@id/iconIv"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_person_gray"
-            app:civ_border_color="@color/black"
-            app:civ_border_width="@dimen/_2mdp" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cons"
+            android:layout_below="@id/iconIv">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/personImageShow"
+                android:layout_width="@dimen/_80mdp"
+                android:layout_height="@dimen/_80mdp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_person_gray"
+                app:civ_border_color="@color/colorGray02"
+                app:civ_border_width="@dimen/_2mdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <ImageView
+                android:id="@+id/personImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_take_photo"
+                app:layout_constraintEnd_toEndOf="@id/personImageShow"
+                app:layout_constraintTop_toTopOf="@id/personImageShow"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <EditText
             android:id="@+id/fullNameET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/personImage"
+            android:layout_below="@id/cons"
             android:layout_marginStart="@dimen/_5mdp"
             android:layout_marginTop="@dimen/_5mdp"
             android:layout_marginEnd="@dimen/_5mdp"
+            android:textColor="@color/black"
+            android:textColorHint="#919090"
             android:layout_marginBottom="@dimen/_5mdp"
             android:background="@drawable/shape_rect_02"
             android:drawableStart="@drawable/ic_person_gray"
@@ -89,6 +114,8 @@
             android:layout_marginTop="@dimen/_5mdp"
             android:layout_marginEnd="@dimen/_5mdp"
             android:layout_marginBottom="@dimen/_5mdp"
+            android:textColor="@color/black"
+            android:textColorHint="#919090"
             android:background="@drawable/shape_rect_02"
             android:drawableStart="@drawable/ic_phone_gray"
             android:drawablePadding="@dimen/_5mdp"
@@ -110,6 +137,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_3mdp"
                 android:layout_weight="1"
+                android:textColor="@color/black"
+                android:textColorHint="#919090"
                 android:background="@drawable/shape_rect_02"
                 android:drawableStart="@drawable/ic_location_gray"
                 android:drawablePadding="@dimen/_5mdp"
@@ -122,7 +151,8 @@
                 android:id="@+id/stateET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                android:textColor="@color/black"
+                android:textColorHint="#919090"
                 android:layout_weight="1"
                 android:background="@drawable/shape_rect_02"
                 android:drawableStart="@drawable/ic_location_gray"
@@ -137,6 +167,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="@color/black"
+                android:textColorHint="#919090"
                 android:background="@drawable/shape_rect_02"
                 android:drawableStart="@drawable/ic_location_gray"
                 android:drawablePadding="@dimen/_5mdp"
@@ -157,6 +189,8 @@
             android:layout_marginTop="@dimen/_5mdp"
             android:layout_marginEnd="@dimen/_5mdp"
             android:layout_marginBottom="@dimen/_5mdp"
+            android:textColor="@color/black"
+            android:textColorHint="#919090"
             android:background="@drawable/shape_rect_02"
             android:drawableStart="@drawable/ic_location_gray"
             android:drawablePadding="@dimen/_5mdp"
@@ -173,6 +207,8 @@
             android:layout_marginTop="@dimen/_5mdp"
             android:layout_marginEnd="@dimen/_5mdp"
             android:layout_marginBottom="@dimen/_5mdp"
+            android:textColor="@color/black"
+            android:textColorHint="#919090"
             android:background="@drawable/shape_rect_02"
             android:drawableStart="@drawable/ic_mail_gray"
             android:drawablePadding="@dimen/_5mdp"
@@ -188,6 +224,8 @@
             android:layout_marginStart="@dimen/_5mdp"
             android:layout_marginTop="@dimen/_5mdp"
             android:layout_marginEnd="@dimen/_5mdp"
+            android:textColor="@color/black"
+            android:textColorHint="#919090"
             android:layout_marginBottom="@dimen/_5mdp"
             android:background="@drawable/shape_rect_02"
             android:drawableStart="@drawable/ic_lock_gray"
@@ -195,6 +233,7 @@
             android:hint="@string/password"
             android:inputType="textPassword"
             android:padding="@dimen/_10mdp" />
+
         <EditText
             android:id="@+id/confirmPasswordET"
             android:layout_width="match_parent"
@@ -204,6 +243,8 @@
             android:layout_marginTop="@dimen/_5mdp"
             android:layout_marginEnd="@dimen/_5mdp"
             android:layout_marginBottom="@dimen/_5mdp"
+            android:textColor="@color/black"
+            android:textColorHint="#919090"
             android:background="@drawable/shape_rect_02"
             android:drawableStart="@drawable/ic_lock_gray"
             android:drawablePadding="@dimen/_5mdp"
@@ -221,6 +262,7 @@
             android:layout_centerHorizontal="true"
             android:minWidth="@dimen/_120mdp"
             android:text="@string/register"
+            android:textColor="@color/white"
             android:textAllCaps="false" />
 
         <TextView
@@ -234,6 +276,7 @@
             android:layout_marginTop="@dimen/_30mdp"
             android:layout_marginEnd="@dimen/_5mdp"
             android:layout_marginBottom="@dimen/_5mdp"
+            android:textColor="#919090"
             android:text="@string/are_you_a_seller_register_as_seller" />
 
 

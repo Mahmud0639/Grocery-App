@@ -98,7 +98,17 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
             }
         });
 
+        binding.buyerPhoneTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String bPhone = binding.buyerPhoneTV.getText().toString().trim();
+                startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + Uri.encode(bPhone))));
+                Toast.makeText(OrderDetailsSellerActivity.this, "" + bPhone, Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
+
 
     private void editOrderedStatusDialog() {
         final String[] options = {"In Progress","Completed","Cancelled"};

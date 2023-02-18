@@ -78,6 +78,7 @@ public class MainSellerActivity extends AppCompatActivity {
         dialog = new ProgressDialog(this);
         dialog.setTitle("Please wait");
         dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         dialog.show();
 
 
@@ -163,37 +164,7 @@ public class MainSellerActivity extends AppCompatActivity {
                         }
 
                     }else if (mobile.isConnected()){
-                        TelephonyManager telephonyManager = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-                        @SuppressLint("MissingPermission") int networkType = telephonyManager.getNetworkType();
-                        switch (networkType){
-                            case TelephonyManager.NETWORK_TYPE_GPRS:
-                            case TelephonyManager.NETWORK_TYPE_EDGE:
-                            case TelephonyManager.NETWORK_TYPE_CDMA:
-                            case TelephonyManager.NETWORK_TYPE_1xRTT:
-                            case TelephonyManager.NETWORK_TYPE_IDEN:{
-                                Toast.makeText(MainSellerActivity.this, "You need a strong connection to logout", Toast.LENGTH_SHORT).show();
-                                break;
-                            }
-                            case TelephonyManager.NETWORK_TYPE_UMTS:
-                            case TelephonyManager.NETWORK_TYPE_EVDO_0:
-                            case TelephonyManager.NETWORK_TYPE_EVDO_A:
-                            case TelephonyManager.NETWORK_TYPE_HSDPA:
-                            case TelephonyManager.NETWORK_TYPE_HSUPA:
-                            case TelephonyManager.NETWORK_TYPE_HSPA:
-                            case TelephonyManager.NETWORK_TYPE_EVDO_B:
-                            case TelephonyManager.NETWORK_TYPE_EHRPD:
-                            case TelephonyManager.NETWORK_TYPE_HSPAP:{
-                                Toast.makeText(MainSellerActivity.this, "Your network is 3g need a strong connection to logout", Toast.LENGTH_SHORT).show();
-                                break;
-                            }
-                            case TelephonyManager.NETWORK_TYPE_LTE:{
-                                makeMeOffLine();
-                                break;
-                            }
-
-
-                        }
-
+                        makeMeOffLine();
 
                     }else if (wifi.isFailover()||mobile.isFailover()){
                         Toast.makeText(MainSellerActivity.this, "Check your connection", Toast.LENGTH_SHORT).show();

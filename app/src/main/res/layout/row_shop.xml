@@ -95,9 +95,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/linearL"
             android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/_5mdp"
             android:layout_marginEnd="@dimen/_20mdp"
             android:numStars="5"
-            android:layout_marginTop="@dimen/_5mdp"
             android:progressBackgroundTint="@color/black"
             android:progressTint="@color/background_theme" />
     </RelativeLayout>

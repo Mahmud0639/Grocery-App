@@ -1,11 +1,16 @@
 package com.manuni.groceryapp;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +39,8 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
     private ArrayList<ModelOrderedItems> modelOrderedItems;
     private AdapterOrderedItems adapterOrderedItems;
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +51,25 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
         orderTo = getIntent().getStringExtra("orderTo");//orderTo contains user id of the shop where we placed order
         orderId = getIntent().getStringExtra("orderId");
 
-        loadShopInfo();
+        progressDialog = new ProgressDialog(OrderDetailsUsersActivity.this);
+        progressDialog.setTitle("Order details");
+        progressDialog.setMessage("Please wait...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setCancelable(false);
+
+        ConnectivityManager manager = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+        if (wifi.isConnected()){
+            loadShopInfo();
+        }else if (mobile.isConnected()){
+            loadShopInfo();
+        }else {
+            Toast.makeText(this, "No connection", Toast.LENGTH_SHORT).show();
+        }
+
+
 
 
 
@@ -67,6 +92,7 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
     }
 
     private void loadOrderedItems() {
+        progressDialog.show();
         modelOrderedItems = new ArrayList<>();
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("Users");
         dbRef.child(orderTo).child("Orders").child(orderId).child("Items").addValueEventListener(new ValueEventListener() {
@@ -82,13 +108,14 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
                     binding.orderedItemsRV.setAdapter(adapterOrderedItems);
 
                     binding.totalItemsTV.setText("" + snapshot.getChildrenCount());
+                    progressDialog.dismiss();
                 }
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                    progressDialog.dismiss();
             }
         });
     }

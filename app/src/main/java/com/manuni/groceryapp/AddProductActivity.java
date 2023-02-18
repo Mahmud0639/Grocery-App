@@ -82,6 +82,7 @@ public class AddProductActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please wait");
         progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setCancelable(false);
 
         binding.discountSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -324,7 +325,7 @@ public class AddProductActivity extends AppCompatActivity {
             imageUri = data.getData();
 
             try {
-                binding.productIconIV.setImageURI(imageUri);
+                binding.productIconIVShow.setImageURI(imageUri);
             } catch (Exception e) {
                 e.printStackTrace();
             }

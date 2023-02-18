@@ -1,18 +1,27 @@
 package com.manuni.groceryapp;
 
 public class ModelOrderedItems {
-    private String pId,name,cost,price,quantity,proQuantity;
+    private String pId,name,cost,price,quantity,proQuantity,prImage;
 
     public ModelOrderedItems() {
     }
 
-    public ModelOrderedItems(String pId, String name, String cost, String price, String quantity,String proQuantity) {
+    public ModelOrderedItems(String pId, String name, String cost, String price, String quantity,String proQuantity,String prImage) {
         this.pId = pId;
         this.name = name;
         this.cost = cost;
         this.price = price;
         this.quantity = quantity;
         this.proQuantity = proQuantity;
+        this.prImage = prImage;
+    }
+
+    public String getPrImage() {
+        return prImage;
+    }
+
+    public void setPrImage(String prImage) {
+        this.prImage = prImage;
     }
 
     public String getProQuantity() {

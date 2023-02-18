@@ -85,7 +85,9 @@ public class LoginActivity extends AppCompatActivity {
     private void login(){
         dialog.setTitle("Please wait");
         dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         dialog.setMessage("Logging in...");
+
 
 
         email = binding.emailET.getText().toString().trim();

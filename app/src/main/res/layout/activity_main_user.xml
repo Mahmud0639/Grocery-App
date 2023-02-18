@@ -21,12 +21,12 @@
 
         <TextView
             android:id="@+id/nameTxt"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_160mdp"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@id/moreBtn"
             android:layout_toEndOf="@id/profileIV"
             android:ellipsize="end"
-            android:maxLines="1"
+            android:maxLines="2"
             android:text="Mahmud Islam Bappi Mahmud Islam Bappi"
             android:textColor="@color/white"
             android:textSize="@dimen/_15font_mdp"

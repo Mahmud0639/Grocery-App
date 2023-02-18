@@ -5,11 +5,20 @@
     android:padding="@dimen/_5mdp"
     android:background="#70EDE8E8">
 
+    <ImageView
+        android:id="@+id/productImage"
+        android:layout_width="@dimen/_30mdp"
+        android:layout_height="@dimen/_30mdp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/impl1" />
+
     <TextView
         android:id="@+id/itemTitleTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/productImage"
         android:text="@string/item_title"
+        android:layout_marginStart="@dimen/_3mdp"
         android:textColor="@color/black" />
 
     <TextView
@@ -26,6 +35,8 @@
         android:layout_below="@id/itemTitleTV"
         android:gravity="center"
         android:text="@string/_0"
+        android:layout_marginStart="@dimen/_3mdp"
+        android:layout_toEndOf="@id/productImage"
         android:textColor="@color/black" />
 
     <LinearLayout

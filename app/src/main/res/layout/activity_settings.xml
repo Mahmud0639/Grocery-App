@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".SettingsActivity">
 
     <RelativeLayout
@@ -35,6 +36,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:padding="@dimen/_5mdp">
 
         <Switch
@@ -43,16 +45,19 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/_5mdp"
             android:text="@string/notification_enable_disable"
+            android:textColor="@color/black"
             android:textSize="@dimen/_14font_mdp"
+            android:theme="@style/mySwitchBack"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
         <TextView
             android:id="@+id/notificationStatusTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/status_notification_disabled"
             android:layout_below="@id/notificationSwitch"
-            android:padding="@dimen/_5mdp"/>
+            android:padding="@dimen/_5mdp"
+            android:textColor="#919090"
+            android:text="@string/status_notification_disabled" />
 
         <View
             android:layout_width="match_parent"

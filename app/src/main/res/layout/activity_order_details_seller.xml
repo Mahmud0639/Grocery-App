@@ -53,11 +53,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardElevation="@dimen/_3mdp"
+        android:background="@color/white"
         app:contentPadding="@dimen/_5mdp">
 
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="@dimen/_5mdp">
 
             <TableRow>
 

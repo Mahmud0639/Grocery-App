@@ -38,6 +38,8 @@ public class DeleteCategoryAdapter extends RecyclerView.Adapter<DeleteCategoryAd
         auth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Deleting records...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setCancelable(false);
     }
 
     @NonNull

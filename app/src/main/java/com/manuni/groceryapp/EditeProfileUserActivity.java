@@ -85,6 +85,7 @@ public class EditeProfileUserActivity extends AppCompatActivity implements Locat
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please wait");
         progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setCancelable(false);
 
         locationPermissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
         cameraPermissions = new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -137,7 +138,7 @@ public class EditeProfileUserActivity extends AppCompatActivity implements Locat
             imageUri = data.getData();
 
             try {
-                binding.profileIV.setImageURI(imageUri);
+                binding.profileIVShow.setImageURI(imageUri);
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".EditProductActivity">
     <ScrollView
         android:layout_width="match_parent"
@@ -41,28 +42,52 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 tools:ignore="UseSwitchCompatOrMaterialXml">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/productIconIV"
-                    android:layout_width="@dimen/_85mdp"
-                    android:layout_height="@dimen/_85mdp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/_10mdp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_shopping_cart_theme_color"
-                    app:civ_border_color="@color/background_theme"
-                    app:civ_border_width="@dimen/_1mdp" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cons">
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/productIconIVShow"
+                        android:layout_width="@dimen/_85mdp"
+                        android:layout_height="@dimen/_85mdp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/_10mdp"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:src="@drawable/impl1"
+                        app:civ_border_color="@color/background_theme"
+                        app:civ_border_width="@dimen/_1mdp" />
+
+
+                    <ImageView
+                        android:id="@+id/productIconIV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_take_photo"
+                        app:layout_constraintEnd_toEndOf="@id/productIconIVShow"
+                        app:layout_constraintTop_toTopOf="@id/productIconIVShow"/>
+
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                 <EditText
                     android:id="@+id/titleET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/productIconIV"
+                    android:layout_below="@id/cons"
                     android:layout_marginStart="@dimen/_5mdp"
                     android:layout_marginTop="@dimen/_5mdp"
                     android:layout_marginEnd="@dimen/_5mdp"
                     android:layout_marginBottom="@dimen/_5mdp"
+                    android:textColor="@color/black"
+                    android:textColorHint="#919090"
                     android:background="@drawable/shape_rect_02"
                     android:drawableStart="@drawable/ic_text_gray"
                     android:drawablePadding="@dimen/_10mdp"
@@ -79,6 +104,8 @@
                     android:layout_marginTop="@dimen/_5mdp"
                     android:layout_marginEnd="@dimen/_5mdp"
                     android:layout_marginBottom="@dimen/_5mdp"
+                    android:textColor="@color/black"
+                    android:textColorHint="#919090"
                     android:background="@drawable/shape_rect_02"
                     android:drawableStart="@drawable/ic_text_gray"
                     android:drawablePadding="@dimen/_10mdp"
@@ -99,7 +126,8 @@
                     android:drawableStart="@drawable/ic_categories_gray"
                     android:drawableEnd="@drawable/ic_down_arrow_gray"
                     android:drawablePadding="@dimen/_10mdp"
-                    android:hint="@string/category"
+                   android:text="Category"
+                    android:textColor="@color/black"
                     android:padding="@dimen/_8mdp" />
 
                 <EditText
@@ -110,6 +138,8 @@
                     android:layout_marginStart="@dimen/_5mdp"
                     android:layout_marginTop="@dimen/_5mdp"
                     android:layout_marginEnd="@dimen/_5mdp"
+                    android:textColor="@color/black"
+                    android:textColorHint="#919090"
                     android:layout_marginBottom="@dimen/_5mdp"
                     android:background="@drawable/shape_rect_02"
                     android:drawableStart="@drawable/ic_cart_gray"
@@ -126,6 +156,8 @@
                     android:layout_marginStart="@dimen/_5mdp"
                     android:layout_marginTop="@dimen/_5mdp"
                     android:layout_marginEnd="@dimen/_5mdp"
+                    android:textColor="@color/black"
+                    android:textColorHint="#919090"
                     android:layout_marginBottom="@dimen/_5mdp"
                     android:background="@drawable/shape_rect_02"
                     android:drawableStart="@drawable/ic_cart_gray"
@@ -142,6 +174,8 @@
                     android:layout_marginStart="@dimen/_5mdp"
                     android:layout_marginTop="@dimen/_5mdp"
                     android:layout_marginEnd="@dimen/_5mdp"
+                    android:textColor="@color/black"
+                    android:theme="@style/mySwitchBack"
                     android:layout_marginBottom="@dimen/_5mdp"
                     android:text="@string/product_available" />
 
@@ -153,6 +187,8 @@
                     android:layout_marginStart="@dimen/_5mdp"
                     android:layout_marginTop="@dimen/_5mdp"
                     android:layout_marginEnd="@dimen/_5mdp"
+                    android:textColor="@color/black"
+                    android:theme="@style/mySwitchBack"
                     android:layout_marginBottom="@dimen/_5mdp"
                     android:text="@string/discount" />
 
@@ -183,6 +219,8 @@
                     android:background="@drawable/shape_rect_02"
                     android:drawableStart="@drawable/ic_cart_gray"
                     android:drawablePadding="@dimen/_10mdp"
+                    android:textColor="@color/black"
+                    android:textColorHint="#919090"
                     android:hint="@string/discount_note_e_g_10_off"
                     android:inputType="numberDecimal"
                     android:padding="@dimen/_8mdp" />
@@ -193,8 +231,12 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/discountNoteET"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginStart="@dimen/_5mdp"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_marginEnd="@dimen/_5mdp"
+                    android:textColor="@color/white"
+                    android:layout_marginBottom="@dimen/_5mdp"
                     android:text="@string/update_product"
-                    android:layout_margin="@dimen/_5mdp"
                     android:textAllCaps="false" />
 
 

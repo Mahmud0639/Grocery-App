@@ -51,6 +51,8 @@ public class TermsConditionActivity extends AppCompatActivity {
         dbRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
         progressDialog = new ProgressDialog(TermsConditionActivity.this);
+        progressDialog.setCancelable(false);
+
 
         loadToSpinner();
 

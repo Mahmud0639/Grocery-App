@@ -94,6 +94,8 @@ public class ShopDetailsActivity extends AppCompatActivity {
 
         cateProgressDialog = new ProgressDialog(ShopDetailsActivity.this);
         cateProgressDialog.setMessage("Please wait...");
+        cateProgressDialog.setCanceledOnTouchOutside(false);
+        cateProgressDialog.setCancelable(false);
         cateProgressDialog.show();
 
 
@@ -108,8 +110,8 @@ public class ShopDetailsActivity extends AppCompatActivity {
 //                .addColumn(new Column("Item_Quantity", new String[]{"text", "not null"}))
 //                .doneTableColumn();
 
-         easyDB = EasyDB.init(ShopDetailsActivity.this,"ITEM_DB")
-                .setTableName("ITEM_TABLE")
+         easyDB = EasyDB.init(ShopDetailsActivity.this,"ITEM_DB_NEW")
+                .setTableName("ITEM_TABLE_NEW")
                 .addColumn(new Column("Items_Id",new String[]{"text","unique"}))
                 .addColumn(new Column("Items_PID",new String[]{"text","not null"}))
                 .addColumn(new Column("Items_Name",new String[]{"text","not null"}))
@@ -117,6 +119,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
                 .addColumn(new Column("Items_Price",new String[]{"text","not null"}))
                 .addColumn(new Column("Items_Quantity",new String[]{"text","not null"}))
                 .addColumn(new Column("Items_Pro_Quantity",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Pro_Image",new String[]{"text","not null"}))
                 .doneTableColumn();
 
         //each shop have its own products and orders
@@ -291,8 +294,8 @@ public class ShopDetailsActivity extends AppCompatActivity {
 //                .addColumn(new Column("Item_Quantity", new String[]{"text", "not null"}))
 //                .doneTableColumn();
 
-        EasyDB easyDB = EasyDB.init(ShopDetailsActivity.this,"ITEM_DB")
-                .setTableName("ITEM_TABLE")
+        EasyDB easyDB = EasyDB.init(ShopDetailsActivity.this,"ITEM_DB_NEW")
+                .setTableName("ITEM_TABLE_NEW")
                 .addColumn(new Column("Items_Id",new String[]{"text","unique"}))
                 .addColumn(new Column("Items_PID",new String[]{"text","not null"}))
                 .addColumn(new Column("Items_Name",new String[]{"text","not null"}))
@@ -300,6 +303,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
                 .addColumn(new Column("Items_Price",new String[]{"text","not null"}))
                 .addColumn(new Column("Items_Quantity",new String[]{"text","not null"}))
                 .addColumn(new Column("Items_Pro_Quantity",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Pro_Image",new String[]{"text","not null"}))
                 .doneTableColumn();
 
         //get all data from db
@@ -312,10 +316,11 @@ public class ShopDetailsActivity extends AppCompatActivity {
             String cost = result.getString(5);
             quantity = result.getString(6);
             String proQuantity = result.getString(7);
+            String prImage = result.getString(8);
 
             allTotalPrice = allTotalPrice + Double.parseDouble(cost);
 
-            ModelCartItem modelCartItem = new ModelCartItem("" + id, "" + pId, "" + name, "" + price, "" + cost, "" + quantity,""+proQuantity);
+            ModelCartItem modelCartItem = new ModelCartItem("" + id, "" + pId, "" + name, "" + price, "" + cost, "" + quantity,""+proQuantity,""+prImage);
             modelCartItemsList.add(modelCartItem);
         }
 
@@ -400,6 +405,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
                     String quantity = modelCartItemsList.get(i).getQuantity();
                     String name = modelCartItemsList.get(i).getName();
                     String productQuantity = modelCartItemsList.get(i).getProQuantity();
+                    String proImage = modelCartItemsList.get(i).getPrImage();
 
                     HashMap<String, String> hashMap1 = new HashMap<>();
                     hashMap1.put("pId", pId);
@@ -408,6 +414,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
                     hashMap1.put("price", price);
                     hashMap1.put("quantity", quantity);
                     hashMap1.put("proQuantity",productQuantity);
+                    hashMap1.put("prImage",proImage);
 
                     dbRef.child(timestamp).child("Items").child(pId).setValue(hashMap1);
                     //ei pId ta holo ekta timestamp jeta product ^add korar somoy neya hoyeche (AddProductActivity)--->addProductTodb-->177 no. lines

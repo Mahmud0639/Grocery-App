@@ -1,12 +1,12 @@
 package com.manuni.groceryapp;
 
 public class ModelCartItem {
-    private String id, pId, name,price,cost,quantity,proQuantity;
+    private String id, pId, name,price,cost,quantity,proQuantity,prImage;
 
     public ModelCartItem() {
     }
 
-    public ModelCartItem(String id, String pId, String name, String price, String cost, String quantity,String proQuantity) {
+    public ModelCartItem(String id, String pId, String name, String price, String cost, String quantity,String proQuantity,String prImage) {
         this.id = id;
         this.pId = pId;
         this.name = name;
@@ -14,8 +14,17 @@ public class ModelCartItem {
         this.cost = cost;
         this.quantity = quantity;
         this.proQuantity = proQuantity;
+        this.prImage = prImage;
 
 
+    }
+
+    public String getPrImage() {
+        return prImage;
+    }
+
+    public void setPrImage(String prImage) {
+        this.prImage = prImage;
     }
 
     public String getProQuantity() {

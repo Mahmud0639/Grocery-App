@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.manuni.groceryapp.databinding.RowCartItemBinding;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -48,6 +49,7 @@ public class AdapterCartItem extends RecyclerView.Adapter<AdapterCartItem.CartIt
         String cost = data.getCost();
         String quantity = data.getQuantity();
         String prodQuantity = data.getProQuantity();
+        String proImage = data.getPrImage();
 
 
 
@@ -57,8 +59,12 @@ public class AdapterCartItem extends RecyclerView.Adapter<AdapterCartItem.CartIt
 
 
 
-        holder.binding.productTotalDesc.setText(prodQuantity+" এর "+quantity+" টি");
-
+        holder.binding.productTotalDesc.setText(prodQuantity+" এর "+quantity+" টি অর্ডার");
+        try {
+            Picasso.get().load(proImage).placeholder(R.drawable.impl1).into(holder.binding.productImage);
+        } catch (Exception e) {
+            Picasso.get().load(R.drawable.impl1).into(holder.binding.productImage);
+        }
         holder.binding.itemTitleTV.setText(title);
         holder.binding.itemPriceEachTV.setText(String.format("৳%.2f",priceDouble));
         holder.binding.itemPriceTV.setText(String.format("৳%.2f",costDouble));
@@ -79,8 +85,8 @@ public class AdapterCartItem extends RecyclerView.Adapter<AdapterCartItem.CartIt
 //                        .addColumn(new Column("Item_Quantity",new String[]{"text","not null"}))
 //                        .doneTableColumn();
 
-                EasyDB easyDB = EasyDB.init(context,"ITEM_DB")
-                        .setTableName("ITEM_TABLE")
+                EasyDB easyDB = EasyDB.init(context,"ITEM_DB_NEW")
+                        .setTableName("ITEM_TABLE_NEW")
                         .addColumn(new Column("Items_Id",new String[]{"text","unique"}))
                         .addColumn(new Column("Items_PID",new String[]{"text","not null"}))
                         .addColumn(new Column("Items_Name",new String[]{"text","not null"}))
@@ -88,6 +94,7 @@ public class AdapterCartItem extends RecyclerView.Adapter<AdapterCartItem.CartIt
                         .addColumn(new Column("Items_Price",new String[]{"text","not null"}))
                         .addColumn(new Column("Items_Quantity",new String[]{"text","not null"}))
                         .addColumn(new Column("Items_Pro_Quantity",new String[]{"text","not null"}))
+                        .addColumn(new Column("Items_Pro_Image",new String[]{"text","not null"}))
                         .doneTableColumn();
 
                 easyDB.deleteRow(1,id);

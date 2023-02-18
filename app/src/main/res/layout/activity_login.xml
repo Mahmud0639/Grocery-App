@@ -43,13 +43,15 @@
         android:layout_marginStart="@dimen/_5mdp"
         android:layout_marginTop="@dimen/_5mdp"
         android:layout_marginEnd="@dimen/_5mdp"
+        android:textColor="@color/black"
         android:layout_marginBottom="@dimen/_5mdp"
         android:background="@drawable/shape_rect_02"
         android:drawableStart="@drawable/ic_mail_gray"
         android:drawablePadding="@dimen/_5mdp"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
-        android:padding="@dimen/_10mdp" />
+        android:padding="@dimen/_10mdp"
+        android:textColorHint="#919090" />
 
     <EditText
         android:id="@+id/passET"
@@ -64,8 +66,10 @@
         android:drawableStart="@drawable/ic_lock_gray"
         android:drawablePadding="@dimen/_5mdp"
         android:hint="@string/password"
+        android:textColor="@color/black"
         android:inputType="textPassword"
-        android:padding="@dimen/_10mdp" />
+        android:padding="@dimen/_10mdp"
+        android:textColorHint="#919090" />
 
     <TextView
         android:id="@+id/forgotTV"
@@ -84,6 +88,7 @@
         android:layout_below="@id/forgotTV"
         android:layout_centerHorizontal="true"
         android:minWidth="@dimen/_120mdp"
+        android:textColor="@color/white"
         android:text="@string/login"
         android:textAllCaps="false" />
 

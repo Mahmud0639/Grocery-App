@@ -12,6 +12,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -43,22 +44,42 @@
                 android:layout_height="wrap_content"
                 tools:ignore="UseSwitchCompatOrMaterialXml">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/productIconIV"
-                    android:layout_width="@dimen/_85mdp"
-                    android:layout_height="@dimen/_85mdp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/_10mdp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_shopping_cart_theme_color"
-                    app:civ_border_color="@color/background_theme"
-                    app:civ_border_width="@dimen/_1mdp" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/productIconIVShow"
+                        android:layout_width="@dimen/_85mdp"
+                        android:layout_height="@dimen/_85mdp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/_10mdp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/impl1"
+                        app:civ_border_color="@color/background_theme"
+                        app:civ_border_width="@dimen/_1mdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/productIconIV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_take_photo"
+                        app:layout_constraintEnd_toEndOf="@id/productIconIVShow"
+                        app:layout_constraintTop_toTopOf="@id/productIconIVShow"/>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                 <EditText
                     android:id="@+id/titleET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/productIconIV"
+                    android:layout_below="@id/cons"
                     android:layout_marginStart="@dimen/_5mdp"
                     android:layout_marginTop="@dimen/_5mdp"
                     android:layout_marginEnd="@dimen/_5mdp"
@@ -68,7 +89,9 @@
                     android:drawablePadding="@dimen/_10mdp"
                     android:hint="@string/title"
                     android:inputType="textPersonName|textCapWords"
-                    android:padding="@dimen/_8mdp" />
+                    android:padding="@dimen/_8mdp"
+                    android:textColor="@color/black"
+                    android:textColorHint="#919090" />
 
                 <EditText
                     android:id="@+id/descriptionET"
@@ -84,7 +107,9 @@
                     android:drawablePadding="@dimen/_10mdp"
                     android:hint="@string/description"
                     android:inputType="textCapSentences|textMultiLine"
-                    android:padding="@dimen/_8mdp" />
+                    android:padding="@dimen/_8mdp"
+                    android:textColor="@color/black"
+                    android:textColorHint="#919090" />
 
                 <TextView
                     android:id="@+id/categoryTV"
@@ -99,9 +124,9 @@
                     android:drawableStart="@drawable/ic_categories_gray"
                     android:drawableEnd="@drawable/ic_down_arrow_gray"
                     android:drawablePadding="@dimen/_10mdp"
-                    android:hint="@string/category"
-                    android:inputType="textCapSentences|textMultiLine"
-                    android:padding="@dimen/_8mdp" />
+                    android:padding="@dimen/_8mdp"
+                    android:text="Category"
+                    android:textColor="@color/black" />
 
                 <EditText
                     android:id="@+id/quantityET"
@@ -117,7 +142,9 @@
                     android:drawablePadding="@dimen/_10mdp"
                     android:hint="@string/quantity_e_g_kg_g_etc"
                     android:inputType="textCapWords"
-                    android:padding="@dimen/_8mdp" />
+                    android:padding="@dimen/_8mdp"
+                    android:textColor="@color/black"
+                    android:textColorHint="#919090" />
 
                 <EditText
                     android:id="@+id/priceET"
@@ -133,8 +160,9 @@
                     android:drawablePadding="@dimen/_10mdp"
                     android:hint="@string/price"
                     android:inputType="numberDecimal"
-                    android:padding="@dimen/_8mdp" />
-
+                    android:padding="@dimen/_8mdp"
+                    android:textColor="@color/black"
+                    android:textColorHint="#919090" />
 
 
                 <Switch
@@ -146,7 +174,9 @@
                     android:layout_marginTop="@dimen/_5mdp"
                     android:layout_marginEnd="@dimen/_5mdp"
                     android:layout_marginBottom="@dimen/_5mdp"
-                    android:text="@string/discount" />
+                    android:text="@string/discount"
+                    android:theme="@style/mySwitchBack"
+                    android:textColor="@color/black" />
 
 <!--                <EditText-->
 <!--                    android:id="@+id/discountPriceET"-->
@@ -176,6 +206,8 @@
                     android:background="@drawable/shape_rect_02"
                     android:drawableStart="@drawable/ic_cart_gray"
                     android:drawablePadding="@dimen/_10mdp"
+                    android:textColor="@color/black"
+                    android:textColorHint="#919090"
                     android:hint="@string/discount_note_e_g_10_off"
                     android:inputType="numberDecimal"
                     android:padding="@dimen/_8mdp" />
@@ -186,8 +218,12 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/discountNoteET"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginStart="@dimen/_5mdp"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:layout_marginEnd="@dimen/_5mdp"
+                    android:layout_marginBottom="@dimen/_5mdp"
                     android:text="@string/add_product"
-                    android:layout_margin="@dimen/_5mdp"
+                    android:textColor="@color/white"
                     android:textAllCaps="false" />
 
 

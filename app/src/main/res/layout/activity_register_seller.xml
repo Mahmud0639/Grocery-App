@@ -11,6 +11,7 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
+            android:id="@+id/sellerRL"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_80mdp"
             android:background="@drawable/shape_rect_01"
@@ -57,25 +58,46 @@
             android:padding="@dimen/_5mdp"
             android:src="@drawable/ic_key_white" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/personImage"
-            android:layout_width="@dimen/_80mdp"
-            android:layout_height="@dimen/_80mdp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/iconIv"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_person_gray"
-          app:civ_border_color="@color/colorGray02"
-            app:civ_border_width="@dimen/_2mdp"/>
+            android:id="@+id/cons">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/personImageShow"
+                android:layout_width="@dimen/_80mdp"
+                android:layout_height="@dimen/_80mdp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_person_gray"
+                app:civ_border_color="@color/colorGray02"
+                app:civ_border_width="@dimen/_2mdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <ImageView
+                android:id="@+id/personImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_take_photo"
+                app:layout_constraintEnd_toEndOf="@id/personImageShow"
+                app:layout_constraintTop_toTopOf="@id/personImageShow"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <EditText
             android:id="@+id/fullNameET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/personImage"
+            android:layout_below="@id/cons"
             android:layout_marginStart="@dimen/_5mdp"
             android:layout_marginTop="@dimen/_5mdp"
             android:layout_marginEnd="@dimen/_5mdp"
+            android:textColor="@color/black"
+            android:textColorHint="#919090"
             android:layout_marginBottom="@dimen/_5mdp"
             android:background="@drawable/shape_rect_02"
             android:drawableStart="@drawable/ic_person_gray"
@@ -93,6 +115,8 @@
             android:layout_marginStart="@dimen/_5mdp"
             android:layout_marginTop="@dimen/_5mdp"
             android:layout_marginEnd="@dimen/_5mdp"
+            android:textColor="@color/black"
+            android:textColorHint="#919090"
             android:layout_marginBottom="@dimen/_5mdp"
             android:background="@drawable/shape_rect_02"
             android:drawableStart="@drawable/ic_store_gray"
@@ -102,7 +126,6 @@
             android:padding="@dimen/_10mdp" />
 
 
-
         <EditText
             android:id="@+id/phoneET"
             android:layout_width="match_parent"
@@ -110,6 +133,8 @@
             android:layout_below="@id/shopET"
             android:layout_marginStart="@dimen/_5mdp"
             android:layout_marginTop="@dimen/_5mdp"
+            android:textColor="@color/black"
+            android:textColorHint="#919090"
             android:layout_marginEnd="@dimen/_5mdp"
             android:layout_marginBottom="@dimen/_5mdp"
             android:background="@drawable/shape_rect_02"
@@ -128,6 +153,8 @@
             android:layout_marginTop="@dimen/_5mdp"
             android:layout_marginEnd="@dimen/_5mdp"
             android:layout_marginBottom="@dimen/_5mdp"
+            android:textColor="@color/black"
+            android:textColorHint="#919090"
             android:background="@drawable/shape_rect_02"
             android:drawableStart="@drawable/ic_shipping_gray"
             android:drawablePadding="@dimen/_5mdp"
@@ -153,6 +180,8 @@
                 android:drawableStart="@drawable/ic_location_gray"
                 android:drawablePadding="@dimen/_5mdp"
                 android:hint="@string/county"
+                android:textColor="@color/black"
+                android:textColorHint="#919090"
                 android:inputType="textPostalAddress"
                 android:padding="@dimen/_10mdp"
                 tools:ignore="TextFields" />
@@ -167,6 +196,8 @@
                 android:drawableStart="@drawable/ic_location_gray"
                 android:drawablePadding="@dimen/_5mdp"
                 android:hint="@string/state"
+                android:textColor="@color/black"
+                android:textColorHint="#919090"
                 android:inputType="textPostalAddress"
                 android:padding="@dimen/_10mdp"
                 tools:ignore="TextFields" />
@@ -180,6 +211,8 @@
                 android:drawableStart="@drawable/ic_location_gray"
                 android:drawablePadding="@dimen/_5mdp"
                 android:hint="@string/city"
+                android:textColor="@color/black"
+                android:textColorHint="#919090"
                 android:layout_marginStart="@dimen/_3mdp"
                 android:inputType="textPostalAddress"
                 android:padding="@dimen/_10mdp"
@@ -199,6 +232,8 @@
             android:background="@drawable/shape_rect_02"
             android:drawableStart="@drawable/ic_location_gray"
             android:drawablePadding="@dimen/_5mdp"
+            android:textColor="@color/black"
+            android:textColorHint="#919090"
             android:hint="@string/complete_address"
             android:inputType="textPostalAddress|textMultiLine"
             android:padding="@dimen/_10mdp"
@@ -217,6 +252,8 @@
             android:drawableStart="@drawable/ic_mail_gray"
             android:drawablePadding="@dimen/_5mdp"
             android:hint="@string/email"
+            android:textColor="@color/black"
+            android:textColorHint="#919090"
             android:inputType="textEmailAddress"
             android:padding="@dimen/_10mdp"
             android:visibility="visible" />
@@ -229,6 +266,8 @@
             android:layout_below="@id/emailEt"
             android:layout_marginStart="@dimen/_5mdp"
             android:layout_marginTop="@dimen/_5mdp"
+            android:textColor="@color/black"
+            android:textColorHint="#919090"
             android:layout_marginEnd="@dimen/_5mdp"
             android:layout_marginBottom="@dimen/_5mdp"
             android:background="@drawable/shape_rect_02"
@@ -251,6 +290,8 @@
             android:drawableStart="@drawable/ic_lock_gray"
             android:drawablePadding="@dimen/_5mdp"
             android:hint="@string/confirm_password"
+            android:textColor="@color/black"
+            android:textColorHint="#919090"
             android:inputType="textPassword"
             android:padding="@dimen/_10mdp"
             android:visibility="visible" />
@@ -265,6 +306,7 @@
             android:layout_centerHorizontal="true"
             android:minWidth="@dimen/_120mdp"
             android:text="@string/register"
+            android:textColor="@color/white"
             android:textAllCaps="false" />
 
 

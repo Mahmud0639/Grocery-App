@@ -19,4 +19,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="mySwitchBack">
+        <item name="colorControlActivated">#46bdbf</item>
+        <item name="colorSwitchThumbNormal">#f1f1f1</item>
+        <item name="android:colorForeground">#42221f1f</item>
+    </style>
+
 </resources>

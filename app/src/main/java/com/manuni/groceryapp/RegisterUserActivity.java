@@ -90,9 +90,12 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
         dialog = new ProgressDialog(RegisterUserActivity.this);
         dialog.setMessage("Please wait...");
         dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
 
         dialogForAccount = new ProgressDialog(RegisterUserActivity.this);
         dialogForAccount.setTitle("Account");
+        dialogForAccount.setCancelable(false);
+        dialogForAccount.setCanceledOnTouchOutside(false);
         binding.backArrowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -291,7 +294,7 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
             imageUri = data.getData();
 
             try {
-                binding.personImage.setImageURI(imageUri);
+                binding.personImageShow.setImageURI(imageUri);
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -26,6 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_toStartOf="@id/nextIV"
             android:text=""
+            android:textColor="#919090"
             android:textSize="@dimen/_8font_mdp" />
 
         <TextView
@@ -43,6 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/shopNameTV"
             android:text=""
+            android:textColor="#919090"
             android:textSize="@dimen/_10font_mdp" />
 
         <TextView

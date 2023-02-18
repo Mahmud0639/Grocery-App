@@ -95,6 +95,7 @@ public class EditProfileSellerActivity extends AppCompatActivity implements Loca
         dialog = new ProgressDialog(this);
         dialog.setTitle("Please wait");
         dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
 
         locationPermissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
         cameraPermissions = new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -151,7 +152,7 @@ public class EditProfileSellerActivity extends AppCompatActivity implements Loca
             imageUri = data.getData();
 
             try {
-                binding.profileIV.setImageURI(imageUri);
+                binding.profileIVShow.setImageURI(imageUri);
             } catch (Exception e) {
                 e.printStackTrace();
             }

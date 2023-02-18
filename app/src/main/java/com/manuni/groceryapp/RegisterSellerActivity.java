@@ -104,12 +104,15 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         dialog = new ProgressDialog(RegisterSellerActivity.this);
         dialog.setMessage("Please wait...");
         dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
 
         progressDialog = new ProgressDialog(this);
 
 
 
         dialogForAccount = new ProgressDialog(RegisterSellerActivity.this);
+        dialogForAccount.setCancelable(false);
+        dialogForAccount.setCanceledOnTouchOutside(false);
         dialogForAccount.setTitle("Account");
 
 
@@ -383,7 +386,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
             imageUri = data.getData();
 
             try {
-                binding.personImage.setImageURI(imageUri);
+                binding.personImageShow.setImageURI(imageUri);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -392,98 +395,6 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         }
     }
 
-    //    private void showImagePickDialog() {
-//        String[] options = {"Camera", "Gallery"};
-//        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterSellerActivity.this);
-//        builder.setTitle("Pick Image")
-//                .setItems(options, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        if (i == 0) {
-//                            if (checkCameraPermission()) {
-//                                pickUsingCamera();
-//                            } else {
-//                                requestCameraPermission();
-//                            }
-//
-//                        } else {
-//                            if (checkStoragePermission()) {
-//                                pickFromGallery();
-//                            } else {
-//                                requestStoragePermission();
-//                            }
-//
-//                        }
-//                    }
-//                }).show();
-//    }
-//
-//    private void pickUsingCamera() {
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put(MediaStore.Images.Media.TITLE, "Temp_image Title");
-//        contentValues.put(MediaStore.Images.Media.DESCRIPTION, "Temp_image Description");
-//
-//        imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-//
-//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-//        //startActivityForResult(intent, REQUEST_FOR_CAMERA_CODE);
-//        resultLauncherForCamera.launch(intent);
-//    }
-//    private ActivityResultLauncher<Intent> resultLauncherForCamera = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-//        @Override
-//        public void onActivityResult(ActivityResult result) {
-//            if (result.getResultCode() == RESULT_OK){
-//                try {
-//                    binding.personImage.setImageURI(imageUri);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        }
-//    });
-//
-//    private void pickFromGallery() {
-//        Intent pickGallery = new Intent(Intent.ACTION_PICK);
-//        pickGallery.setType("image/*");
-//        //startActivityForResult(pickGallery, REQUEST_FOR_STORAGE_CODE);
-//        resultLauncherForGallery.launch(pickGallery);
-//    }
-//    private ActivityResultLauncher<Intent> resultLauncherForGallery = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-//        @Override
-//        public void onActivityResult(ActivityResult result) {
-//            if (result.getResultCode() == RESULT_OK){
-//                Intent data = result.getData();
-//                imageUri = data.getData();
-//
-//                try {
-//                    binding.personImage.setImageURI(imageUri);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//    });
-//
-//    private boolean checkStoragePermission() {
-//        boolean result = ContextCompat.checkSelfPermission(RegisterSellerActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-//        return result;
-//    }
-//
-//    private void requestStoragePermission() {
-//        ActivityCompat.requestPermissions(RegisterSellerActivity.this, storage_permissions, STORAGE_REQUEST_CODE);
-//    }
-//
-//    private boolean checkCameraPermission() {
-//        boolean resultForCamera = ContextCompat.checkSelfPermission(RegisterSellerActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
-//        boolean resultForStorage = ContextCompat.checkSelfPermission(RegisterSellerActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-//        return resultForCamera && resultForStorage;
-//    }
-//
-//    private void requestCameraPermission() {
-//        ActivityCompat.requestPermissions(RegisterSellerActivity.this, camera_permissions, CAMERA_REQUEST_CODE);
-//    }
 
     private boolean checkLocationPermission() {
         boolean result = ContextCompat.checkSelfPermission(RegisterSellerActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;

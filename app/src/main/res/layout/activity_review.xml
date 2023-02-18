@@ -77,6 +77,8 @@
         android:layout_below="@id/serviceExpr"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_15mdp"
+        android:progressBackgroundTint="#919090"
+        android:progressTint="@color/background_theme"
         android:numStars="5" />
 
     <EditText
@@ -90,9 +92,11 @@
         android:layout_marginBottom="@dimen/_15mdp"
         android:background="@drawable/shape_rect_02"
         android:gravity="top"
+        android:textColorHint="#919090"
         android:hint="@string/write_your_review"
         android:minHeight="@dimen/_80mdp"
-        android:padding="@dimen/_8mdp" />
+        android:padding="@dimen/_8mdp"
+        android:textColor="#919090" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
