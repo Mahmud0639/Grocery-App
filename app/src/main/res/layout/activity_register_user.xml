@@ -79,6 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_take_photo"
+                android:background="@drawable/circle_bg_blue"
                 app:layout_constraintEnd_toEndOf="@id/personImageShow"
                 app:layout_constraintTop_toTopOf="@id/personImageShow"/>
 
@@ -207,14 +208,14 @@
             android:layout_marginTop="@dimen/_5mdp"
             android:layout_marginEnd="@dimen/_5mdp"
             android:layout_marginBottom="@dimen/_5mdp"
-            android:textColor="@color/black"
-            android:textColorHint="#919090"
             android:background="@drawable/shape_rect_02"
             android:drawableStart="@drawable/ic_mail_gray"
             android:drawablePadding="@dimen/_5mdp"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
-            android:padding="@dimen/_10mdp" />
+            android:padding="@dimen/_10mdp"
+            android:textColor="@color/black"
+            android:textColorHint="#919090" />
 
         <EditText
             android:id="@+id/passwordET"

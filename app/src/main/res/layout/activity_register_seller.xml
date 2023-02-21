@@ -79,6 +79,7 @@
 
             <ImageView
                 android:id="@+id/personImage"
+                android:background="@drawable/circle_bg_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_take_photo"

@@ -35,29 +35,51 @@
         android:padding="@dimen/_5mdp"
         android:layout_marginBottom="@dimen/_40mdp"/>
 
-    <EditText
-        android:id="@+id/emailET"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/iconIv"
-        android:layout_marginStart="@dimen/_5mdp"
-        android:layout_marginTop="@dimen/_5mdp"
-        android:layout_marginEnd="@dimen/_5mdp"
-        android:textColor="@color/black"
-        android:layout_marginBottom="@dimen/_5mdp"
-        android:background="@drawable/shape_rect_02"
-        android:drawableStart="@drawable/ic_mail_gray"
-        android:drawablePadding="@dimen/_5mdp"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress"
-        android:padding="@dimen/_10mdp"
-        android:textColorHint="#919090" />
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
+        app:hintEnabled="false"
+        app:boxBackgroundMode="outline"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:helperText="example@gmail.com">
+
+        <EditText
+            android:id="@+id/emailET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5mdp"
+            android:layout_marginTop="@dimen/_5mdp"
+            android:layout_marginEnd="@dimen/_5mdp"
+            android:layout_marginBottom="@dimen/_5mdp"
+            android:background="@drawable/shape_rect_02"
+            android:drawableStart="@drawable/ic_mail_gray"
+            android:drawablePadding="@dimen/_5mdp"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            android:padding="@dimen/_10mdp"
+            android:textColor="@color/black"
+            android:textColorHint="#919090" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+<com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/textInputEmail"
+    app:passwordToggleEnabled="true"
+    app:errorEnabled="true"
+    app:helperText="**********"
+    app:hintEnabled="false"
+    android:id="@+id/textInputPass">
 
     <EditText
         android:id="@+id/passET"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/emailET"
         android:layout_marginStart="@dimen/_5mdp"
         android:layout_marginTop="@dimen/_5mdp"
         android:layout_marginEnd="@dimen/_5mdp"
@@ -71,11 +93,16 @@
         android:textColor="@color/black"
         android:textColorHint="#919090" />
 
+</com.google.android.material.textfield.TextInputLayout>
+
+
+
+
     <TextView
         android:id="@+id/forgotTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/passET"
+        android:layout_below="@id/textInputPass"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="@dimen/_5mdp"
         android:layout_marginTop="@dimen/_5mdp"
@@ -92,9 +119,9 @@
         android:layout_below="@id/forgotTV"
         android:layout_centerHorizontal="true"
         android:minWidth="@dimen/_120mdp"
-        android:textColor="@color/white"
         android:text="@string/login"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/notHaveAccountTV"

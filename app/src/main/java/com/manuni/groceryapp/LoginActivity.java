@@ -2,13 +2,18 @@ package com.manuni.groceryapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
@@ -25,6 +30,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.manuni.groceryapp.databinding.ActivityLoginBinding;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
     ActivityLoginBinding binding;
@@ -55,6 +62,65 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LoginActivity.this,ForgotPasswordActivity.class));
+            }
+        });
+
+        binding.emailET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+               if (!Patterns.EMAIL_ADDRESS.matcher(charSequence).matches()){
+                   binding.textInputEmail.setHelperText("Email Patterns doesn't matched yet.");
+                   binding.textInputEmail.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_deep)));
+               }else {
+                   binding.textInputEmail.setHelperText("Email Patterns matched!");
+                   binding.textInputEmail.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorGreen)));
+               }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        binding.passET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length()>=6){
+                    Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
+                    Matcher matcher = pattern.matcher(charSequence);
+                    boolean isPwdContains = matcher.find();
+                    if (isPwdContains){
+                        binding.textInputPass.setHelperText("Strong Password");
+                        binding.textInputPass.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorGreen)));
+                        binding.textInputPass.setError("");
+
+                    }else {
+                        binding.textInputPass.setHelperText("");
+                        binding.textInputPass.setError("Weak Password.Include minimum 1 special char.");
+
+                    }
+                } else{
+                    binding.textInputPass.setHelperText("Enter Minimum 6 char.");
+                    binding.textInputPass.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_deep)));
+                    binding.textInputPass.setError("");
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
 
@@ -90,17 +156,33 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        email = binding.emailET.getText().toString().trim();
-        password = binding.passET.getText().toString().trim();
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            Toast.makeText(this, "Invalid email address!", Toast.LENGTH_SHORT).show();
+        if (!validateEmail() | !validatePassword()){
             return;
-        }else if (password.length()<6){
-            Toast.makeText(this, "Password should be at least 6 characters!", Toast.LENGTH_SHORT).show();
-            return;
-        }else {
+        }
+//
+//        email = binding.emailET.getText().toString().trim();
+//        password = binding.passET.getText().toString().trim();
+//
+//        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+//            if (email.isEmpty()){
+//                binding.textInputEmail.setError("Empty");
+//            }else {
+//                binding.textInputEmail.setError(null);
+//            }
+//            //Toast.makeText(this, "Invalid email address!", Toast.LENGTH_SHORT).show();
+//            binding.textInputEmail.setError("Field can't be empty");
+//            return;
+//        }else if (password.length()<6){
+//           // Toast.makeText(this, "Password should be at least 6 characters!", Toast.LENGTH_SHORT).show();
+//            binding.textInputPass.setError("Password should be at least 6 characters");
+//            return;
+//        }else {
             dialog.show();
+            binding.textInputEmail.setError(null);
+            binding.textInputPass.setError(null);
+            //binding.emailET.setText("");
+            //binding.passET.setText("");
+           // binding.textInputPass.setHelperText("");
             auth.signInWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                 @Override
                 public void onSuccess(AuthResult authResult) {
@@ -114,7 +196,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
-        }
+        //}
 
 
 
@@ -222,5 +304,53 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finishAffinity();
+    }
+
+
+    private boolean validateEmail(){
+
+
+        email = binding.emailET.getText().toString().trim();
+
+        if (email.isEmpty()){
+            binding.textInputEmail.setError("Field can't be empty");
+            return false;
+        }else  if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            binding.textInputEmail.setError("Invalid Password Pattern");
+            return false;
+        } else {
+            binding.textInputEmail.setError(null);
+            binding.textInputEmail.setErrorEnabled(false);
+            return true;
+        }
+
+
+    }
+    private boolean validatePassword(){
+        password = binding.passET.getText().toString().trim();
+        if (password.length()>=6){
+            Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
+            Matcher matcher = pattern.matcher(password);
+            boolean isPwdContains = matcher.find();
+            if (isPwdContains){
+                binding.textInputPass.setHelperText("Strong Password");
+                binding.textInputPass.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorGreen)));
+                binding.textInputPass.setError("");
+                return true;
+            }else {
+                binding.textInputPass.setHelperText("");
+                binding.textInputPass.setError("Weak Password.Include minimum 1 special char.");
+                return false;
+            }
+        }else if (password.isEmpty()){
+            binding.textInputPass.setHelperText("Field can't be empty.");
+            binding.textInputPass.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_deep)));
+            return false;
+        } else{
+            binding.textInputPass.setHelperText("Enter Minimum 6 char.");
+            binding.textInputPass.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_deep)));
+            binding.textInputPass.setError("");
+            return false;
+        }
     }
 }

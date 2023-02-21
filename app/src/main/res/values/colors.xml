@@ -18,4 +18,6 @@
     <color name="disable_foreground_gray">#42221f1f</color>
     <color name="disable_thumb_gray">#1c000000</color>
     <color name="enable_thumb_white">#fff</color>
+
+    <color name="red_deep">#C11212</color>
 </resources>
