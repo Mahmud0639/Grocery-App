@@ -126,6 +126,7 @@ public class MainSellerActivity extends AppCompatActivity {
         popupMenu.getMenu().add("Today Balance");
         popupMenu.getMenu().add("Reviews");
         popupMenu.getMenu().add("Settings");
+        popupMenu.getMenu().add("Send Feedback");
         popupMenu.getMenu().add("Logout");
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -137,7 +138,9 @@ public class MainSellerActivity extends AppCompatActivity {
                     startActivity(new Intent(MainSellerActivity.this,AccountInfoActivity.class));
                 }  else if (item.getTitle()=="Add Product"){
                     startActivity(new Intent(MainSellerActivity.this,AddProductActivity.class));
-                }else if (item.getTitle()=="Today Balance"){
+                }else if (item.getTitle()=="Send Feedback"){
+                   startActivity(new Intent(MainSellerActivity.this,FeedbackActivity.class));
+                } else if (item.getTitle()=="Today Balance"){
                    startActivity(new Intent(MainSellerActivity.this,TotalCostActivity.class));
                 } else if (item.getTitle()=="Reviews"){
                     Intent intent = new Intent(MainSellerActivity.this,ShopReviewActivity.class);
@@ -191,8 +194,8 @@ public class MainSellerActivity extends AppCompatActivity {
             public void onClick(View view) {
                 popupMenu.show();
             }
-        });
 
+        });
 //        binding.editProfileBtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -250,23 +253,30 @@ public class MainSellerActivity extends AppCompatActivity {
         binding.filterOrderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String[] options = {"All","In Progress","Completed","Cancelled"};
+                if (modelOrderShops.size()==0){
+                    Toast.makeText(MainSellerActivity.this, "No orders available.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else {
+                    final String[] options = {"All","In Progress","Completed","Cancelled"};
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainSellerActivity.this);
-                builder.setTitle("Filter Orders")
-                        .setItems(options, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                if (i==0){
-                                    binding.filterOrderTV.setText("Showing All Orders");
-                                    adapterOrderShop.getFilter().filter("");
-                                }else {
-                                    String optionClicked = options[i];
-                                    binding.filterOrderTV.setText("Showing "+optionClicked+" Orders");
-                                    adapterOrderShop.getFilter().filter(optionClicked);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainSellerActivity.this);
+                    builder.setTitle("Filter Orders")
+                            .setItems(options, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    if (i==0){
+                                        binding.filterOrderTV.setText("Showing All Orders");
+                                        adapterOrderShop.getFilter().filter("");
+                                    }else {
+                                        String optionClicked = options[i];
+                                        binding.filterOrderTV.setText("Showing "+optionClicked+" Orders");
+                                        adapterOrderShop.getFilter().filter(optionClicked);
+                                    }
                                 }
-                            }
-                        }).show();
+                            }).show();
+                }
+
+
             }
         });
 
@@ -317,6 +327,7 @@ public class MainSellerActivity extends AppCompatActivity {
     }
 
     private void loadFilteredProducts(String selected) {
+        binding.itemsFoundTV.setVisibility(View.VISIBLE);
         list = new ArrayList<>();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
         databaseReference.child(auth.getUid()).child("Products").addValueEventListener(new ValueEventListener() {
@@ -330,10 +341,12 @@ public class MainSellerActivity extends AppCompatActivity {
                     if (selected.equals(productCategory)){
                         ModelProduct data = dataSnapshot.getValue(ModelProduct.class);
                         list.add(data);
+
+                       // binding.filterProductTV.setText(list.size()+" items found");
                     }
 
-
                 }
+                binding.itemsFoundTV.setText(" ("+list.size()+" items found)");
                 productSellerAdapter = new ProductSellerAdapter(MainSellerActivity.this,list);
                 binding.productRV.setAdapter(productSellerAdapter);
 
@@ -347,6 +360,7 @@ public class MainSellerActivity extends AppCompatActivity {
     }
 
     private void loadAllProducts() {
+        binding.itemsFoundTV.setVisibility(View.GONE);
         list = new ArrayList<>();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
         databaseReference.child(auth.getUid()).child("Products").addValueEventListener(new ValueEventListener() {
@@ -390,7 +404,32 @@ public class MainSellerActivity extends AppCompatActivity {
         binding.tabOrdersTV.setTextColor(getResources().getColor(R.color.black));
         binding.tabOrdersTV.setBackgroundResource(R.drawable.shape_rect04);
 
-        loadAllOrders();
+        DatabaseReference myD = FirebaseDatabase.getInstance().getReference().child("Users");
+        myD.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    String status = ""+snapshot.child("accountStatus").getValue();
+
+                    if (status.equals("blocked")){
+                        startActivity(new Intent(MainSellerActivity.this,LoginActivity.class));
+                        finish();
+                    }else {
+                        loadAllOrders();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MainSellerActivity.this, ""+error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+
     }
     private void makeMeOffLine(){
         dialog.setMessage("Logging out...");

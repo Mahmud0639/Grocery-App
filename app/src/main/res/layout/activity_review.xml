@@ -32,6 +32,7 @@
 
 
     </RelativeLayout>
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/storeIV"
         android:layout_width="@dimen/_100mdp"
@@ -40,8 +41,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_5mdp"
         android:src="@drawable/ic_store_gray"
-        app:civ_border_width="@dimen/_1mdp"
-        app:civ_border_color="@color/background_theme"/>
+        app:civ_border_color="@color/background_theme"
+        app:civ_border_width="@dimen/_1mdp" />
 
     <TextView
         android:id="@+id/shopNameTV"

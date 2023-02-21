@@ -24,9 +24,9 @@
             android:id="@+id/itemTitleTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_3mdp"
             android:layout_toEndOf="@id/productImage"
             android:text="@string/item_title"
-            android:layout_marginStart="@dimen/_3mdp"
             android:textColor="@color/black" />
 
         <TextView
@@ -34,7 +34,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/itemTitleTV"
-            android:text="(5 kg er 2 ti)" />
+            android:text="(5 kg er 2 ti)"
+            android:textColor="#919090" />
 
         <TextView
             android:id="@+id/itemPriceTV"

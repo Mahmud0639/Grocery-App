@@ -19,7 +19,7 @@
             android:layout_centerHorizontal="true"
             android:text="@string/login"
             android:textColor="@color/white"
-            android:textSize="@dimen/_14font_mdp"
+            android:textSize="@dimen/_15font_mdp"
             android:textStyle="bold" />
 
 
@@ -66,19 +66,23 @@
         android:drawableStart="@drawable/ic_lock_gray"
         android:drawablePadding="@dimen/_5mdp"
         android:hint="@string/password"
-        android:textColor="@color/black"
         android:inputType="textPassword"
         android:padding="@dimen/_10mdp"
+        android:textColor="@color/black"
         android:textColorHint="#919090" />
 
     <TextView
         android:id="@+id/forgotTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/forgot_password"
         android:layout_below="@id/passET"
         android:layout_alignParentEnd="true"
-        android:layout_margin="@dimen/_5mdp"/>
+        android:layout_marginStart="@dimen/_5mdp"
+        android:layout_marginTop="@dimen/_5mdp"
+        android:layout_marginEnd="@dimen/_5mdp"
+        android:visibility="invisible"
+        android:layout_marginBottom="@dimen/_5mdp"
+        android:text="@string/forgot_password" />
 
     <Button
         android:id="@+id/loginBtn"
@@ -96,9 +100,13 @@
         android:id="@+id/notHaveAccountTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/don_t_have_account_register"
-       android:layout_alignParentBottom="true"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/_5mdp"/>
+        android:layout_marginStart="@dimen/_5mdp"
+        android:layout_marginTop="@dimen/_5mdp"
+        android:textColor="#919090"
+        android:layout_marginEnd="@dimen/_5mdp"
+        android:layout_marginBottom="@dimen/_5mdp"
+        android:text="@string/don_t_have_account_register" />
 
 </RelativeLayout>

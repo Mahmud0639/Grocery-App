@@ -40,60 +40,48 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 tools:ignore="UseSwitchCompatOrMaterialXml">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/productIconIVShow"
+                    android:layout_width="@dimen/_85mdp"
+                    android:layout_height="@dimen/_85mdp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/_5mdp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/impl2"
+                    app:civ_border_width="@dimen/_1mdp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/cons">
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/productIconIVShow"
-                        android:layout_width="@dimen/_85mdp"
-                        android:layout_height="@dimen/_85mdp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="@dimen/_10mdp"
-                        android:scaleType="centerCrop"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:src="@drawable/impl1"
-                        app:civ_border_color="@color/background_theme"
-                        app:civ_border_width="@dimen/_1mdp" />
-
-
-                    <ImageView
-                        android:id="@+id/productIconIV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_take_photo"
-                        app:layout_constraintEnd_toEndOf="@id/productIconIVShow"
-                        app:layout_constraintTop_toTopOf="@id/productIconIVShow"/>
-
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="17dp"
+                    android:text="Upload photo" />
 
                 <EditText
                     android:id="@+id/titleET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/cons"
+                    android:layout_below="@id/productIconIVShow"
                     android:layout_marginStart="@dimen/_5mdp"
                     android:layout_marginTop="@dimen/_5mdp"
                     android:layout_marginEnd="@dimen/_5mdp"
                     android:layout_marginBottom="@dimen/_5mdp"
-                    android:textColor="@color/black"
-                    android:textColorHint="#919090"
                     android:background="@drawable/shape_rect_02"
                     android:drawableStart="@drawable/ic_text_gray"
                     android:drawablePadding="@dimen/_10mdp"
                     android:hint="@string/title"
                     android:inputType="textPersonName|textCapWords"
-                    android:padding="@dimen/_8mdp" />
+                    android:padding="@dimen/_8mdp"
+                    android:textColor="@color/black"
+                    android:textColorHint="#919090" />
 
                 <EditText
                     android:id="@+id/descriptionET"

@@ -80,6 +80,7 @@ public class MainUserActivity extends AppCompatActivity {
         PopupMenu popupMenu = new PopupMenu(MainUserActivity.this,binding.moreBtn);
         popupMenu.getMenu().add("Edit Profile");
         popupMenu.getMenu().add("Settings");
+        popupMenu.getMenu().add("Send Feedback");
         popupMenu.getMenu().add("Logout");
 
 
@@ -93,6 +94,8 @@ public class MainUserActivity extends AppCompatActivity {
                     startActivity(intent);
                 }else if (item.getTitle()=="Logout"){
                     makeMeOffLine();
+                }else if (item.getTitle()=="Send Feedback"){
+                    startActivity(new Intent(MainUserActivity.this,FeedbackActivity.class));
                 }
                 return true;
             }
@@ -190,6 +193,8 @@ public class MainUserActivity extends AppCompatActivity {
         binding.tabOrdersTV.setTextColor(getResources().getColor(R.color.white));
         binding.tabOrdersTV.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         binding.filterProductBtn.setVisibility(View.VISIBLE);
+        binding.filterTxt.setVisibility(View.VISIBLE);
+        binding.shopsFoundTV.setVisibility(View.VISIBLE);
     }
     private void showOrdersUI(){
 
@@ -206,6 +211,8 @@ public class MainUserActivity extends AppCompatActivity {
         binding.tabShopsTV.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
         binding.filterProductBtn.setVisibility(View.GONE);
+        binding.filterTxt.setVisibility(View.GONE);
+        binding.shopsFoundTV.setVisibility(View.GONE);
 
         loadOrders();//ekhane rakhar karone duplicate ashe na
 
@@ -370,6 +377,7 @@ public class MainUserActivity extends AppCompatActivity {
 
 
                 }
+                binding.shopsFoundTV.setText("("+modelShopArrayList.size()+"shops available)");
                 adapterShop = new AdapterShop(MainUserActivity.this,modelShopArrayList);
                 binding.shopRV.setAdapter(adapterShop);
 
@@ -409,9 +417,12 @@ public class MainUserActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 String category = data[i];//ekhane kono category select kora hole seta ei variable er moddhe chole ashbe
                 if (category.equals("All")){
-
+                    binding.filterTxt.setVisibility(View.VISIBLE);
+                    binding.filterTxt.setText("Showing All");
                     loadShops(city);
                 }else{
+                    binding.filterTxt.setVisibility(View.VISIBLE);
+                    binding.filterTxt.setText(category);
                     loadAllShops(category);
                 }
             }
@@ -436,6 +447,7 @@ public class MainUserActivity extends AppCompatActivity {
                     }
                 }
 
+                binding.shopsFoundTV.setText("("+modelShopArrayList.size()+" shops found)");
                 adapterShop = new AdapterShop(MainUserActivity.this,modelShopArrayList);
                 binding.shopRV.setAdapter(adapterShop);
             }

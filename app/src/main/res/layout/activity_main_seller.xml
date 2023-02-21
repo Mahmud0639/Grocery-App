@@ -154,15 +154,15 @@
             android:layout_marginStart="@dimen/_5mdp"
             android:layout_marginTop="@dimen/_5mdp"
             android:layout_marginEnd="@dimen/_5mdp"
-            android:textColor="@color/black"
-            android:textColorHint="#919090"
             android:layout_marginBottom="@dimen/_5mdp"
             android:layout_toStartOf="@id/filterProductBtn"
             android:background="@drawable/shape_rect_02"
             android:drawableStart="@drawable/ic_search_gray"
             android:drawablePadding="@dimen/_10mdp"
             android:hint="Search"
-            android:padding="@dimen/_8mdp" />
+            android:padding="@dimen/_8mdp"
+            android:textColor="@color/black"
+            android:textColorHint="#919090" />
 
         <ImageButton
             android:id="@+id/filterProductBtn"
@@ -185,6 +185,15 @@
             android:layout_marginBottom="@dimen/_5mdp"
             android:text="Showing All"
             android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/itemsFoundTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#919090"
+            android:layout_toEndOf="@id/filterProductTV"
+            android:layout_below="@id/searchET"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/productRV"
@@ -216,6 +225,7 @@
             android:background="@drawable/shape_rect_02"
             android:drawablePadding="@dimen/_10mdp"
             android:padding="@dimen/_8mdp"
+            android:textColor="#919090"
             android:text="Showing All Orders" />
 
         <ImageButton

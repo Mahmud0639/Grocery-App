@@ -106,6 +106,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:textColor="@color/black"
                     android:drawableStart="@drawable/ic_category_gray"
                     android:drawablePadding="@dimen/_5mdp"
                     android:inputType="textMultiLine|textCapSentences" />

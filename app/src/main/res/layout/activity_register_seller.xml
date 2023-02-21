@@ -69,9 +69,9 @@
                 android:layout_width="@dimen/_80mdp"
                 android:layout_height="@dimen/_80mdp"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/ic_person_gray"
+                android:src="@drawable/impl2"
                 app:civ_border_color="@color/colorGray02"
-                app:civ_border_width="@dimen/_2mdp"
+                app:civ_border_width="@dimen/_1mdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

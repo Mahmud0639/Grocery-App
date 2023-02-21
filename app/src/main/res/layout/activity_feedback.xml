@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="4"
+    android:padding="@dimen/_10mdp"
+    android:background="#454545"
+    android:orientation="vertical"
+    tools:context=".FeedbackActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5">
+
+        <EditText
+            android:id="@+id/nameEditTextId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="@color/white"
+            android:hint="আপনার নাম লিখুন"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/teal_200"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5">
+
+        <EditText
+            android:id="@+id/messageEditTextId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="@color/white"
+            android:hint="আপনার তথ্য দিন"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/teal_200"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/sendButtonId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#4CAF50"
+            android:text="পাঠান"
+            android:textSize="@dimen/_14font_mdp"
+            android:textStyle="bold"
+            tools:ignore="ButtonStyle"
+            android:layout_marginEnd="5dp" />
+
+        <Button
+            android:id="@+id/clearButtonId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#EC1B0C"
+            android:text="মুছুন"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            tools:ignore="ButtonStyle"
+            android:layout_marginStart="5dp" />
+    </LinearLayout>
+
+
+</LinearLayout>

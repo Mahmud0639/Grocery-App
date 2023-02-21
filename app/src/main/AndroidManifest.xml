@@ -23,6 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GroceryApp.NoActionBar">
         <activity
+            android:name=".FeedbackActivity"
+            android:exported="false" />
+        <activity
             android:name=".AccountInfoActivity"
             android:exported="false" />
         <activity
@@ -63,8 +66,8 @@
             android:exported="false" />
         <activity
             android:name=".ShopDetailsActivity"
-            android:exported="false"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+            android:exported="false"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".EditProductActivity"
@@ -94,10 +97,7 @@
         <activity
             android:name=".RegisterSellerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
-            android:exported="true">
-
-
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".LoginActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"

@@ -1,22 +1,9 @@
 package com.manuni.groceryapp;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -28,11 +15,16 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -50,21 +42,18 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.manuni.groceryapp.databinding.ActivityRegisterSellerBinding;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 public class RegisterSellerActivity extends AppCompatActivity implements LocationListener {
     ActivityRegisterSellerBinding binding;
-    ProgressDialog dialog,dialogForAccount,progressDialog;
-
+    ProgressDialog dialog, dialogForAccount, progressDialog;
 
 
     private FirebaseAuth auth;
     private DatabaseReference reference;
     private StorageReference storageReference;
-
 
 
     private static final int LOCATION_REQUEST_CODE = 100;
@@ -84,7 +73,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
 
 
     private LocationManager locationManager;
-    private double latitude=0.0, longitude=0.0;
+    private double latitude = 0.0, longitude = 0.0;
 
 
     @Override
@@ -98,7 +87,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         storageReference = FirebaseStorage.getInstance().getReference();
         auth = FirebaseAuth.getInstance();
 
-       // loadToSpinner();
+        // loadToSpinner();
 
 
         dialog = new ProgressDialog(RegisterSellerActivity.this);
@@ -107,7 +96,6 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         dialog.setCancelable(false);
 
         progressDialog = new ProgressDialog(this);
-
 
 
         dialogForAccount = new ProgressDialog(RegisterSellerActivity.this);
@@ -131,9 +119,6 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
                 }
             }
         });
-
-
-
 
 
         binding.personImage.setOnClickListener(new View.OnClickListener() {
@@ -161,61 +146,58 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
 
 
     private void inputDataToDatabaseAndStorage() {
-        if (TextUtils.isEmpty(binding.fullNameET.getText().toString().trim())){
+        if (TextUtils.isEmpty(binding.fullNameET.getText().toString().trim())) {
             Toast.makeText(this, "Insert full name", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (TextUtils.isEmpty(binding.shopET.getText().toString().trim())){
+        if (TextUtils.isEmpty(binding.shopET.getText().toString().trim())) {
             Toast.makeText(this, "Insert Shop Name", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (TextUtils.isEmpty(binding.phoneET.getText().toString().trim())){
+        if (TextUtils.isEmpty(binding.phoneET.getText().toString().trim())) {
             Toast.makeText(this, "Insert phone number", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (TextUtils.isEmpty(binding.deliveryET.getText().toString().trim())){
+        if (TextUtils.isEmpty(binding.deliveryET.getText().toString().trim())) {
             Toast.makeText(this, "Insert delivery fee", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (latitude==0.0 || longitude==0.0){
+        if (latitude == 0.0 || longitude == 0.0) {
             Toast.makeText(this, "Please click on the GPS tracker", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!Patterns.EMAIL_ADDRESS.matcher(binding.emailEt.getText().toString().trim()).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(binding.emailEt.getText().toString().trim()).matches()) {
             Toast.makeText(this, "Invalid email address!", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (binding.passwordET.getText().toString().trim().length()<6){
+        if (binding.passwordET.getText().toString().trim().length() < 6) {
             Toast.makeText(this, "You must take character 6 digits at least!", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!binding.confirmPasswordET.getText().toString().trim().equals(binding.passwordET.getText().toString().trim())){
+        if (!binding.confirmPasswordET.getText().toString().trim().equals(binding.passwordET.getText().toString().trim())) {
             Toast.makeText(this, "Password doesn't match", Toast.LENGTH_SHORT).show();
             return;
         }
-        ConnectivityManager manager = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager manager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
-        if (wifi.isConnected()){
+        if (wifi.isConnected()) {
             createAccount();
-        }else if (mobile.isConnected()){
+        } else if (mobile.isConnected()) {
             createAccount();
-        }else {
+        } else {
             Toast.makeText(this, "No internet", Toast.LENGTH_SHORT).show();
         }
-
-
-
 
 
     }
 
 
-    private void createAccount(){
+    private void createAccount() {
         dialogForAccount.setMessage("Creating Account...");
         dialogForAccount.show();
-        auth.createUserWithEmailAndPassword(binding.emailEt.getText().toString().trim(),binding.passwordET.getText().toString().trim()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+        auth.createUserWithEmailAndPassword(binding.emailEt.getText().toString().trim(), binding.passwordET.getText().toString().trim()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
                 saveDataInfoToDatabase();
@@ -224,7 +206,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
             @Override
             public void onFailure(@NonNull Exception e) {
                 dialogForAccount.dismiss();
-                Toast.makeText(RegisterSellerActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterSellerActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -232,29 +214,29 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
     private void saveDataInfoToDatabase() {
         dialogForAccount.setMessage("Saving Data to Database...");
 
-        if (imageUri == null){
-            HashMap<String,Object> hashMap = new HashMap<>();
-            hashMap.put("fullName",""+binding.fullNameET.getText().toString().trim());
-            hashMap.put("shopName",""+binding.shopET.getText().toString().trim());
-            hashMap.put("phoneNumber",""+binding.phoneET.getText().toString().trim());
-            hashMap.put("deliveryFee",""+binding.deliveryET.getText().toString().trim());
-            hashMap.put("countryName",""+binding.countryET.getText().toString().trim());
-            hashMap.put("state",""+binding.stateET.getText().toString().trim());
-            hashMap.put("city",""+binding.cityET.getText().toString().trim());
-            hashMap.put("address",""+binding.completeAddressET.getText().toString().trim());
-            hashMap.put("email",""+binding.emailEt.getText().toString().trim());
-//            hashMap.put("password",""+binding.passwordET.getText().toString().trim());
-//            hashMap.put("confirmPassword",""+binding.confirmPasswordET.getText().toString().trim());
-            hashMap.put("uid",""+auth.getUid());
-            hashMap.put("latitude",""+latitude);
-            hashMap.put("longitude",""+longitude);
-            hashMap.put("accountType","Seller");
-            hashMap.put("shopOpen","true");
-            hashMap.put("timestamp",""+System.currentTimeMillis());
-            hashMap.put("online","true");
-            hashMap.put("profileImage","");
-            hashMap.put("accountStatus","blocked");
-            hashMap.put("shopCategory","false");
+        if (imageUri == null) {
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("fullName", "" + binding.fullNameET.getText().toString().trim());
+            hashMap.put("shopName", "" + binding.shopET.getText().toString().trim());
+            hashMap.put("phoneNumber", "" + binding.phoneET.getText().toString().trim());
+            hashMap.put("deliveryFee", "" + binding.deliveryET.getText().toString().trim());
+            hashMap.put("countryName", "" + binding.countryET.getText().toString().trim());
+            hashMap.put("state", "" + binding.stateET.getText().toString().trim());
+            hashMap.put("city", "" + binding.cityET.getText().toString().trim());
+            hashMap.put("address", "" + binding.completeAddressET.getText().toString().trim());
+            hashMap.put("email", "" + binding.emailEt.getText().toString().trim());
+            hashMap.put("password", "" + binding.passwordET.getText().toString().trim());
+            hashMap.put("confirmPassword", "" + binding.confirmPasswordET.getText().toString().trim());
+            hashMap.put("uid", "" + auth.getUid());
+            hashMap.put("latitude", "" + latitude);
+            hashMap.put("longitude", "" + longitude);
+            hashMap.put("accountType", "Seller");
+            hashMap.put("shopOpen", "true");
+            hashMap.put("timestamp", "" + System.currentTimeMillis());
+            hashMap.put("online", "true");
+            hashMap.put("profileImage", "");
+            hashMap.put("accountStatus", "blocked");
+            hashMap.put("shopCategory", "false");
 
             reference.child(auth.getUid()).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
@@ -270,39 +252,39 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
                 }
             });
 
-        }else {
-            String filePathAndName = "profile_images/"+""+auth.getUid();
+        } else {
+            String filePathAndName = "profile_images/" + "" + auth.getUid();
             storageReference.child(filePathAndName).putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
 
-                    while (!uriTask.isSuccessful());
+                    while (!uriTask.isSuccessful()) ;
                     Uri downloadUrl = uriTask.getResult();
 
-                    if (uriTask.isSuccessful()){
-                        HashMap<String,Object> hashMap = new HashMap<>();
-                        hashMap.put("fullName",""+binding.fullNameET.getText().toString().trim());
-                        hashMap.put("shopName",""+binding.shopET.getText().toString().trim());
-                        hashMap.put("phoneNumber",""+binding.phoneET.getText().toString().trim());
-                        hashMap.put("deliveryFee",""+binding.deliveryET.getText().toString().trim());
-                        hashMap.put("countryName",""+binding.countryET.getText().toString().trim());
-                        hashMap.put("state",""+binding.stateET.getText().toString().trim());
-                        hashMap.put("city",""+binding.cityET.getText().toString().trim());
-                        hashMap.put("address",""+binding.completeAddressET.getText().toString().trim());
-                        hashMap.put("email",""+binding.emailEt.getText().toString().trim());
-//            hashMap.put("password",""+binding.passwordET.getText().toString().trim());
-//            hashMap.put("confirmPassword",""+binding.confirmPasswordET.getText().toString().trim());
-                        hashMap.put("uid",""+auth.getUid());
-                        hashMap.put("latitude",""+latitude);
-                        hashMap.put("longitude",""+longitude);
-                        hashMap.put("accountType","Seller");
-                        hashMap.put("shopOpen","true");
-                        hashMap.put("timestamp",""+System.currentTimeMillis());
-                        hashMap.put("online","true");
-                        hashMap.put("profileImage",""+downloadUrl);
-                        hashMap.put("accountStatus","blocked");
-                        hashMap.put("shopCategory","false");
+                    if (uriTask.isSuccessful()) {
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("fullName", "" + binding.fullNameET.getText().toString().trim());
+                        hashMap.put("shopName", "" + binding.shopET.getText().toString().trim());
+                        hashMap.put("phoneNumber", "" + binding.phoneET.getText().toString().trim());
+                        hashMap.put("deliveryFee", "" + binding.deliveryET.getText().toString().trim());
+                        hashMap.put("countryName", "" + binding.countryET.getText().toString().trim());
+                        hashMap.put("state", "" + binding.stateET.getText().toString().trim());
+                        hashMap.put("city", "" + binding.cityET.getText().toString().trim());
+                        hashMap.put("address", "" + binding.completeAddressET.getText().toString().trim());
+                        hashMap.put("email", "" + binding.emailEt.getText().toString().trim());
+                        hashMap.put("password", "" + binding.passwordET.getText().toString().trim());
+                        hashMap.put("confirmPassword", "" + binding.confirmPasswordET.getText().toString().trim());
+                        hashMap.put("uid", "" + auth.getUid());
+                        hashMap.put("latitude", "" + latitude);
+                        hashMap.put("longitude", "" + longitude);
+                        hashMap.put("accountType", "Seller");
+                        hashMap.put("shopOpen", "true");
+                        hashMap.put("timestamp", "" + System.currentTimeMillis());
+                        hashMap.put("online", "true");
+                        hashMap.put("profileImage", "" + downloadUrl);
+                        hashMap.put("accountStatus", "blocked");
+                        hashMap.put("shopCategory", "false");
 
                         reference.child(auth.getUid()).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -325,7 +307,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     dialogForAccount.dismiss();
-                    Toast.makeText(RegisterSellerActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterSellerActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -337,24 +319,23 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         reference.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    String status = ""+snapshot.child("accountStatus").getValue();
-                    if (status.equals("blocked")){
+                if (snapshot.exists()) {
+                    String status = "" + snapshot.child("accountStatus").getValue();
+                    if (status.equals("blocked")) {
 
-                        startActivity(new Intent(RegisterSellerActivity.this,TermsConditionActivity.class));
+                        startActivity(new Intent(RegisterSellerActivity.this, TermsConditionActivity.class));
 
                         //binding.blockedTV.setVisibility(View.VISIBLE);
                         Toast.makeText(RegisterSellerActivity.this, "You are blocked.Please contact with your admin.", Toast.LENGTH_SHORT).show();
-                    }else {
-                            String shopCat = ""+snapshot.child("shopCategory").getValue();
-                            if (shopCat.equals("false")){
-                                startActivity(new Intent(RegisterSellerActivity.this,TermsConditionActivity.class));
-                            }else {
-                               // binding.blockedTV.setVisibility(View.GONE);
-                                startActivity(new Intent(RegisterSellerActivity.this,MainSellerActivity.class));
-                                finish();
-                            }
-
+                    } else {
+                        String shopCat = "" + snapshot.child("shopCategory").getValue();
+                        if (shopCat.equals("false")) {
+                            startActivity(new Intent(RegisterSellerActivity.this, TermsConditionActivity.class));
+                        } else {
+                            // binding.blockedTV.setVisibility(View.GONE);
+                            startActivity(new Intent(RegisterSellerActivity.this, MainSellerActivity.class));
+                            finish();
+                        }
 
 
                     }
@@ -369,11 +350,10 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
     }
 
 
-
-    private void showImagePickDialog(){
+    private void showImagePickDialog() {
         ImagePicker.with(this)
-                .crop()	    			//Crop image(Optional), Check Customization for more option
-                .compress(1024)			//Final image size will be less than 1 MB(Optional)
+                .crop()                    //Crop image(Optional), Check Customization for more option
+                .compress(1024)            //Final image size will be less than 1 MB(Optional)
                 .maxResultSize(1080, 1080)//Final image resolution will be less than 1080 x 1080(Optional)
                 .start();
     }
@@ -382,7 +362,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK){
+        if (resultCode == RESULT_OK) {
             imageUri = data.getData();
 
             try {
@@ -390,8 +370,8 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else {
-            Toast.makeText(this, ""+ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "" + ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -419,29 +399,6 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
                 }
             }
             break;
-//            case CAMERA_REQUEST_CODE: {
-//                if (grantResults.length > 0) {
-//                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-//                    boolean storageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-//                    if (cameraAccepted && storageAccepted) {
-//                        pickUsingCamera();
-//                    } else {
-//                        Toast.makeText(this, "Camera permissions are required!", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                }
-//            }
-//            break;
-//            case STORAGE_REQUEST_CODE: {
-//                if (grantResults.length > 0) {
-//                    boolean storageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-//                    if (storageAccepted) {
-//                        pickFromGallery();
-//                    } else {
-//                        Toast.makeText(this, "Storage permission is required!", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            }
 
         }
 
@@ -468,9 +425,9 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
     private void findAddress() {
         Geocoder geocoder;
         List<Address> addressList;
-        geocoder = new Geocoder(RegisterSellerActivity.this,Locale.getDefault());
+        geocoder = new Geocoder(RegisterSellerActivity.this, Locale.getDefault());
         try {
-            addressList = geocoder.getFromLocation(latitude,longitude,1);
+            addressList = geocoder.getFromLocation(latitude, longitude, 1);
             String fullAddress = addressList.get(0).getAddressLine(0);
             String city = addressList.get(0).getLocality();
             String state = addressList.get(0).getAdminArea();
@@ -481,9 +438,9 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
             binding.stateET.setText(state);
             binding.countryET.setText(country);
             dialog.dismiss();
-        }catch (Exception e){
+        } catch (Exception e) {
             dialog.dismiss();
-            Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

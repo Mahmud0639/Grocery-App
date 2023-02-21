@@ -63,6 +63,13 @@
             android:background="@android:color/transparent"
             android:src="@drawable/ic_next_gray" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1mdp"
+            android:background="#D4EBFD"
+            android:layout_below="@id/statusTV"
+            android:layout_marginTop="@dimen/_4mdp"/>
+
 
     </RelativeLayout>
 

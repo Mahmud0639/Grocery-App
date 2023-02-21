@@ -108,7 +108,7 @@ public class EditProductActivity extends AppCompatActivity {
 
 
 
-        binding.productIconIV.setOnClickListener(new View.OnClickListener() {
+        binding.productIconIVShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showImagePickDialog();
@@ -184,9 +184,9 @@ public class EditProductActivity extends AppCompatActivity {
 
 
                 try {
-                    Picasso.get().load(productIcon).placeholder(R.drawable.ic_shopping_cart_white).into(binding.productIconIV);
+                    Picasso.get().load(productIcon).placeholder(R.drawable.impl2).into(binding.productIconIVShow);
                 } catch (Exception e) {
-                    binding.productIconIV.setImageResource(R.drawable.ic_shopping_cart_white);
+                   Picasso.get().load(R.drawable.impl2).into(binding.productIconIVShow);
                 }
 
 
@@ -397,7 +397,7 @@ public class EditProductActivity extends AppCompatActivity {
         binding.priceET.setText("");
         //binding.discountPriceET.setText("");
         binding.discountNoteET.setText("");
-        binding.productIconIV.setImageResource(R.drawable.ic_shopping_cart_theme_color);
+        binding.productIconIVShow.setImageResource(R.drawable.impl2);
         imageUri = null;
     }
 

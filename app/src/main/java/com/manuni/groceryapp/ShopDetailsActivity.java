@@ -164,8 +164,12 @@ public class ShopDetailsActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 try {
+                       // productUserAdapter.getFilter().filter(charSequence);
+                    if (charSequence.equals("")){
+                        loadFilteredProducts(selected);
+                    }else {
                         productUserAdapter.getFilter().filter(charSequence);
-
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -193,7 +197,8 @@ public class ShopDetailsActivity extends AppCompatActivity {
                             if (selected.equals("All")) {
                                 loadShopProducts();
                             } else {
-                                productUserAdapter.getFilter().filter(selected);
+                                //productUserAdapter.getFilter().filter(selected);
+                                loadFilteredProducts(selected);
                             }
                         }
                     }).show();
@@ -556,6 +561,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
 
     private void loadShopProducts() {
 
+        binding.itemsFoundTV.setVisibility(View.GONE);
         modelProducts = new ArrayList<>();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
         reference.child(shopUid).child("Products").addValueEventListener(new ValueEventListener() {
@@ -709,6 +715,38 @@ public class ShopDetailsActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError error) {
+
+            }
+        });
+    }
+    private void loadFilteredProducts(String selected) {
+        binding.itemsFoundTV.setVisibility(View.VISIBLE);
+        modelProducts = new ArrayList<>();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        databaseReference.child(shopUid).child("Products").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //before getting data clear the list data
+                modelProducts.clear();
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+
+                    String productCategory = ""+dataSnapshot.child("productCategory").getValue();
+                    if (selected.equals(productCategory)){
+                        ModelProduct data = dataSnapshot.getValue(ModelProduct.class);
+                        modelProducts.add(data);
+
+                        // binding.filterProductTV.setText(list.size()+" items found");
+                    }
+
+                }
+                binding.itemsFoundTV.setText("("+modelProducts.size()+" items found)");
+                productUserAdapter = new ProductUserAdapter(ShopDetailsActivity.this,modelProducts);
+                binding.productRV.setAdapter(productUserAdapter);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });

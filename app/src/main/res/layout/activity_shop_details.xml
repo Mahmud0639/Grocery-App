@@ -239,6 +239,15 @@
             android:layout_marginBottom="@dimen/_5mdp"
             android:text="@string/showing_all"
             android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/itemsFoundTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_toEndOf="@id/filterProductTV"
+            android:layout_below="@id/searchET"
+            android:textColor="#919090"
+            android:layout_marginStart="@dimen/_3mdp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/productRV"

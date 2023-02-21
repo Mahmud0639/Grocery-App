@@ -64,7 +64,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginTop="@dimen/_10mdp"
-                    android:src="@drawable/ic_person_gray"
+                    android:src="@drawable/impl2"
                     app:civ_border_color="@color/background_theme"
                     app:civ_border_width="@dimen/_1mdp" />
 

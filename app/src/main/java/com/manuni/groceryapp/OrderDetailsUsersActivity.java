@@ -55,7 +55,7 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
         progressDialog.setTitle("Order details");
         progressDialog.setMessage("Please wait...");
         progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setCancelable(false);
+
 
         ConnectivityManager manager = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
@@ -92,7 +92,7 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
     }
 
     private void loadOrderedItems() {
-        progressDialog.show();
+
         modelOrderedItems = new ArrayList<>();
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("Users");
         dbRef.child(orderTo).child("Orders").child(orderId).child("Items").addValueEventListener(new ValueEventListener() {
@@ -108,14 +108,14 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
                     binding.orderedItemsRV.setAdapter(adapterOrderedItems);
 
                     binding.totalItemsTV.setText("" + snapshot.getChildrenCount());
-                    progressDialog.dismiss();
+
                 }
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                    progressDialog.dismiss();
+
             }
         });
     }

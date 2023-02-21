@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardUseCompatPadding="true"
-    app:cardCornerRadius="@dimen/_3mdp"
+    android:layout_marginBottom="@dimen/_1mdp"
+    app:cardBackgroundColor="@color/white"
     app:cardElevation="@dimen/_3mdp"
     app:contentPadding="@dimen/_5mdp">
 
@@ -55,13 +55,21 @@
             android:layout_toStartOf="@id/nextIV"
             android:text=""
             android:textColor="@color/colorGreen" />
+
         <ImageView
             android:id="@+id/nextIV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_next_gray"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_next_gray" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1mdp"
+            android:background="#D4EBFD"
+            android:layout_below="@id/statusTV"
+            android:layout_marginTop="@dimen/_4mdp"/>
 
 
     </RelativeLayout>
