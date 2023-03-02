@@ -30,19 +30,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         dialog = new ProgressDialog(this);
         dialog.setCanceledOnTouchOutside(false);
 
-        binding.backArrowBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        binding.backArrowBtn.setOnClickListener(view -> onBackPressed());
 
-        binding.recoverBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                recoverPassword();
-            }
-        });
+        binding.recoverBtn.setOnClickListener(view -> recoverPassword());
 
 
     }
@@ -58,18 +48,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         dialog.setMessage("Sending instruction to reset password...");
         dialog.show();
-        auth.sendPasswordResetEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                dialog.dismiss();
-                Toast.makeText(ForgotPasswordActivity.this, "Password reset instruction is sent...", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                dialog.dismiss();
-                Toast.makeText(ForgotPasswordActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
+        auth.sendPasswordResetEmail(email).addOnSuccessListener(unused -> {
+            dialog.dismiss();
+            Toast.makeText(ForgotPasswordActivity.this, "Password reset instruction is sent...", Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> {
+            dialog.dismiss();
+            Toast.makeText(ForgotPasswordActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
         });
     }
 }

@@ -55,9 +55,9 @@
             android:src="@drawable/ic_key_white" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/cons"
             android:layout_below="@id/iconIv">
 
 
@@ -78,41 +78,65 @@
                 android:id="@+id/personImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_take_photo"
                 android:background="@drawable/circle_bg_blue"
+                android:src="@drawable/ic_take_photo"
                 app:layout_constraintEnd_toEndOf="@id/personImageShow"
-                app:layout_constraintTop_toTopOf="@id/personImageShow"/>
+                app:layout_constraintTop_toTopOf="@id/personImageShow" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+<com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/cons"
+    android:id="@+id/textInputFullName"
+    android:layout_marginTop="@dimen/_5mdp"
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    app:boxBackgroundMode="outline"
+    app:endIconMode="clear_text"
+    app:errorEnabled="true"
+    app:helperText="Your full name"
+    app:helperTextTextColor="#919090"
+    app:hintEnabled="false">
 
-        <EditText
-            android:id="@+id/fullNameET"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/cons"
-            android:layout_marginStart="@dimen/_5mdp"
-            android:layout_marginTop="@dimen/_5mdp"
-            android:layout_marginEnd="@dimen/_5mdp"
-            android:textColor="@color/black"
-            android:textColorHint="#919090"
-            android:layout_marginBottom="@dimen/_5mdp"
-            android:background="@drawable/shape_rect_02"
-            android:drawableStart="@drawable/ic_person_gray"
-            android:drawablePadding="@dimen/_5mdp"
-            android:hint="@string/full_name"
-            android:inputType="text|textCapWords"
-            android:padding="@dimen/_10mdp"
-            tools:ignore="TextFields" />
+    <EditText
+        android:id="@+id/fullNameET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cons"
+        android:layout_marginStart="@dimen/_5mdp"
+        android:layout_marginEnd="@dimen/_5mdp"
+        android:layout_marginBottom="@dimen/_5mdp"
+        android:background="@drawable/shape_rect_02"
+        android:drawableStart="@drawable/ic_person_gray"
+        android:drawablePadding="@dimen/_5mdp"
+        android:hint="@string/full_name"
+        android:inputType="text|textCapWords"
+        android:padding="@dimen/_10mdp"
+        android:textColor="@color/black"
+        android:textColorHint="#919090"
+        tools:ignore="TextFields" />
+</com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textInputPhone"
+        android:layout_below="@id/textInputFullName"
+        android:layout_marginTop="@dimen/_5mdp"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
+        app:hintEnabled="false"
+        app:boxBackgroundMode="outline"
+        app:helperTextTextColor="#919090"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:helperText="01*********">
 
         <EditText
             android:id="@+id/phoneET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/fullNameET"
             android:layout_marginStart="@dimen/_5mdp"
-            android:layout_marginTop="@dimen/_5mdp"
             android:layout_marginEnd="@dimen/_5mdp"
             android:layout_marginBottom="@dimen/_5mdp"
             android:textColor="@color/black"
@@ -124,11 +148,15 @@
             android:inputType="phone"
             android:padding="@dimen/_10mdp" />
 
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
         <LinearLayout
             android:id="@+id/linearLayoutLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/phoneET"
+            android:layout_below="@id/textInputPhone"
             android:layout_margin="@dimen/_5mdp"
             android:orientation="horizontal">
 
@@ -199,59 +227,110 @@
             android:inputType="textPostalAddress|textMultiLine"
             android:padding="@dimen/_10mdp" />
 
-        <EditText
-            android:id="@+id/emailEt"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/textInputEmail"
             android:layout_below="@id/completeAddressET"
-            android:layout_marginStart="@dimen/_5mdp"
             android:layout_marginTop="@dimen/_5mdp"
-            android:layout_marginEnd="@dimen/_5mdp"
-            android:layout_marginBottom="@dimen/_5mdp"
-            android:background="@drawable/shape_rect_02"
-            android:drawableStart="@drawable/ic_mail_gray"
-            android:drawablePadding="@dimen/_5mdp"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress"
-            android:padding="@dimen/_10mdp"
-            android:textColor="@color/black"
-            android:textColorHint="#919090" />
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="outline"
+            app:helperTextTextColor="#919090"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:helperText="example@gmail.com">
+            <EditText
+                android:id="@+id/emailEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5mdp"
+                android:layout_marginEnd="@dimen/_5mdp"
+                android:layout_marginBottom="@dimen/_5mdp"
+                android:background="@drawable/shape_rect_02"
+                android:drawableStart="@drawable/ic_mail_gray"
+                android:drawablePadding="@dimen/_5mdp"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:padding="@dimen/_10mdp"
+                android:textColor="@color/black"
+                android:textColorHint="#919090" />
 
-        <EditText
-            android:id="@+id/passwordET"
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/textInputPass"
+          android:layout_below="@id/textInputEmail"
+          android:layout_marginTop="@dimen/_5mdp"
+          app:passwordToggleEnabled="true"
+          app:errorEnabled="true"
+          app:helperTextTextColor="#919090"
+          app:helperText="**********"
+          app:passwordToggleTint="#919090"
+          app:hintEnabled="false">
+          <EditText
+              android:id="@+id/passwordET"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="@dimen/_5mdp"
+              android:layout_marginEnd="@dimen/_5mdp"
+              android:textColor="@color/black"
+              android:textColorHint="#919090"
+              android:layout_marginBottom="@dimen/_5mdp"
+              android:background="@drawable/shape_rect_02"
+              android:drawableStart="@drawable/ic_lock_gray"
+              android:drawablePadding="@dimen/_5mdp"
+              android:hint="@string/password"
+              android:inputType="textPassword"
+              android:padding="@dimen/_10mdp" />
+
+      </com.google.android.material.textfield.TextInputLayout>
+
+       <com.google.android.material.textfield.TextInputLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:id="@+id/textInputConfirmPass"
+           android:layout_below="@id/textInputPass"
+           android:layout_marginTop="@dimen/_5mdp"
+           app:passwordToggleEnabled="true"
+           app:errorEnabled="true"
+           app:helperText="**********"
+           app:helperTextTextColor="#919090"
+           app:passwordToggleTint="#919090"
+           app:hintEnabled="false">
+           <EditText
+               android:id="@+id/confirmPasswordET"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginStart="@dimen/_5mdp"
+               android:layout_marginEnd="@dimen/_5mdp"
+               android:layout_marginBottom="@dimen/_5mdp"
+               android:textColor="@color/black"
+               android:textColorHint="#919090"
+               android:background="@drawable/shape_rect_02"
+               android:drawableStart="@drawable/ic_lock_gray"
+               android:drawablePadding="@dimen/_5mdp"
+               android:hint="@string/confirm_password"
+               android:inputType="textPassword"
+               android:padding="@dimen/_10mdp" />
+
+       </com.google.android.material.textfield.TextInputLayout>
+
+
+        <CheckBox
+            android:id="@+id/savePassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/emailEt"
+            android:layout_below="@id/textInputConfirmPass"
             android:layout_marginStart="@dimen/_5mdp"
-            android:layout_marginTop="@dimen/_5mdp"
-            android:layout_marginEnd="@dimen/_5mdp"
-            android:textColor="@color/black"
-            android:textColorHint="#919090"
-            android:layout_marginBottom="@dimen/_5mdp"
-            android:background="@drawable/shape_rect_02"
-            android:drawableStart="@drawable/ic_lock_gray"
+            android:button="@null"
+            android:drawableStart="@drawable/check_drawable_bg"
             android:drawablePadding="@dimen/_5mdp"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:padding="@dimen/_10mdp" />
-
-        <EditText
-            android:id="@+id/confirmPasswordET"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/passwordET"
-            android:layout_marginStart="@dimen/_5mdp"
-            android:layout_marginTop="@dimen/_5mdp"
-            android:layout_marginEnd="@dimen/_5mdp"
-            android:layout_marginBottom="@dimen/_5mdp"
-            android:textColor="@color/black"
-            android:textColorHint="#919090"
-            android:background="@drawable/shape_rect_02"
-            android:drawableStart="@drawable/ic_lock_gray"
-            android:drawablePadding="@dimen/_5mdp"
-            android:hint="@string/confirm_password"
-            android:inputType="textPassword"
-            android:padding="@dimen/_10mdp" />
+            android:text="Save Password"
+            android:textColor="@color/black" />
 
 
         <Button
@@ -259,12 +338,12 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/confirmPasswordET"
+            android:layout_below="@id/savePassword"
             android:layout_centerHorizontal="true"
             android:minWidth="@dimen/_120mdp"
             android:text="@string/register"
-            android:textColor="@color/white"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/registerAsSellerTV"
@@ -279,6 +358,8 @@
             android:layout_marginBottom="@dimen/_5mdp"
             android:textColor="#919090"
             android:text="@string/are_you_a_seller_register_as_seller" />
+
+
 
 
     </RelativeLayout>

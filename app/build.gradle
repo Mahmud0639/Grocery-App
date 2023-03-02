@@ -46,13 +46,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-database'
     implementation 'com.google.firebase:firebase-storage'
     implementation 'com.github.MrNouri:DynamicSizes:1.0'
-    implementation 'com.github.AtifSayings:CircularImageView:1.0.2'
+
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     implementation 'com.squareup.picasso:picasso:2.8'
 
     implementation 'com.github.p32929:AndroidEasySQL-Library:1.4.1'
-    implementation 'com.android.volley:volley:1.2.1'
+
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
@@ -62,7 +62,7 @@ dependencies {
     implementation 'com.github.dhaval2404:imagepicker:2.1'
 
     implementation 'com.github.mancj:MaterialSearchBar:0.8.5'
-
+    implementation 'com.android.volley:volley:1.2.1'
     implementation 'com.makeramen:roundedimageview:2.3.0'
-
+    implementation 'com.github.AtifSayings:CircularImageView:1.0.2'
 }

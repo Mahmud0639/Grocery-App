@@ -3,6 +3,7 @@ package com.manuni.groceryapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,6 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.manuni.groceryapp.databinding.ActivityDeleteCategoryBinding;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class DeleteCategoryActivity extends AppCompatActivity {
     ActivityDeleteCategoryBinding binding;
@@ -30,7 +32,8 @@ public class DeleteCategoryActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Categories");
-        databaseReference.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+        databaseReference.child(Objects.requireNonNull(auth.getUid())).addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
@@ -38,7 +41,11 @@ public class DeleteCategoryActivity extends AppCompatActivity {
                     list.clear();
                     for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                         DeleteCategoryModel data = dataSnapshot.getValue(DeleteCategoryModel.class);
-                        list.add(data);
+                        try {
+                            list.add(data);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     adapter = new DeleteCategoryAdapter(DeleteCategoryActivity.this,list);

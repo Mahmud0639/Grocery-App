@@ -28,9 +28,9 @@
             android:layout_below="@id/productIV"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_5mdp"
-            android:text="@string/product_title"
-            android:maxLines="1"
             android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/fetching"
             android:textColor="@color/white"
             android:textSize="@dimen/_14font_mdp" />
 
@@ -42,20 +42,25 @@
             android:layout_centerHorizontal="true"
             android:ellipsize="end"
             android:maxLines="2"
-            android:minLines="2"
-            android:text="@string/quantity"
+            android:text="@string/fetching"
             android:textColor="@color/white"
             android:textSize="@dimen/_11font_mdp" />
 
         <TextView
             android:id="@+id/pDescription"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/pQuantityTV"
             android:layout_centerHorizontal="true"
-            android:text="@string/the_product_description"
-            android:textColor="@color/white"
             android:layout_marginBottom="@dimen/_5mdp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:padding="@dimen/_3mdp"
+            android:layout_marginStart="@dimen/_20mdp"
+            android:layout_marginEnd="@dimen/_5mdp"
+            android:text="@string/fetching"
+            android:gravity="center"
+            android:textColor="@color/white"
             android:textSize="@dimen/_11font_mdp" />
 
         <TextView
@@ -69,7 +74,7 @@
             android:layout_marginBottom="@dimen/_5mdp"
             android:background="@drawable/shape_rect05"
             android:padding="@dimen/_5mdp"
-            android:text="@string/_10_off"
+            android:text="@string/fetching"
             android:textColor="@color/colorGreen"
             android:textSize="@dimen/_11font_mdp" />
 
@@ -105,7 +110,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:padding="@dimen/_5mdp"
-            android:text="@string/final_price"
+            android:text="@string/fetching"
             android:textColor="@color/black" />
 
     </RelativeLayout>

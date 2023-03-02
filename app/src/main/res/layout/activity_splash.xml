@@ -4,24 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_theme"
+    android:background="@color/white"
     tools:context=".SplashActivity">
 
   <ImageView
       android:id="@+id/splashIV"
       android:layout_width="@dimen/_130mdp"
       android:layout_height="@dimen/_130mdp"
-      android:src="@drawable/grocery"
-      android:layout_centerInParent="true"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/splashIV"
-        android:text="@string/grocery"
-        android:layout_centerHorizontal="true"
-        android:textSize="@dimen/_20font_mdp"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        android:layout_marginTop="@dimen/_10mdp"/>
+      android:layout_centerInParent="true"
+      android:src="@drawable/sop" />
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/splashIV"
+      android:layout_centerHorizontal="true"
+      android:layout_marginTop="@dimen/_10mdp"
+      android:text="@string/app_name"
+      android:textColor="@color/white"
+      android:textSize="@dimen/_20font_mdp"
+      android:textStyle="bold" />
 
 </RelativeLayout>

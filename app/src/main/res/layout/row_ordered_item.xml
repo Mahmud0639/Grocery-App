@@ -26,6 +26,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_3mdp"
             android:layout_toEndOf="@id/productImage"
+            android:maxLines="1"
+            android:maxWidth="@dimen/_120mdp"
             android:text="@string/item_title"
             android:textColor="@color/black" />
 

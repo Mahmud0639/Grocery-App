@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -15,7 +16,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
@@ -45,6 +47,9 @@ import com.manuni.groceryapp.databinding.ActivityRegisterSellerBinding;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterSellerActivity extends AppCompatActivity implements LocationListener {
     ActivityRegisterSellerBinding binding;
@@ -54,14 +59,11 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
     private FirebaseAuth auth;
     private DatabaseReference reference;
     private StorageReference storageReference;
+    double delivery = 0.0;
 
 
     private static final int LOCATION_REQUEST_CODE = 100;
-    private static final int CAMERA_REQUEST_CODE = 101;
-    private static final int STORAGE_REQUEST_CODE = 102;
 
-    private static final int REQUEST_FOR_CAMERA_CODE = 103;
-    private static final int REQUEST_FOR_STORAGE_CODE = 104;
 
 
     private String[] location_permissions;
@@ -113,18 +115,256 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
             public void onClick(View view) {
                 if (checkLocationPermission()) {
                     dialog.show();
-                    detectLocation();
+                    try {
+                        detectLocation();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else {
-                    requestLocationPermission();
+                    try {
+                        requestLocationPermission();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
+
+        binding.fullNameET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+               /* Pattern pattern = Pattern.compile("^[A-Za-z\\s]+$");//allow only space and alphabets
+                Matcher matcher = pattern.matcher(charSequence);
+                boolean isNameContains = matcher.find();*/
+
+               if (charSequence.length()<=3){
+                    binding.textInputFullName.setError("Name is too small.");
+
+                }else if (charSequence.length()>=20){
+                    binding.textInputFullName.setError("Name is too long. Put under 20 char.");
+
+                } else{
+                    binding.textInputFullName.setError(null);
+                    binding.textInputFullName.setHelperText("Valid Name.");
+                    binding.textInputFullName.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorGreen)));
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        binding.shopET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                if (charSequence.length()<=3){
+                    binding.textInputShopName.setError("Shop name is too small.");
+
+                }else if (charSequence.length()>=20){
+                    binding.textInputShopName.setError("Shop name is too long.");
+
+                }else {
+                    binding.textInputShopName.setError(null);
+                    binding.textInputShopName.setHelperText("Valid shop name.");
+                    binding.textInputShopName.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorGreen)));
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        binding.emailEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                 if (!Patterns.EMAIL_ADDRESS.matcher(charSequence).matches()){
+                    binding.textInputEmail.setError("Invalid Email Pattern.");
+
+                } else {
+                    binding.textInputEmail.setError(null);
+                    binding.textInputEmail.setErrorEnabled(false);
+                    binding.textInputEmail.setHelperText("Valid email address.");
+                    binding.textInputEmail.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorGreen)));
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        binding.passwordET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length()>=6){
+                    Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
+                    Matcher matcher = pattern.matcher(charSequence);
+                    boolean isPwdContains = matcher.find();
+                    if (isPwdContains){
+                        binding.textInputPass.setHelperText("Strong Password");
+                        binding.textInputPass.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorGreen)));
+                        binding.textInputPass.setError("");
+
+                    }else {
+                        binding.textInputPass.setHelperText("Weak Password.Include minimum 1 special char.");
+                        binding.textInputPass.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
+
+                    }
+                } else{
+                    binding.textInputPass.setHelperText("Enter Minimum 6 char.");
+                    binding.textInputPass.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_deep)));
+                    binding.textInputPass.setError("");
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        binding.confirmPasswordET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length()>=6){
+                    Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
+                    Matcher matcher = pattern.matcher(charSequence);
+                    boolean isPwdContains = matcher.find();
+                    if (isPwdContains){
+                        binding.textInputConfirmPass.setHelperText("Strong Password");
+                        binding.textInputConfirmPass.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorGreen)));
+                        binding.textInputConfirmPass.setError("");
+
+                    }else {
+                        binding.textInputConfirmPass.setHelperText("Weak Password.Include minimum 1 special char.");
+                        binding.textInputConfirmPass.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
+
+                    }
+                } else{
+                    binding.textInputConfirmPass.setHelperText("Enter Minimum 6 char.");
+                    binding.textInputConfirmPass.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_deep)));
+                    binding.textInputConfirmPass.setError("");
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        binding.phoneET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                 if (charSequence.length() != 11){
+                    binding.textInputPhone.setError("Put 11 digit phone number.");
+
+                }else {
+                    binding.textInputPhone.setError(null);
+                    binding.textInputPhone.setHelperText("Valid phone number.");
+                    binding.textInputPhone.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorGreen)));
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+       /* binding.deliveryET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+                try {
+                    if (charSequence.equals("")){
+                        Toast.makeText(RegisterSellerActivity.this, "Try nothing...", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (!charSequence.equals("")){
+                   delivery = Double.parseDouble(charSequence.toString());
+                    if (delivery>=0 && delivery<5){
+                        binding.textInputDelivery.setError("Delivery fee is too low");
+
+                    }else {
+                        binding.textInputDelivery.setError(null);
+                        binding.textInputDelivery.setHelperText("Sufficient delivery fee.");
+                        binding.textInputDelivery.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorGreen)));
+
+                    }
+
+
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });*/
+
 
 
         binding.personImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showImagePickDialog();
+                try {
+                    showImagePickDialog();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         binding.backArrowBtn.setOnClickListener(new View.OnClickListener() {
@@ -137,55 +377,71 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
             @Override
             public void onClick(View view) {
 
-                inputDataToDatabaseAndStorage();
+                try {
+                    inputDataToDatabaseAndStorage();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
 
             }
         });
     }
-
+    private String email,password,confirmPass,fullName,shopName,deliveryFee,phoneNumber;
 
     private void inputDataToDatabaseAndStorage() {
-        if (TextUtils.isEmpty(binding.fullNameET.getText().toString().trim())) {
-            Toast.makeText(this, "Insert full name", Toast.LENGTH_SHORT).show();
+
+        if (!validateFullName() | !validateShopName() | !validatePhone() | !validateEmail() | !validatePassword() | !validateConfirmPassword() | !validateDeliveryFee() | !validateMatchPass()){
             return;
         }
-        if (TextUtils.isEmpty(binding.shopET.getText().toString().trim())) {
-            Toast.makeText(this, "Insert Shop Name", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (TextUtils.isEmpty(binding.phoneET.getText().toString().trim())) {
-            Toast.makeText(this, "Insert phone number", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (TextUtils.isEmpty(binding.deliveryET.getText().toString().trim())) {
-            Toast.makeText(this, "Insert delivery fee", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if (TextUtils.isEmpty(binding.fullNameET.getText().toString().trim())) {
+//            Toast.makeText(this, "Insert full name", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//        if (TextUtils.isEmpty(binding.shopET.getText().toString().trim())) {
+//            Toast.makeText(this, "Insert Shop Name", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//        if (TextUtils.isEmpty(binding.phoneET.getText().toString().trim())) {
+//            Toast.makeText(this, "Insert phone number", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//        if (TextUtils.isEmpty(binding.deliveryET.getText().toString().trim())) {
+//            Toast.makeText(this, "Insert delivery fee", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
         if (latitude == 0.0 || longitude == 0.0) {
             Toast.makeText(this, "Please click on the GPS tracker", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!Patterns.EMAIL_ADDRESS.matcher(binding.emailEt.getText().toString().trim()).matches()) {
-            Toast.makeText(this, "Invalid email address!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (binding.passwordET.getText().toString().trim().length() < 6) {
-            Toast.makeText(this, "You must take character 6 digits at least!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (!binding.confirmPasswordET.getText().toString().trim().equals(binding.passwordET.getText().toString().trim())) {
-            Toast.makeText(this, "Password doesn't match", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if (!Patterns.EMAIL_ADDRESS.matcher(binding.emailEt.getText().toString().trim()).matches()) {
+//            Toast.makeText(this, "Invalid email address!", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//        if (binding.passwordET.getText().toString().trim().length() < 6) {
+//            Toast.makeText(this, "You must take character 6 digits at least!", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//        if (!binding.confirmPasswordET.getText().toString().trim().equals(binding.passwordET.getText().toString().trim())) {
+//            Toast.makeText(this, "Password doesn't match", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
         ConnectivityManager manager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
         if (wifi.isConnected()) {
-            createAccount();
+            try {
+                createAccount();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else if (mobile.isConnected()) {
-            createAccount();
+            try {
+                createAccount();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             Toast.makeText(this, "No internet", Toast.LENGTH_SHORT).show();
         }
@@ -200,7 +456,11 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         auth.createUserWithEmailAndPassword(binding.emailEt.getText().toString().trim(), binding.passwordET.getText().toString().trim()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                saveDataInfoToDatabase();
+                try {
+                    saveDataInfoToDatabase();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -238,11 +498,15 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
             hashMap.put("accountStatus", "blocked");
             hashMap.put("shopCategory", "false");
 
-            reference.child(auth.getUid()).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+            reference.child(Objects.requireNonNull(auth.getUid())).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {
                     dialogForAccount.dismiss();
-                    checkSellerStatus();
+                    try {
+                        checkSellerStatus();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -290,7 +554,11 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
                             @Override
                             public void onSuccess(Void unused) {
                                 dialogForAccount.dismiss();
-                                checkSellerStatus();
+                                try {
+                                    checkSellerStatus();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                                 //startActivity(new Intent(RegisterSellerActivity.this,MainSellerActivity.class));
                                 //finish();
                             }
@@ -316,28 +584,41 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
     }
 
     private void checkSellerStatus() {
-        reference.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+        reference.child(Objects.requireNonNull(auth.getUid())).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    String status = "" + snapshot.child("accountStatus").getValue();
-                    if (status.equals("blocked")) {
+                    String status = null;
+                    String shopCat = null;
+                    try {
+                        status = "" + snapshot.child("accountStatus").getValue();
+                        shopCat = "" + snapshot.child("shopCategory").getValue();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    assert status != null;
+                    if (status.equals("blocked")&& Objects.equals(shopCat, "false")) {
 
-                        startActivity(new Intent(RegisterSellerActivity.this, TermsConditionActivity.class));
+                        try {
+                            startActivity(new Intent(RegisterSellerActivity.this, ShopCategoryActivity.class));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
                         //binding.blockedTV.setVisibility(View.VISIBLE);
                         Toast.makeText(RegisterSellerActivity.this, "You are blocked.Please contact with your admin.", Toast.LENGTH_SHORT).show();
                     } else {
-                        String shopCat = "" + snapshot.child("shopCategory").getValue();
-                        if (shopCat.equals("false")) {
-                            startActivity(new Intent(RegisterSellerActivity.this, TermsConditionActivity.class));
-                        } else {
-                            // binding.blockedTV.setVisibility(View.GONE);
-                            startActivity(new Intent(RegisterSellerActivity.this, MainSellerActivity.class));
-                            finish();
+                        if (status.equals("unblocked")) {
+                            assert shopCat != null;
+                            if (shopCat.equals("false")) {
+
+                                //startActivity(new Intent(RegisterSellerActivity.this, ShopCategoryActivity.class));
+                                Toast.makeText(RegisterSellerActivity.this, "Please save a category", Toast.LENGTH_SHORT).show();
+                                finish();
+
+
+                            }
                         }
-
-
                     }
                 }
             }
@@ -363,6 +644,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
+            assert data != null;
             imageUri = data.getData();
 
             try {
@@ -382,7 +664,11 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
     }
 
     private void requestLocationPermission() {
-        ActivityCompat.requestPermissions(this, location_permissions, LOCATION_REQUEST_CODE);
+        try {
+            ActivityCompat.requestPermissions(this, location_permissions, LOCATION_REQUEST_CODE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -392,7 +678,11 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
                 if (grantResults.length > 0) {
                     boolean permissionAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     if (permissionAccepted) {
-                        detectLocation();
+                        try {
+                            detectLocation();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     } else {
                         Toast.makeText(this, "Location permission is required!", Toast.LENGTH_SHORT).show();
                     }
@@ -409,17 +699,25 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
     @SuppressLint("MissingPermission")
     private void detectLocation() {
         Toast.makeText(this, "Please wait for a while!", Toast.LENGTH_SHORT).show();
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        try {
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
+        try {
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
 
-        findAddress();
+            findAddress();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void findAddress() {
@@ -459,6 +757,189 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
     public void onProviderDisabled(@NonNull String provider) {
         dialog.dismiss();
         Toast.makeText(this, "Please enable location service.", Toast.LENGTH_SHORT).show();
+    }
+
+    private boolean validateEmail(){
+
+
+        email = binding.emailEt.getText().toString().trim();
+
+        if (email.isEmpty()){
+            binding.textInputEmail.setError("Field can't be empty");
+            return false;
+        }else  if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            binding.textInputEmail.setError("Invalid Email Pattern");
+            return false;
+        } else {
+            binding.textInputEmail.setError(null);
+            binding.textInputEmail.setErrorEnabled(false);
+            binding.textInputEmail.setHelperText("Valid email address.");
+            binding.textInputEmail.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorGreen)));
+            return true;
+        }
+
+
+    }
+    private boolean validatePassword(){
+        password = binding.passwordET.getText().toString().trim();
+        if (password.length()>=6){
+            Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
+            Matcher matcher = pattern.matcher(password);
+            boolean isPwdContains = matcher.find();
+            if (isPwdContains){
+                binding.textInputPass.setHelperText("Strong Password");
+                binding.textInputPass.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorGreen)));
+                binding.textInputPass.setError("");
+                return true;
+            }else {
+                binding.textInputPass.setHelperText("Weak Password.Include minimum 1 special char.");
+                binding.textInputPass.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
+                return true;
+            }
+        }else if (password.isEmpty()){
+            binding.textInputPass.setHelperText("Field can't be empty.");
+            binding.textInputPass.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_deep)));
+            return false;
+        } else{
+            binding.textInputPass.setHelperText("Enter Minimum 6 char.");
+            binding.textInputPass.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_deep)));
+            binding.textInputPass.setError("");
+            return false;
+        }
+    }
+    private boolean validateConfirmPassword(){
+        confirmPass = binding.confirmPasswordET.getText().toString().trim();
+        if (confirmPass.length()>=6){
+            Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
+            Matcher matcher = pattern.matcher(confirmPass);
+            boolean isPwdContains = matcher.find();
+            if (isPwdContains){
+                binding.textInputConfirmPass.setHelperText("Strong Password");
+                binding.textInputConfirmPass.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorGreen)));
+                binding.textInputConfirmPass.setError("");
+                return true;
+            }else {
+                binding.textInputConfirmPass.setHelperText("Weak Password.Include minimum 1 special char.");
+                binding.textInputConfirmPass.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
+                return true;
+            }
+        }else if (confirmPass.isEmpty()){
+            binding.textInputConfirmPass.setHelperText("Field can't be empty.");
+            binding.textInputConfirmPass.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_deep)));
+            return false;
+        } else{
+            binding.textInputConfirmPass.setHelperText("Enter Minimum 6 char.");
+            binding.textInputConfirmPass.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_deep)));
+            binding.textInputConfirmPass.setError("");
+            return false;
+        }
+    }
+
+    private boolean validateFullName(){
+        fullName = binding.fullNameET.getText().toString().trim();
+
+     /*   Pattern pattern = Pattern.compile("^[A-Za-z\\s]+$");//allow only space and alphabets
+        Matcher matcher = pattern.matcher(fullName);
+        boolean isNameContains = matcher.find();*/
+
+        if (fullName.isEmpty()){
+            binding.textInputFullName.setError("Field can't be empty.");
+            return false;
+        }else if (fullName.length()<=3){
+            binding.textInputFullName.setError("Name is too small.");
+            return false;
+        }else if (fullName.length()>=20){
+            binding.textInputFullName.setError("Name is too long. Put under 20 char.");
+            return false;
+        } else{
+            binding.textInputFullName.setError(null);
+            binding.textInputFullName.setHelperText("Valid name.");
+            binding.textInputFullName.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorGreen)));
+            return true;
+        }
+    }
+    private boolean validateShopName(){
+        shopName = binding.shopET.getText().toString().trim();
+
+
+//        Pattern pattern = Pattern.compile("^[a-zA-Z\\s]*$");//allow space special character and number
+//        Matcher matcher = pattern.matcher(shopName);
+//        boolean isShopNameContains = matcher.find();
+
+
+        if (shopName.isEmpty()){
+            binding.textInputShopName.setError("Field can't be empty.");
+            return false;
+        } else if (shopName.length()<=3){
+            binding.textInputShopName.setError("Shop name is too small.");
+            return false;
+        }else if (shopName.length()>=20){
+            binding.textInputShopName.setError("Shop name is too long.");
+            return false;
+        }else {
+            binding.textInputShopName.setError(null);
+            binding.textInputShopName.setHelperText("Valid shop name.");
+            binding.textInputShopName.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorGreen)));
+            return true;
+        }
+    }
+    private boolean validatePhone(){
+        phoneNumber = binding.phoneET.getText().toString().trim();
+        if (phoneNumber.isEmpty()){
+            binding.textInputPhone.setError("Field can't be empty.");
+            return false;
+        }else if (phoneNumber.length() != 11){
+            binding.textInputPhone.setError("Put 11 digit phone number.");
+            return false;
+        }else {
+            binding.textInputPhone.setError(null);
+            binding.textInputPhone.setHelperText("Valid phone number.");
+            binding.textInputPhone.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorGreen)));
+            return true;
+        }
+    }
+
+
+    private boolean validateDeliveryFee(){
+        deliveryFee = binding.deliveryET.getText().toString().trim();
+        if (!deliveryFee.equals("")){
+            try {
+                delivery = Double.parseDouble(deliveryFee);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (deliveryFee.isEmpty()){
+            binding.textInputDelivery.setError("Field can't be empty.");
+            return false;
+        }else if (delivery>=0 && delivery<5){
+            binding.textInputDelivery.setError("Delivery fee is too low");
+            return false;
+        }else {
+            binding.textInputDelivery.setError(null);
+            binding.textInputDelivery.setHelperText("Sufficient delivery fee.");
+            binding.textInputDelivery.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorGreen)));
+            return true;
+        }
+    }
+    private boolean validateMatchPass(){
+        password = binding.passwordET.getText().toString().trim();
+        confirmPass = binding.confirmPasswordET.getText().toString().trim();
+
+        if (!password.isEmpty() && !confirmPass.isEmpty()){
+            if (!password.equals(confirmPass)){
+                Toast.makeText(this, "Password doesn't match.", Toast.LENGTH_SHORT).show();
+                return false;
+            }else {
+                Toast.makeText(this, "Password matched.", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+        }else {
+            Toast.makeText(this, "Make a password first.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
 

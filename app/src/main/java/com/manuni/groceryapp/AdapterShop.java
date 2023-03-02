@@ -63,20 +63,40 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.AdapterShopVie
 
         loadRatings(data,holder);
 
-        holder.binding.shopNameTV.setText(shopName);
-        holder.binding.addressTV.setText(address);
-        holder.binding.phoneTV.setText(phone);
+        try {
+            holder.binding.shopNameTV.setText(shopName);
+            holder.binding.addressTV.setText(address);
+            holder.binding.phoneTV.setText(phone);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (online.equals("true")){
-            holder.binding.onlineIV.setVisibility(View.VISIBLE);
+            try {
+                holder.binding.onlineIV.setVisibility(View.VISIBLE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }else {
-            holder.binding.onlineIV.setVisibility(View.GONE);
+            try {
+                holder.binding.onlineIV.setVisibility(View.GONE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         if (shopOpen.equals("true")){
-            holder.binding.closedTV.setVisibility(View.GONE);
+            try {
+                holder.binding.closedTV.setVisibility(View.GONE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }else {
-            holder.binding.closedTV.setVisibility(View.VISIBLE);
+            try {
+                holder.binding.closedTV.setVisibility(View.VISIBLE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         try {
@@ -85,12 +105,13 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.AdapterShopVie
             holder.binding.shopIV.setImageResource(R.drawable.ic_baseline_store_gray);
         }
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context,ShopDetailsActivity.class);
-                intent.putExtra("shopUid",uid);
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(context,ShopDetailsActivity.class);
+            intent.putExtra("shopUid",uid);
+            try {
                 context.startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
@@ -107,15 +128,25 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.AdapterShopVie
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ratingSum = 0;
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    float rating = Float.parseFloat(""+dataSnapshot.child("ratings").getValue());//e.g 4.5
+                    float rating = 0;//e.g 4.5
+                    try {
+                        rating = Float.parseFloat(""+dataSnapshot.child("ratings").getValue());
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
                     ratingSum = ratingSum+rating;
 
 
                 }
 
 
-                long numberOfReviews = snapshot.getChildrenCount();
-                float avgOfReviews = ratingSum/numberOfReviews;
+                float avgOfReviews = 0;
+                try {
+                    long numberOfReviews = snapshot.getChildrenCount();
+                    avgOfReviews = ratingSum/numberOfReviews;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 holder.binding.ratingBar.setRating(avgOfReviews);
             }

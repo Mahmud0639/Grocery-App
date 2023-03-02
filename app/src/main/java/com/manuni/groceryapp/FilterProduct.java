@@ -1,5 +1,6 @@
 package com.manuni.groceryapp;
 
+import android.annotation.SuppressLint;
 import android.widget.Filter;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class FilterProduct extends Filter {
         return filterResults;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void publishResults(CharSequence constraint, FilterResults filterResults) {
         adapter.list = (ArrayList<ModelProduct>) filterResults.values;

@@ -10,7 +10,7 @@
     <RelativeLayout
         android:id="@+id/userRL"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_50mdp"
+        android:layout_height="@dimen/_80mdp"
         android:background="@drawable/shape_rect_01"
         android:padding="@dimen/_10mdp">
 
@@ -38,6 +38,21 @@
             android:layout_marginTop="@dimen/_5mdp"
             android:background="@drawable/ic_gps_white" />
 
+        <TextView
+            android:id="@+id/addPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/gpsBtn"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/box_photo"
+            android:drawableEnd="@drawable/ic_camera"
+            android:drawablePadding="@dimen/_5mdp"
+            android:padding="@dimen/_7mdp"
+            android:text="Add Your Photo"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
 
     </RelativeLayout>
 
@@ -50,10 +65,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/cons">
+
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profileIVShow"
@@ -68,17 +80,16 @@
                     app:civ_border_color="@color/background_theme"
                     app:civ_border_width="@dimen/_1mdp" />
 
-
+<!--
                 <ImageView
                     android:id="@+id/profileIV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_take_photo"
                     app:layout_constraintEnd_toEndOf="@id/profileIVShow"
-                    app:layout_constraintTop_toTopOf="@id/profileIVShow"/>
+                    app:layout_constraintTop_toTopOf="@id/profileIVShow"/>-->
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
@@ -87,7 +98,7 @@
                 android:id="@+id/fullNameET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/cons"
+                android:layout_below="@id/profileIVShow"
                 android:layout_marginStart="@dimen/_5mdp"
                 android:layout_marginTop="@dimen/_5mdp"
                 android:layout_marginEnd="@dimen/_5mdp"

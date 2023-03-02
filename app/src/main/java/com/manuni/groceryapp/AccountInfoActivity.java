@@ -1,7 +1,9 @@
 package com.manuni.groceryapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,6 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.manuni.groceryapp.databinding.ActivityAccountInfoBinding;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class AccountInfoActivity extends AppCompatActivity {
     ActivityAccountInfoBinding binding;
@@ -37,15 +40,20 @@ public class AccountInfoActivity extends AppCompatActivity {
 
 
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("OrderInfo");
-        dbRef.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+        dbRef.child(Objects.requireNonNull(auth.getUid())).addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     list = new ArrayList<>();
                     list.clear();
                     for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                         ModelCalculation data = dataSnapshot.getValue(ModelCalculation.class);
-                        list.add(0,data);
+                        try {
+                            list.add(0,data);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     adapterCalculation = new AdapterCalculation(AccountInfoActivity.this,list);
@@ -56,34 +64,18 @@ public class AccountInfoActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
 
         loadTotalTaka();
 
-        binding.backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        binding.backBtn.setOnClickListener(view -> onBackPressed());
 
-        binding.totalTakaBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                binding.totalLinear.setVisibility(View.VISIBLE);
+        binding.totalTakaBtn.setOnClickListener(view -> binding.totalLinear.setVisibility(View.VISIBLE));
 
-            }
-        });
-
-        binding.gotItBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                binding.totalLinear.setVisibility(View.GONE);
-            }
-        });
+        binding.gotItBtn.setOnClickListener(view -> binding.totalLinear.setVisibility(View.GONE));
 
         binding.searchCalculation.addTextChangeListener(new TextWatcher() {
             @Override
@@ -111,9 +103,10 @@ public class AccountInfoActivity extends AppCompatActivity {
 
     private void loadTotalTaka() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("OrderInfo");
-        databaseReference.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+        databaseReference.child(Objects.requireNonNull(auth.getUid())).addValueEventListener(new ValueEventListener() {
+            @SuppressLint({"DefaultLocale", "SetTextI18n"})
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                         String totalCompleted = ""+dataSnapshot.child("totalOfCompleted").getValue();
@@ -139,7 +132,7 @@ public class AccountInfoActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });

@@ -17,9 +17,9 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_50mdp"
+                android:layout_height="@dimen/_80mdp"
                 android:background="@drawable/shape_rect_01"
-                android:padding="@dimen/_8mdp">
+                android:padding="@dimen/_10mdp">
 
                 <ImageButton
                     android:id="@+id/backArrowBtn"
@@ -29,12 +29,28 @@
                     android:src="@drawable/ic_arrow_left_white" />
 
                 <TextView
+                    android:id="@+id/updateTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:text="@string/update_product"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14font_mdp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/addPhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/updateTxt"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/_10mdp"
+                    android:background="@drawable/box_photo"
+                    android:drawableEnd="@drawable/ic_camera"
+                    android:drawablePadding="@dimen/_5mdp"
+                    android:padding="@dimen/_7mdp"
+                    android:text="Add Your Photo"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
                     android:textStyle="bold" />
 
             </RelativeLayout>
@@ -57,13 +73,6 @@
                     android:src="@drawable/impl2"
                     app:civ_border_width="@dimen/_1mdp" />
 
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="17dp"
-                    android:text="Upload photo" />
 
                 <EditText
                     android:id="@+id/titleET"

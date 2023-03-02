@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.manuni.groceryapp.databinding.CalculationRowBinding;
@@ -26,12 +27,14 @@ public class AdapterCalculation extends RecyclerView.Adapter<AdapterCalculation.
         this.filterList = list;
     }
 
+    @NonNull
     @Override
-    public AdapterCalculationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterCalculationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.calculation_row,parent,false);
         return new AdapterCalculationViewHolder(view);
     }
 
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     @Override
     public void onBindViewHolder(AdapterCalculationViewHolder holder, @SuppressLint("RecyclerView") int position) {
         ModelCalculation data = list.get(position);

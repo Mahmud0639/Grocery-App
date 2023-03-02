@@ -1,5 +1,6 @@
 package com.manuni.groceryapp;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +10,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -48,8 +48,12 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         auth = FirebaseAuth.getInstance();
-        orderTo = getIntent().getStringExtra("orderTo");//orderTo contains user id of the shop where we placed order
-        orderId = getIntent().getStringExtra("orderId");
+        try {
+            orderTo = getIntent().getStringExtra("orderTo");//orderTo contains user id of the shop where we placed order
+            orderId = getIntent().getStringExtra("orderId");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         progressDialog = new ProgressDialog(OrderDetailsUsersActivity.this);
         progressDialog.setTitle("Order details");
@@ -62,9 +66,17 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
         NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
         if (wifi.isConnected()){
-            loadShopInfo();
+            try {
+                loadShopInfo();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }else if (mobile.isConnected()){
-            loadShopInfo();
+            try {
+                loadShopInfo();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }else {
             Toast.makeText(this, "No connection", Toast.LENGTH_SHORT).show();
         }
@@ -74,19 +86,15 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
 
 
         //Log.d("MyTag", "onCreate: "+orderTo);
-        binding.backArrowBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        binding.backArrowBtn.setOnClickListener(view -> onBackPressed());
 
-        binding.reviewBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent reviewIntent = new Intent(OrderDetailsUsersActivity.this,ReviewActivity.class);
-                reviewIntent.putExtra("shopUid",orderTo);
+        binding.reviewBtn.setOnClickListener(view -> {
+            Intent reviewIntent = new Intent(OrderDetailsUsersActivity.this,ReviewActivity.class);
+            reviewIntent.putExtra("shopUid",orderTo);
+            try {
                 startActivity(reviewIntent);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
@@ -96,16 +104,30 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
         modelOrderedItems = new ArrayList<>();
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("Users");
         dbRef.child(orderTo).child("Orders").child(orderId).child("Items").addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     modelOrderedItems.clear();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        ModelOrderedItems items = dataSnapshot.getValue(ModelOrderedItems.class);
-                        modelOrderedItems.add(items);
+                        ModelOrderedItems items = null;
+                        try {
+                            items = dataSnapshot.getValue(ModelOrderedItems.class);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            modelOrderedItems.add(items);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                     adapterOrderedItems = new AdapterOrderedItems(OrderDetailsUsersActivity.this, modelOrderedItems);
-                    binding.orderedItemsRV.setAdapter(adapterOrderedItems);
+                    try {
+                        binding.orderedItemsRV.setAdapter(adapterOrderedItems);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                     binding.totalItemsTV.setText("" + snapshot.getChildrenCount());
 
@@ -123,20 +145,25 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
     private void loadOrderDetails() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users");
         ref.child(orderTo).child("Orders").child(orderId).addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 if (snapshot.exists()){
-                    orderBy = "" + snapshot.child("orderBy").getValue();
-                    orderCost = "" + snapshot.child("orderCost").getValue();
-                     orderId = "" + snapshot.child("orderId").getValue();
-                     orderStatus = "" + snapshot.child("orderStatus").getValue();
-                     orderTo = "" + snapshot.child("orderTo").getValue();
-                     deliveryFee = "" + snapshot.child("deliveryFee").getValue();
-                     latitude = "" + snapshot.child("latitude").getValue();
-                     longitude = "" + snapshot.child("longitude").getValue();
+                    try {
+                        orderBy = "" + snapshot.child("orderBy").getValue();
+                        orderCost = "" + snapshot.child("orderCost").getValue();
+                        orderId = "" + snapshot.child("orderId").getValue();
+                        orderStatus = "" + snapshot.child("orderStatus").getValue();
+                        orderTo = "" + snapshot.child("orderTo").getValue();
+                        deliveryFee = "" + snapshot.child("deliveryFee").getValue();
+                        latitude = "" + snapshot.child("latitude").getValue();
+                        longitude = "" + snapshot.child("longitude").getValue();
 
-                     orderTime = "" + snapshot.child("orderTime").getValue();
+                        orderTime = "" + snapshot.child("orderTime").getValue();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTimeInMillis(Long.parseLong(orderTime));
                     String dateTime = DateFormat.format("dd/MM/yy hh:mm aa", calendar).toString();
@@ -153,12 +180,16 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
                 //convert time
 
 
-                if (orderStatus.equals("In Progress")) {
-                    binding.statusTV.setTextColor(getResources().getColor(R.color.background_theme));
-                } else if (orderStatus.equals("Completed")) {
-                    binding.statusTV.setTextColor(getResources().getColor(R.color.colorGreen));
-                } else if (orderStatus.equals("Cancelled")) {
-                    binding.statusTV.setTextColor(getResources().getColor(R.color.colorRed));
+                switch (orderStatus) {
+                    case "In Progress":
+                        binding.statusTV.setTextColor(getResources().getColor(R.color.background_theme));
+                        break;
+                    case "Completed":
+                        binding.statusTV.setTextColor(getResources().getColor(R.color.colorGreen));
+                        break;
+                    case "Cancelled":
+                        binding.statusTV.setTextColor(getResources().getColor(R.color.colorRed));
+                        break;
                 }
 
                 binding.orderIdTV.setText(orderId);
@@ -166,7 +197,11 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
                 binding.totalPriceTV.setText("৳" + orderCost + "[Including delivery fee ৳" + deliveryFee + "]");
 
 
-                findAddress(latitude, longitude);
+                try {
+                    findAddress(latitude, longitude);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -177,8 +212,14 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
     }
 
     private void findAddress(String myLatitude, String myLongitude) {
-        double lat = Double.parseDouble(myLatitude);
-        double lon = Double.parseDouble(myLongitude);
+        double lat = 0;
+        double lon = 0;
+        try {
+            lat = Double.parseDouble(myLatitude);
+            lon = Double.parseDouble(myLongitude);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
 
         Geocoder geocoder;
         List<Address> addresses;
@@ -193,7 +234,7 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
             binding.deliveryAddressTV.setText(address);
 
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -202,11 +243,20 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
         databaseReference.child(orderTo).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String shopName = "" + snapshot.child("shopName").getValue();
+                String shopName = null;
+                try {
+                    shopName = "" + snapshot.child("shopName").getValue();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 binding.shopNameTV.setText(shopName);
 
-                loadOrderDetails();
-                loadOrderedItems();
+                try {
+                    loadOrderDetails();
+                    loadOrderedItems();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

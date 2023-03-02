@@ -2,8 +2,8 @@ package com.manuni.groceryapp;
 
 import static com.manuni.groceryapp.Constants.TOPICS;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -19,8 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -74,18 +72,25 @@ public class ShopDetailsActivity extends AppCompatActivity {
         binding = ActivityShopDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        shopUid = getIntent().getStringExtra("shopUid");
+        try {
+            shopUid = getIntent().getStringExtra("shopUid");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         auth = FirebaseAuth.getInstance();
 
 
+        try {
+            loadMyInfo();
+            loadShopDetails();
+            loadShopProducts();
+            loadRatings();
 
-        loadMyInfo();
-        loadShopDetails();
-        loadShopProducts();
-        loadRatings();
-
-        loadToSpinner();
+            loadToSpinner();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         progressDialog = new ProgressDialog(ShopDetailsActivity.this);
         progressDialog.setTitle("Placing an order");
@@ -99,18 +104,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
         cateProgressDialog.show();
 
 
-
-//        easyDB = EasyDB.init(ShopDetailsActivity.this, "ITEMS_DB")
-//                .setTableName("ITEMS_TABLE")
-//                .addColumn(new Column("Item_Id", new String[]{"text", "unique"}))
-//                .addColumn(new Column("Item_PID", new String[]{"text", "not null"}))
-//                .addColumn(new Column("Item_Name", new String[]{"text", "not null"}))
-//                .addColumn(new Column("Item_Each_Price", new String[]{"text", "not null"}))
-//                .addColumn(new Column("Item_Price", new String[]{"text", "not null"}))
-//                .addColumn(new Column("Item_Quantity", new String[]{"text", "not null"}))
-//                .doneTableColumn();
-
-         easyDB = EasyDB.init(ShopDetailsActivity.this,"ITEM_DB_NEW")
+      /*  easyDB = EasyDB.init(ShopDetailsActivity.this,"ITEM_DB_NEW")
                 .setTableName("ITEM_TABLE_NEW")
                 .addColumn(new Column("Items_Id",new String[]{"text","unique"}))
                 .addColumn(new Column("Items_PID",new String[]{"text","not null"}))
@@ -120,40 +114,42 @@ public class ShopDetailsActivity extends AppCompatActivity {
                 .addColumn(new Column("Items_Quantity",new String[]{"text","not null"}))
                 .addColumn(new Column("Items_Pro_Quantity",new String[]{"text","not null"}))
                 .addColumn(new Column("Items_Pro_Image",new String[]{"text","not null"}))
+                .doneTableColumn();*/
+
+         easyDB = EasyDB.init(ShopDetailsActivity.this,"ITEM_DB_NEW_TWO")
+                .setTableName("ITEM_TABLE_NEW_TWO")
+                .addColumn(new Column("Items_Id_Two",new String[]{"text","unique"}))
+                .addColumn(new Column("Items_PID_Two",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Name_Two",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Each_Price_Two",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Price_Two",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Quantity_Two",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Pro_Quantity_Two",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Pro_Image_Two",new String[]{"text","not null"}))
                 .doneTableColumn();
 
         //each shop have its own products and orders
-        deleteCartData();
-        cartCount();
+        try {
+            deleteCartData();
+            cartCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        binding.backArrowBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        binding.backArrowBtn.setOnClickListener(view -> onBackPressed());
 
-        binding.cartBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        binding.cartBtn.setOnClickListener(view -> {
+            try {
                 showCartDialog();
-                binding.cartCountTV.setVisibility(View.GONE);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            binding.cartCountTV.setVisibility(View.GONE);
         });
         //commit korar new ekta upay paoya gece...seta holo alt+(1 key er purber tilda key mane ~ key)
 
-        binding.callBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialPhone();
-            }
-        });
-        binding.mapBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openMap();
-            }
-        });
+        binding.callBtn.setOnClickListener(view -> dialPhone());
+        binding.mapBtn.setOnClickListener(view -> openMap());
 
         binding.searchET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -182,37 +178,40 @@ public class ShopDetailsActivity extends AppCompatActivity {
             }
         });
 
-        binding.filterProductBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (dataList.size()==0){
-                    Toast.makeText(ShopDetailsActivity.this, "No items available!", Toast.LENGTH_SHORT).show();
-                }else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(ShopDetailsActivity.this);
-                    builder.setTitle("Choose Category").setItems(data, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            selected = data[i];
-                            binding.filterProductTV.setText(selected);
-                            if (selected.equals("All")) {
-                                loadShopProducts();
-                            } else {
-                                //productUserAdapter.getFilter().filter(selected);
-                                loadFilteredProducts(selected);
-                            }
+        binding.filterProductBtn.setOnClickListener(view -> {
+            if (dataList.size()==0){
+                Toast.makeText(ShopDetailsActivity.this, "No items available!", Toast.LENGTH_SHORT).show();
+            }else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ShopDetailsActivity.this);
+                builder.setTitle("Choose Category").setItems(data, (dialogInterface, i) -> {
+                    selected = data[i];
+                    binding.filterProductTV.setText(selected);
+                    if (selected.equals("All")) {
+                        try {
+                            loadShopProducts();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    }).show();
-                }
-
+                    } else {
+                        //productUserAdapter.getFilter().filter(selected);
+                        try {
+                            loadFilteredProducts(selected);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).show();
             }
+
         });
 
-        binding.reviewBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ShopDetailsActivity.this, ShopReviewActivity.class);
-                intent.putExtra("shopUid", shopUid);
+        binding.reviewBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(ShopDetailsActivity.this, ShopReviewActivity.class);
+            intent.putExtra("shopUid", shopUid);
+            try {
                 startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
@@ -227,7 +226,12 @@ public class ShopDetailsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ratingSum = 0;
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    float rating = Float.parseFloat("" + dataSnapshot.child("ratings").getValue());//e.g 4.5
+                    float rating = 0;//e.g 4.5
+                    try {
+                        rating = Float.parseFloat("" + dataSnapshot.child("ratings").getValue());
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
                     ratingSum = ratingSum + rating;
 
 
@@ -251,10 +255,15 @@ public class ShopDetailsActivity extends AppCompatActivity {
     private void deleteCartData() {
 
 
-        easyDB.deleteAllDataFromTable();//it will delete all data from the cart
+        try {
+            easyDB.deleteAllDataFromTable();//it will delete all data from the cart
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
+    @SuppressLint("SetTextI18n")
     public void cartCount() {
         //make it public so we can access it in the adapter
         count = easyDB.getAllData().getCount();
@@ -270,6 +279,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
     public double allTotalPrice = 0.00;
     public TextView subTotalPriceTV, deliFeeTV, allTotalPriceTV;
 
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     private void showCartDialog() {
 
         //init list
@@ -289,17 +299,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
         builder.setView(view);
 
 
-//        EasyDB easyDB = EasyDB.init(ShopDetailsActivity.this, "ITEMS_DB")
-//                .setTableName("ITEMS_TABLE")
-//                .addColumn(new Column("Item_Id", new String[]{"text", "unique"}))
-//                .addColumn(new Column("Item_PID", new String[]{"text", "not null"}))
-//                .addColumn(new Column("Item_Name", new String[]{"text", "not null"}))
-//                .addColumn(new Column("Item_Each_Price", new String[]{"text", "not null"}))
-//                .addColumn(new Column("Item_Price", new String[]{"text", "not null"}))
-//                .addColumn(new Column("Item_Quantity", new String[]{"text", "not null"}))
-//                .doneTableColumn();
-
-        EasyDB easyDB = EasyDB.init(ShopDetailsActivity.this,"ITEM_DB_NEW")
+      /*  EasyDB easyDB = EasyDB.init(ShopDetailsActivity.this,"ITEM_DB_NEW")
                 .setTableName("ITEM_TABLE_NEW")
                 .addColumn(new Column("Items_Id",new String[]{"text","unique"}))
                 .addColumn(new Column("Items_PID",new String[]{"text","not null"}))
@@ -309,24 +309,52 @@ public class ShopDetailsActivity extends AppCompatActivity {
                 .addColumn(new Column("Items_Quantity",new String[]{"text","not null"}))
                 .addColumn(new Column("Items_Pro_Quantity",new String[]{"text","not null"}))
                 .addColumn(new Column("Items_Pro_Image",new String[]{"text","not null"}))
+                .doneTableColumn();*/
+
+        EasyDB easyDB = EasyDB.init(ShopDetailsActivity.this,"ITEM_DB_NEW_TWO")
+                .setTableName("ITEM_TABLE_NEW_TWO")
+                .addColumn(new Column("Items_Id_Two",new String[]{"text","unique"}))
+                .addColumn(new Column("Items_PID_Two",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Name_Two",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Each_Price_Two",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Price_Two",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Quantity_Two",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Pro_Quantity_Two",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Pro_Image_Two",new String[]{"text","not null"}))
                 .doneTableColumn();
 
         //get all data from db
         Cursor result = easyDB.getAllData();
         while (result.moveToNext()) {
-            String id = result.getString(1);
-            String pId = result.getString(2);
-            String name = result.getString(3);
-            String price = result.getString(4);
-            String cost = result.getString(5);
-            quantity = result.getString(6);
-            String proQuantity = result.getString(7);
-            String prImage = result.getString(8);
+            String id = null;
+            String pId = null;
+            String name = null;
+            String price = null;
+            String cost = null;
+            String proQuantity = null;
+            String prImage = null;
+            try {
+                id = result.getString(1);
+                pId = result.getString(2);
+                name = result.getString(3);
+                price = result.getString(4);
+                cost = result.getString(5);
+                quantity = result.getString(6);
+                proQuantity = result.getString(7);
+                prImage = result.getString(8);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
+            assert cost != null;
             allTotalPrice = allTotalPrice + Double.parseDouble(cost);
 
             ModelCartItem modelCartItem = new ModelCartItem("" + id, "" + pId, "" + name, "" + price, "" + cost, "" + quantity,""+proQuantity,""+prImage);
-            modelCartItemsList.add(modelCartItem);
+            try {
+                modelCartItemsList.add(modelCartItem);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         adapterCartItem = new AdapterCartItem(ShopDetailsActivity.this, modelCartItemsList);
@@ -342,35 +370,30 @@ public class ShopDetailsActivity extends AppCompatActivity {
         dialog.show();
 
         //reset total price on dialog dismiss
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialogInterface) {
-                allTotalPrice = 0.00;
+        dialog.setOnCancelListener(dialogInterface -> allTotalPrice = 0.00);
 
+        binding.checkoutBtn.setOnClickListener(view1 -> {
+
+            allTotalPrice = 0.00;
+
+
+            //first validate location address
+            if (myLatitude.equals("") || myLatitude.equals("null") || myLongitude.equals("") || myLongitude.equals("null")) {
+                Toast.makeText(ShopDetailsActivity.this, "Please set your location in your profile.", Toast.LENGTH_SHORT).show();
+                return;//don't proceed further
             }
-        });
-
-        binding.checkoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                allTotalPrice = 0.00;
-
-
-                //first validate location address
-                if (myLatitude.equals("") || myLatitude.equals("null") || myLongitude.equals("") || myLongitude.equals("null")) {
-                    Toast.makeText(ShopDetailsActivity.this, "Please set your location in your profile.", Toast.LENGTH_SHORT).show();
-                    return;//don't proceed further
-                }
-                if (phoneNumber.equals("") || phoneNumber.equals("null")) {
-                    Toast.makeText(ShopDetailsActivity.this, "Please set your phone in your profile.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (modelCartItemsList.size() == 0) {
-                    Toast.makeText(ShopDetailsActivity.this, "No items available to place an order", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+            if (phoneNumber.equals("") || phoneNumber.equals("null")) {
+                Toast.makeText(ShopDetailsActivity.this, "Please set your phone in your profile.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (modelCartItemsList.size() == 0) {
+                Toast.makeText(ShopDetailsActivity.this, "No items available to place an order", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            try {
                 submitOrder();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
@@ -386,95 +409,83 @@ public class ShopDetailsActivity extends AppCompatActivity {
         String cost = allTotalPriceTV.getText().toString().replace("৳", "");//if contains $ then replace with ""
 
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("orderId", "" + timestamp);
-        hashMap.put("orderTime", "" + timestamp);
-        hashMap.put("orderStatus", "In Progress");
-        hashMap.put("orderCost", "" + cost);
-        hashMap.put("orderBy", "" + auth.getUid());
-        hashMap.put("orderTo", "" + shopUid);
-        hashMap.put("latitude", "" + myLatitude);
-        hashMap.put("longitude", "" + myLongitude);
-        hashMap.put("deliveryFee", "" + deliveryFee);
-        hashMap.put("shopName",""+shopName);
+        try {
+            hashMap.put("orderId", "" + timestamp);
+            hashMap.put("orderTime", "" + timestamp);
+            hashMap.put("orderStatus", "In Progress");
+            hashMap.put("orderCost", "" + cost);
+            hashMap.put("orderBy", "" + auth.getUid());
+            hashMap.put("orderTo", "" + shopUid);
+            hashMap.put("latitude", "" + myLatitude);
+            hashMap.put("longitude", "" + myLongitude);
+            hashMap.put("deliveryFee", "" + deliveryFee);
+            hashMap.put("shopName",""+shopName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("Users").child(shopUid).child("Orders");
-        dbRef.child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                //order info added now add order items
-                for (int i = 0; i < modelCartItemsList.size(); i++) {
-                    String pId = modelCartItemsList.get(i).getpId();
+        dbRef.child(timestamp).setValue(hashMap).addOnSuccessListener(unused -> {
+            //order info added now add order items
+            for (int i = 0; i < modelCartItemsList.size(); i++) {
+                String pId = null;
+                String cost1 = null;
+                String price = null;
+                String quantity = null;
+                String name = null;
+                String productQuantity = null;
+                String proImage = null;
+                try {
+                    pId = modelCartItemsList.get(i).getpId();
                     String id = modelCartItemsList.get(i).getId();
-                    String cost = modelCartItemsList.get(i).getCost();
-                    String price = modelCartItemsList.get(i).getPrice();
-                    String quantity = modelCartItemsList.get(i).getQuantity();
-                    String name = modelCartItemsList.get(i).getName();
-                    String productQuantity = modelCartItemsList.get(i).getProQuantity();
-                    String proImage = modelCartItemsList.get(i).getPrImage();
-
-                    HashMap<String, String> hashMap1 = new HashMap<>();
-                    hashMap1.put("pId", pId);
-                    hashMap1.put("name", name);
-                    hashMap1.put("cost", cost);
-                    hashMap1.put("price", price);
-                    hashMap1.put("quantity", quantity);
-                    hashMap1.put("proQuantity",productQuantity);
-                    hashMap1.put("prImage",proImage);
-
-                    dbRef.child(timestamp).child("Items").child(pId).setValue(hashMap1);
-                    //ei pId ta holo ekta timestamp jeta product ^add korar somoy neya hoyeche (AddProductActivity)--->addProductTodb-->177 no. lines
+                    cost1 = modelCartItemsList.get(i).getCost();
+                    price = modelCartItemsList.get(i).getPrice();
+                    quantity = modelCartItemsList.get(i).getQuantity();
+                    name = modelCartItemsList.get(i).getName();
+                    productQuantity = modelCartItemsList.get(i).getProQuantity();
+                    proImage = modelCartItemsList.get(i).getPrImage();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-//
-//                DatabaseReference myAdRef = FirebaseDatabase.getInstance().getReference().child("Admin").child(shopUid).child("Orders");
-//                myAdRef.child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void unused) {
-//                        for (int i = 0; i < modelCartItemsList.size(); i++) {
-//                            String pId = modelCartItemsList.get(i).getpId();
-//                            String id = modelCartItemsList.get(i).getId();
-//                            String cost = modelCartItemsList.get(i).getCost();
-//                            String price = modelCartItemsList.get(i).getPrice();
-//                            String quantity = modelCartItemsList.get(i).getQuantity();
-//                            String name = modelCartItemsList.get(i).getName();
-//
-//                            HashMap<String, String> hashMap1 = new HashMap<>();
-//                            hashMap1.put("pId", pId);
-//                            hashMap1.put("name", name);
-//                            hashMap1.put("cost", cost);
-//                            hashMap1.put("price", price);
-//                            hashMap1.put("quantity", quantity);
-//
-//                            myAdRef.child(timestamp).child("Items").child(pId).setValue(hashMap1);
-//
-//                            //ei pId ta holo ekta timestamp jeta product ^add korar somoy neya hoyeche (AddProductActivity)--->addProductTodb-->177 no. lines
-//                        }
-//                    }
-//                });
-                progressDialog.dismiss();
-                dialog.dismiss();
-                //binding.cartCountTV.setVisibility(View.GONE);
 
-                Toast.makeText(ShopDetailsActivity.this, "Product order placed to " + shopName + " successfully!", Toast.LENGTH_SHORT).show();
+                HashMap<String, String> hashMap1 = new HashMap<>();
+                hashMap1.put("pId", pId);
+                hashMap1.put("name", name);
+                hashMap1.put("cost", cost1);
+                hashMap1.put("price", price);
+                hashMap1.put("quantity", quantity);
+                hashMap1.put("proQuantity",productQuantity);
+                hashMap1.put("prImage",proImage);
+
+                assert pId != null;
+                dbRef.child(timestamp).child("Items").child(pId).setValue(hashMap1);
+                //ei pId ta holo ekta timestamp jeta product ^add korar somoy neya hoyeche (AddProductActivity)--->addProductTodb-->177 no. lines
+            }
+            progressDialog.dismiss();
+            dialog.dismiss();
+            //binding.cartCountTV.setVisibility(View.GONE);
+
+            Toast.makeText(ShopDetailsActivity.this, "Product order placed to " + shopName + " successfully!", Toast.LENGTH_SHORT).show();
+            try {
                 deleteCartData();
-               // Toast.makeText(ShopDetailsActivity.this, ""+modelCartItemsList.size(), Toast.LENGTH_SHORT).show();
-                //sending notification after submitting order successfully.
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // Toast.makeText(ShopDetailsActivity.this, ""+modelCartItemsList.size(), Toast.LENGTH_SHORT).show();
+            //sending notification after submitting order successfully.
+            try {
                 prepareNotification(timestamp);
-
-
-                //nicher ei data gulo notification set er pore ekhan theke cut kore neya hoyeche...
-//                Intent intent = new Intent(ShopDetailsActivity.this,OrderDetailsUsersActivity.class);
-//                intent.putExtra("orderTo",shopUid);
-//                intent.putExtra("orderId",timestamp);
-//                startActivity(intent);
-
-
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                progressDialog.dismiss();
-                Toast.makeText(ShopDetailsActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
+
+
+            //nicher ei data gulo notification set er pore ekhan theke cut kore neya hoyeche...
+
+
+        }).addOnFailureListener(e -> {
+            progressDialog.dismiss();
+            Toast.makeText(ShopDetailsActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -488,7 +499,11 @@ public class ShopDetailsActivity extends AppCompatActivity {
         //daddr means destination address
         String address = "https://maps.google.com/maps?saddr=" + myLatitude + "," + myLongitude + "&daddr=" + shopLatitude + "," + shopLongitude;
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(address));
-        startActivity(intent);
+        try {
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadMyInfo() {
@@ -519,6 +534,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
     private void loadShopDetails() {
         DatabaseReference dbr = FirebaseDatabase.getInstance().getReference().child("Users");
         dbr.child(shopUid).addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String fullName = "" + snapshot.child("fullName").getValue();
@@ -548,7 +564,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
                 try {
                     Picasso.get().load(profileImage).into(binding.shopIV);
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
             }
 
@@ -570,11 +586,24 @@ public class ShopDetailsActivity extends AppCompatActivity {
                 modelProducts.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     productQuantity = ""+dataSnapshot.child("productQuantity").getValue();
-                    ModelProduct data = dataSnapshot.getValue(ModelProduct.class);
-                    modelProducts.add(data);
+                    ModelProduct data = null;
+                    try {
+                        data = dataSnapshot.getValue(ModelProduct.class);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        modelProducts.add(data);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 productUserAdapter = new ProductUserAdapter(ShopDetailsActivity.this, modelProducts);
-                binding.productRV.setAdapter(productUserAdapter);
+                try {
+                    binding.productRV.setAdapter(productUserAdapter);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -593,80 +622,41 @@ public class ShopDetailsActivity extends AppCompatActivity {
         String NOTIFICATION_MESSAGE = "Congratulations..! You have a new order.";
         String NOTIFICATION_TYPE = "NewOrder";
 
-//        //prepare json(what to send and where to send)
-//        JSONObject notificationJO = new JSONObject();
-//        JSONObject notificationBodyJO = new JSONObject();
-//
-//        try {
-//            //what to send
-//            notificationBodyJO.put("notificationType",NOTIFICATION_TYPE);
-//            notificationBodyJO.put("buyerUid",auth.getUid());
-//            notificationBodyJO.put("sellerUid",shopUid);
-//            notificationBodyJO.put("orderId",orderId);
-//            notificationBodyJO.put("notificationTitle",NOTIFICATION_TITLE);
-//            notificationBodyJO.put("notificationMessage",NOTIFICATION_MESSAGE);
-//            //where to send
-//           // notificationJO.put("to",NOTIFICATION_TOPIC);//to all who subscribe this topic
-//            notificationJO.put("data",notificationBodyJO);
-//
-//        }catch (Exception e){
-//            Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-//
-//        }
-
         String buyerUid = auth.getUid();
         String sellerUid = shopUid;
 
 
-        sendFcmNotification(NOTIFICATION_TYPE, buyerUid, sellerUid, orderId, NOTIFICATION_TITLE, NOTIFICATION_MESSAGE);
+        try {
+            sendFcmNotification(NOTIFICATION_TYPE, buyerUid, sellerUid, orderId, NOTIFICATION_TITLE, NOTIFICATION_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void sendFcmNotification(String notificationType, String buyerUid, String sellerUid, String orderId, String notificationTitle, String notificationMessage) {
         PushNotification notification = new PushNotification(new NotificationData(notificationType, buyerUid, sellerUid, orderId, notificationTitle, notificationMessage), TOPICS);
-        sendNotification(notification, orderId);
+        try {
+            sendNotification(notification, orderId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
-//        JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST,"https://fcm.googleapis.com/fcm/send", notificationJO, new Response.Listener<JSONObject>() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                //after sending fcm request start order details activity
-//                Intent intent = new Intent(ShopDetailsActivity.this,OrderDetailsUsersActivity.class);
-//                intent.putExtra("orderTo",shopUid);
-//                intent.putExtra("orderId",orderId);
-//                startActivity(intent);
-//
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                //if failed perform the same operation
-//                Intent intent = new Intent(ShopDetailsActivity.this,OrderDetailsUsersActivity.class);
-//                intent.putExtra("orderTo",shopUid);
-//                intent.putExtra("orderId",orderId);
-//                startActivity(intent);
-//
-//            }
-//        }){
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String,String> headers = new HashMap<>();
-//                headers.put("Content-Type","application/json");
-//               // headers.put("Authorization:","key="+Constants.FCM_KEY);
-//                return headers;
-//            }
-//        };
-//        Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
 
     private void sendNotification(PushNotification notification, String orderId) {
         ApiUtilities.getClient().sendNotification(notification).enqueue(new Callback<PushNotification>() {
             @Override
-            public void onResponse(Call<PushNotification> call, Response<PushNotification> response) {
+            public void onResponse(@NonNull Call<PushNotification> call, @NonNull Response<PushNotification> response) {
                 if (response.isSuccessful()) {
                     Intent intent = new Intent(ShopDetailsActivity.this, OrderDetailsUsersActivity.class);
                     intent.putExtra("orderTo", shopUid);
                     intent.putExtra("orderId", orderId);
-                    startActivity(intent);
+                    try {
+                        startActivity(intent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     Toast.makeText(ShopDetailsActivity.this, "Success", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(ShopDetailsActivity.this, "Failed", Toast.LENGTH_SHORT).show();
@@ -674,11 +664,15 @@ public class ShopDetailsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<PushNotification> call, Throwable t) {
+            public void onFailure(@NonNull Call<PushNotification> call, @NonNull Throwable t) {
                 Intent intent = new Intent(ShopDetailsActivity.this, OrderDetailsUsersActivity.class);
                 intent.putExtra("orderTo", shopUid);
                 intent.putExtra("orderId", orderId);
-                startActivity(intent);
+                try {
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 Toast.makeText(ShopDetailsActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -690,15 +684,28 @@ public class ShopDetailsActivity extends AppCompatActivity {
         DatabaseReference myDbRef = FirebaseDatabase.getInstance().getReference().child("Categories");
         myDbRef.child(shopUid).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dataList = new ArrayList<>();
                 if (snapshot.exists()){
                     dataList.clear();
                     for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                        String categories = ""+dataSnapshot.child("category").getValue();
-                        dataList.add(categories);
+                        String categories = null;
+                        try {
+                            categories = ""+dataSnapshot.child("category").getValue();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            dataList.add(categories);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
-                    dataList.add(0,"All");
+                    try {
+                        dataList.add(0,"All");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     data = dataList.toArray(new String[dataList.size()]);
 
 
@@ -714,7 +721,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
 
 
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
@@ -724,6 +731,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
         modelProducts = new ArrayList<>();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
         databaseReference.child(shopUid).child("Products").addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //before getting data clear the list data
@@ -732,8 +740,17 @@ public class ShopDetailsActivity extends AppCompatActivity {
 
                     String productCategory = ""+dataSnapshot.child("productCategory").getValue();
                     if (selected.equals(productCategory)){
-                        ModelProduct data = dataSnapshot.getValue(ModelProduct.class);
-                        modelProducts.add(data);
+                        ModelProduct data = null;
+                        try {
+                            data = dataSnapshot.getValue(ModelProduct.class);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            modelProducts.add(data);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
                         // binding.filterProductTV.setText(list.size()+" items found");
                     }
@@ -741,7 +758,11 @@ public class ShopDetailsActivity extends AppCompatActivity {
                 }
                 binding.itemsFoundTV.setText("("+modelProducts.size()+" items found)");
                 productUserAdapter = new ProductUserAdapter(ShopDetailsActivity.this,modelProducts);
-                binding.productRV.setAdapter(productUserAdapter);
+                try {
+                    binding.productRV.setAdapter(productUserAdapter);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
             }
 

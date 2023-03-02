@@ -77,7 +77,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/_1234567"
+                    android:text="@string/fetching"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14font_mdp" />
 
@@ -99,7 +99,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/_02_09_2023_02_56pm"
+                    android:text="@string/fetching"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14font_mdp" />
 
@@ -121,7 +121,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/in_progress"
+                    android:text="@string/fetching"
                     android:textColor="@color/background_theme"
                     android:textSize="@dimen/_14font_mdp" />
 
@@ -143,8 +143,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/mahmud_gmail_com"
-                    android:textColor="@color/background_theme"
+                    android:text="@string/fetching"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_14font_mdp" />
 
 
@@ -166,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:autoLink="all"
-                    android:text="@string/_8801774362950"
+                    android:text="@string/fetching"
                     android:textColor="@color/background_theme"
                     android:textSize="@dimen/_14font_mdp" />
 
@@ -188,8 +188,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/_14"
-                    android:textColor="@color/background_theme"
+                    android:text="@string/fetching"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_14font_mdp" />
 
 
@@ -210,8 +210,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/_320_50"
-                    android:textColor="@color/background_theme"
+                    android:text="@string/fetching"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_14font_mdp" />
 
 
@@ -232,8 +232,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/model_town_daffodil_road_dhaka_1207"
-                    android:textColor="@color/background_theme"
+                    android:text="@string/fetching"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_14font_mdp" />
 
 

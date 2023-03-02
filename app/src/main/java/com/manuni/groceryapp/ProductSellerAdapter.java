@@ -1,8 +1,10 @@
 package com.manuni.groceryapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +28,7 @@ import com.manuni.groceryapp.databinding.SampleProductSellerBinding;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ProductSellerAdapter extends RecyclerView.Adapter<ProductSellerAdapter.ProductSellerViewHolder> implements Filterable {
     private Context context;
@@ -45,6 +48,7 @@ public class ProductSellerAdapter extends RecyclerView.Adapter<ProductSellerAdap
         return new ProductSellerViewHolder(view);
     }
 
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     @Override
     public void onBindViewHolder(@NonNull ProductSellerViewHolder holder, int position) {
         ModelProduct data = list.get(position);
@@ -66,39 +70,63 @@ public class ProductSellerAdapter extends RecyclerView.Adapter<ProductSellerAdap
         holder.binding.quantityTV.setText(quantity);
 
 
+        double discountPriceDouble = 0;
+        double productOriginalPriceDouble = 0;
+        try {
+            discountPriceDouble = Double.parseDouble(discountPrice);
+            productOriginalPriceDouble = Double.parseDouble(productOriginalPrice);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
 
-
-        double discountPriceDouble = Double.parseDouble(discountPrice);
-        double productOriginalPriceDouble = Double.parseDouble(productOriginalPrice);
-
-        holder.binding.discountPriceTV.setText(String.format("৳%.2f",discountPriceDouble));
-        holder.binding.originalPriceTV.setText(String.format("৳%.2f",productOriginalPriceDouble));
+        try {
+            holder.binding.discountPriceTV.setText(String.format("৳%.2f",discountPriceDouble));
+            holder.binding.originalPriceTV.setText(String.format("৳%.2f",productOriginalPriceDouble));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (productAvailable.equals("false")&&(discountAvailable.equals("true")||discountAvailable.equals("false"))){
-            holder.binding.productAvailableTV.setText("Not Available");
-            holder.binding.productAvailableTV.setTextColor(context.getResources().getColor(R.color.colorRed));
-            // holder.binding.discountNoteTV.setVisibility(View.GONE);
-            holder.binding.productAvailableTV.setVisibility(View.VISIBLE);
+            try {
+                holder.binding.productAvailableTV.setText("Not Available");
+                holder.binding.productAvailableTV.setTextColor(context.getResources().getColor(R.color.colorRed));
+                // holder.binding.discountNoteTV.setVisibility(View.GONE);
+                holder.binding.productAvailableTV.setVisibility(View.VISIBLE);
+            } catch (Resources.NotFoundException e) {
+                e.printStackTrace();
+            }
         }else {
-            holder.binding.discountNoteTV.setText(discountNote+"% OFF");
-            holder.binding.productAvailableTV.setVisibility(View.GONE);
+            try {
+                holder.binding.discountNoteTV.setText(discountNote+"% OFF");
+                holder.binding.productAvailableTV.setVisibility(View.GONE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         if (discountAvailable.equals("true")){
             //product is on discount
 
-            holder.binding.discountPriceTV.setVisibility(View.VISIBLE);
-            holder.binding.discountNoteTV.setText(discountNote+"% OFF");
-            // holder.binding.discountNoteTV.setVisibility(View.VISIBLE);
-            //to make strike original price when it is on discount state
-            holder.binding.originalPriceTV.setPaintFlags(holder.binding.originalPriceTV.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            try {
+                holder.binding.discountPriceTV.setVisibility(View.VISIBLE);
+                holder.binding.discountNoteTV.setText(discountNote+"% OFF");
+                // holder.binding.discountNoteTV.setVisibility(View.VISIBLE);
+                //to make strike original price when it is on discount state
+                holder.binding.originalPriceTV.setPaintFlags(holder.binding.originalPriceTV.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         }else {
             //product is not on discount
-            holder.binding.discountPriceTV.setVisibility(View.GONE);
-            //holder.binding.discountNoteTV.setText("0% OFF");
-            holder.binding.discountNoteTV.setVisibility(View.GONE);
-            holder.binding.originalPriceTV.setPaintFlags(0);
+            try {
+                holder.binding.discountPriceTV.setVisibility(View.GONE);
+                //holder.binding.discountNoteTV.setText("0% OFF");
+                holder.binding.discountNoteTV.setVisibility(View.GONE);
+                holder.binding.originalPriceTV.setPaintFlags(0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         try {
@@ -119,6 +147,7 @@ public class ProductSellerAdapter extends RecyclerView.Adapter<ProductSellerAdap
 
     }
 
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     private void detailsBottomSheet(ModelProduct data) {
         BottomSheetProductDetailsSellerBinding binding;
 
@@ -142,29 +171,47 @@ public class ProductSellerAdapter extends RecyclerView.Adapter<ProductSellerAdap
         String timestamp = data.getTimestamp();
         String productOriginalPrice = data.getProductOriginalPrice();
 
-        double discountPriceDouble = Double.parseDouble(discountPrice);
-        double productOriginalPriceDouble = Double.parseDouble(productOriginalPrice);
+        double discountPriceDouble = 0;
+        double productOriginalPriceDouble = 0;
+        try {
+            discountPriceDouble = Double.parseDouble(discountPrice);
+            productOriginalPriceDouble = Double.parseDouble(productOriginalPrice);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
 
-        binding.titleTV.setText(title);
-        binding.descriptionTV.setText(productDescription);
-        binding.categoryTV.setText(productCategory);
-        binding.quantityTV.setText(quantity);
-        binding.discountNote.setText(discountNote+"% OFF");
-        binding.discountPriceTV.setText(String.format("৳%.2f",discountPriceDouble));
-        binding.originalPriceTV.setText(String.format("৳%.2f",productOriginalPriceDouble));
+        try {
+            binding.titleTV.setText(title);
+            binding.descriptionTV.setText(productDescription);
+            binding.categoryTV.setText(productCategory);
+            binding.quantityTV.setText(quantity);
+            binding.discountNote.setText(discountNote+"% OFF");
+            binding.discountPriceTV.setText(String.format("৳%.2f",discountPriceDouble));
+            binding.originalPriceTV.setText(String.format("৳%.2f",productOriginalPriceDouble));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (discountAvailable.equals("true")){
             //product is on discount
 
-            binding.discountPriceTV.setVisibility(View.VISIBLE);
-            binding.discountNote.setVisibility(View.VISIBLE);
-            //to make strike original price when it is on discount state
-            binding.originalPriceTV.setPaintFlags(binding.originalPriceTV.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            try {
+                binding.discountPriceTV.setVisibility(View.VISIBLE);
+                binding.discountNote.setVisibility(View.VISIBLE);
+                //to make strike original price when it is on discount state
+                binding.originalPriceTV.setPaintFlags(binding.originalPriceTV.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         }else {
             //product is not on discount
-            binding.discountPriceTV.setVisibility(View.GONE);
-            binding.discountNote.setVisibility(View.GONE);
+            try {
+                binding.discountPriceTV.setVisibility(View.GONE);
+                binding.discountNote.setVisibility(View.GONE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         try {
@@ -222,7 +269,7 @@ public class ProductSellerAdapter extends RecyclerView.Adapter<ProductSellerAdap
     private void deleteProduct(String id) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
-        databaseReference.child(auth.getUid()).child("Products").child(id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+        databaseReference.child(Objects.requireNonNull(auth.getUid())).child("Products").child(id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(context, "Product deleted successfully!", Toast.LENGTH_SHORT).show();

@@ -22,13 +22,12 @@
 
         <TextView
             android:id="@+id/nameTxt"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@id/moreBtn"
             android:layout_toEndOf="@id/profileIV"
-            android:ellipsize="end"
             android:maxLines="1"
-            android:text="Mahmud Islam Bappi Mahmud Islam Bappi"
+            android:text="@string/fetching"
             android:textColor="@color/white"
             android:textSize="@dimen/_15font_mdp"
             android:textStyle="bold" />
@@ -38,39 +37,39 @@
             android:layout_width="@dimen/_20mdp"
             android:layout_height="@dimen/_20mdp"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_more_white"
-            android:background="@android:color/transparent"/>
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_more_white" />
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/logoutBtn"-->
-<!--            android:layout_width="@dimen/_20mdp"-->
-<!--            android:layout_height="@dimen/_20mdp"-->
-<!--            android:layout_alignParentEnd="true"-->
-<!--            android:layout_marginTop="@dimen/_5mdp"-->
-<!--            android:background="@drawable/ic_logout_white" />-->
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/logoutBtn"-->
+        <!--            android:layout_width="@dimen/_20mdp"-->
+        <!--            android:layout_height="@dimen/_20mdp"-->
+        <!--            android:layout_alignParentEnd="true"-->
+        <!--            android:layout_marginTop="@dimen/_5mdp"-->
+        <!--            android:background="@drawable/ic_logout_white" />-->
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/editProfileBtn"-->
-<!--            android:layout_width="@dimen/_20mdp"-->
-<!--            android:layout_height="@dimen/_20mdp"-->
-<!--            android:layout_marginTop="@dimen/_5mdp"-->
-<!--            android:layout_toStartOf="@id/logoutBtn"-->
-<!--            android:background="@drawable/ic_edit_white" />-->
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/editProfileBtn"-->
+        <!--            android:layout_width="@dimen/_20mdp"-->
+        <!--            android:layout_height="@dimen/_20mdp"-->
+        <!--            android:layout_marginTop="@dimen/_5mdp"-->
+        <!--            android:layout_toStartOf="@id/logoutBtn"-->
+        <!--            android:background="@drawable/ic_edit_white" />-->
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/settingsBtn"-->
-<!--            android:layout_width="@dimen/_30mdp"-->
-<!--            android:layout_height="@dimen/_30mdp"-->
-<!--            android:layout_toStartOf="@id/editProfileBtn"-->
-<!--            android:background="@android:color/transparent"-->
-<!--            android:src="@drawable/ic_settings_white" />-->
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/settingsBtn"-->
+        <!--            android:layout_width="@dimen/_30mdp"-->
+        <!--            android:layout_height="@dimen/_30mdp"-->
+        <!--            android:layout_toStartOf="@id/editProfileBtn"-->
+        <!--            android:background="@android:color/transparent"-->
+        <!--            android:src="@drawable/ic_settings_white" />-->
 
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileIV"
             android:layout_width="@dimen/_70mdp"
             android:layout_height="@dimen/_70mdp"
-            android:layout_marginEnd="@dimen/_10mdp"
+            android:layout_marginEnd="@dimen/_5mdp"
             android:src="@drawable/ic_store_gray"
             app:civ_border_color="@color/colorGray02"
             app:civ_border_width="@dimen/_2mdp" />
@@ -80,11 +79,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/nameTxt"
+            android:layout_toStartOf="@id/moreBtn"
             android:layout_toEndOf="@id/profileIV"
             android:ellipsize="end"
-            android:maxLines="1"
-            android:layout_toStartOf="@id/moreBtn"
-            android:text="email"
+            android:maxLines="2"
+            android:text="@string/fetching"
             android:textColor="@color/white" />
 
         <TextView
@@ -93,9 +92,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/emailTV"
             android:layout_toEndOf="@id/profileIV"
-            android:text="Phone"
-            android:maxLines="1"
             android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/fetching"
             android:textColor="@color/white" />
 
         <LinearLayout
@@ -129,10 +128,16 @@
         </LinearLayout>
 
 
-
-
-
     </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/filterArea"
+        android:layout_width="@dimen/_30mdp"
+        android:layout_height="@dimen/_30mdp"
+        android:layout_below="@id/toolbarRL"
+        android:layout_marginTop="@dimen/_7mdp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_filter_area_two" />
 
 
     <com.mancj.materialsearchbar.MaterialSearchBar
@@ -142,11 +147,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbarRL"
         android:layout_marginBottom="@dimen/_5mdp"
+        android:layout_toStartOf="@id/filterProductBtn"
+        android:layout_toEndOf="@id/filterArea"
         android:padding="@dimen/_2mdp"
+        android:visibility="visible"
         app:mt_hint="Search a shop"
         app:mt_maxSuggestionsCount="10"
-        android:layout_toStartOf="@id/filterProductBtn"
-        app:mt_navIconEnabled="true"
         app:mt_placeholder="Search by name,email or phone"
         app:mt_placeholderColor="#E1DFDF"
         app:mt_speechMode="false" />
@@ -159,10 +165,9 @@
         android:layout_below="@id/toolbarRL"
         android:layout_marginBottom="@dimen/_5mdp"
         android:padding="@dimen/_2mdp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:mt_hint="Search a order"
         app:mt_maxSuggestionsCount="10"
-        app:mt_navIconEnabled="true"
         app:mt_placeholder="Search by shop name or status"
         app:mt_placeholderColor="#E1DFDF"
         app:mt_speechMode="false" />
@@ -172,12 +177,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/searchBar"
-        android:layout_marginStart="@dimen/_10mdp"
+        android:layout_marginStart="@dimen/_13mdp"
         android:gravity="start"
         android:padding="@dimen/_3mdp"
         android:text="Showing All"
         android:textColor="@color/black"
         android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/myArea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchBar"
+        android:layout_toEndOf="@id/shopsFoundTV"
+        android:padding="@dimen/_3mdp"
+        android:text="" />
 
     <TextView
         android:id="@+id/shopsFoundTV"
@@ -200,8 +214,8 @@
         android:layout_marginBottom="@dimen/_5mdp"
         android:background="@null"
         android:scaleType="fitXY"
-        android:visibility="gone"
-        android:src="@drawable/ic_filter_gray" />
+        android:src="@drawable/ic_filter_gray"
+        android:visibility="visible" />
 
 
 

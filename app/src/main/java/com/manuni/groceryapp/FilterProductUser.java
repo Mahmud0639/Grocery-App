@@ -1,5 +1,6 @@
 package com.manuni.groceryapp;
 
+import android.annotation.SuppressLint;
 import android.widget.Filter;
 
 import java.util.ArrayList;
@@ -25,7 +26,9 @@ public class FilterProductUser extends Filter {
             for (int i = 0; i<productArrayList.size();i++){
                 //check, search by title and category
 
-                if (productArrayList.get(i).getProductTitle().toUpperCase().contains(constraint)||productArrayList.get(i).getProductCategory().toUpperCase().contains(constraint)){
+                if (productArrayList.get(i).getProductTitle().toUpperCase().contains(constraint)
+                        ||productArrayList.get(i).getProductCategory().toUpperCase().contains(constraint)
+                        || productArrayList.get(i).getProductDesc().toUpperCase().contains(constraint)){
                     filterProduct.add(productArrayList.get(i));
                 }
             }
@@ -39,6 +42,7 @@ public class FilterProductUser extends Filter {
         return filterResults;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void publishResults(CharSequence constraint, FilterResults filterResults) {
         adapter.list = (ArrayList<ModelProduct>) filterResults.values;

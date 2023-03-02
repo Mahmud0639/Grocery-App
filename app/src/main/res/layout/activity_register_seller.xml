@@ -59,10 +59,10 @@
             android:src="@drawable/ic_key_white" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/iconIv"
-            android:id="@+id/cons">
+            android:layout_below="@id/iconIv">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/personImageShow"
@@ -79,95 +79,156 @@
 
             <ImageView
                 android:id="@+id/personImage"
-                android:background="@drawable/circle_bg_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/circle_bg_blue"
                 android:src="@drawable/ic_take_photo"
                 app:layout_constraintEnd_toEndOf="@id/personImageShow"
-                app:layout_constraintTop_toTopOf="@id/personImageShow"/>
+                app:layout_constraintTop_toTopOf="@id/personImageShow" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-        <EditText
-            android:id="@+id/fullNameET"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputFullName"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/cons"
-            android:layout_marginStart="@dimen/_5mdp"
             android:layout_marginTop="@dimen/_5mdp"
-            android:layout_marginEnd="@dimen/_5mdp"
-            android:textColor="@color/black"
-            android:textColorHint="#919090"
-            android:layout_marginBottom="@dimen/_5mdp"
-            android:background="@drawable/shape_rect_02"
-            android:drawableStart="@drawable/ic_person_gray"
-            android:drawablePadding="@dimen/_5mdp"
-            android:hint="@string/full_name"
-            android:inputType="text|textCapWords"
-            android:padding="@dimen/_10mdp"
-            tools:ignore="TextFields" />
+            app:boxBackgroundMode="outline"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
+            app:helperText="Your full name"
+            app:helperTextTextColor="#919090"
+            app:hintEnabled="false">
 
-        <EditText
-            android:id="@+id/shopET"
+            <EditText
+                android:id="@+id/fullNameET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5mdp"
+                android:layout_marginEnd="@dimen/_5mdp"
+                android:layout_marginBottom="@dimen/_5mdp"
+                android:background="@drawable/shape_rect_02"
+                android:drawableStart="@drawable/ic_person_gray"
+                android:drawablePadding="@dimen/_5mdp"
+                android:hint="@string/full_name"
+                android:inputType="text|textCapWords"
+                android:padding="@dimen/_10mdp"
+                android:textColor="@color/black"
+                android:textColorHint="#919090"
+                tools:ignore="TextFields" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+       <com.google.android.material.textfield.TextInputLayout
+           android:id="@+id/textInputShopName"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@id/textInputFullName"
+           app:endIconMode="clear_text"
+           app:errorEnabled="true"
+           app:hintEnabled="false"
+           app:boxBackgroundMode="outline"
+           android:layout_marginTop="@dimen/_5mdp"
+           app:helperTextTextColor="#919090"
+           style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+           app:helperText="Your shop name">
+
+           <EditText
+               android:id="@+id/shopET"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginStart="@dimen/_5mdp"
+               android:layout_marginEnd="@dimen/_5mdp"
+               android:layout_marginBottom="@dimen/_5mdp"
+               android:background="@drawable/shape_rect_02"
+               android:drawableStart="@drawable/ic_store_gray"
+               android:drawablePadding="@dimen/_5mdp"
+               android:hint="@string/shop_name"
+               android:inputType="textPersonName|textCapWords"
+               android:padding="@dimen/_10mdp"
+               android:textColor="@color/black"
+               android:textColorHint="#919090" />
+
+       </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/fullNameET"
-            android:layout_marginStart="@dimen/_5mdp"
+            android:layout_below="@id/textInputShopName"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="outline"
             android:layout_marginTop="@dimen/_5mdp"
-            android:layout_marginEnd="@dimen/_5mdp"
-            android:textColor="@color/black"
-            android:textColorHint="#919090"
-            android:layout_marginBottom="@dimen/_5mdp"
-            android:background="@drawable/shape_rect_02"
-            android:drawableStart="@drawable/ic_store_gray"
-            android:drawablePadding="@dimen/_5mdp"
-            android:hint="@string/shop_name"
-            android:inputType="textPersonName|textCapWords"
-            android:padding="@dimen/_10mdp" />
+            app:helperTextTextColor="#919090"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:helperText="01*********">
+
+            <EditText
+                android:id="@+id/phoneET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5mdp"
+                android:layout_marginEnd="@dimen/_5mdp"
+                android:layout_marginBottom="@dimen/_5mdp"
+                android:background="@drawable/shape_rect_02"
+                android:drawableStart="@drawable/ic_phone_gray"
+                android:drawablePadding="@dimen/_5mdp"
+                android:hint="@string/phone_number"
+                android:inputType="phone"
+                android:padding="@dimen/_10mdp"
+                android:textColor="@color/black"
+                android:textColorHint="#919090" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
 
-        <EditText
-            android:id="@+id/phoneET"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputDelivery"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/shopET"
-            android:layout_marginStart="@dimen/_5mdp"
+            android:layout_below="@id/textInputPhone"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
+            app:hintEnabled="false"
             android:layout_marginTop="@dimen/_5mdp"
-            android:textColor="@color/black"
-            android:textColorHint="#919090"
-            android:layout_marginEnd="@dimen/_5mdp"
-            android:layout_marginBottom="@dimen/_5mdp"
-            android:background="@drawable/shape_rect_02"
-            android:drawableStart="@drawable/ic_phone_gray"
-            android:drawablePadding="@dimen/_5mdp"
-            android:hint="@string/phone_number"
-            android:inputType="phone"
-            android:padding="@dimen/_10mdp" />
+            app:boxBackgroundMode="outline"
+            app:helperTextTextColor="#919090"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:helperText="Delivery fee start from 5">
 
-        <EditText
-            android:id="@+id/deliveryET"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/phoneET"
-            android:layout_marginStart="@dimen/_5mdp"
-            android:layout_marginTop="@dimen/_5mdp"
-            android:layout_marginEnd="@dimen/_5mdp"
-            android:layout_marginBottom="@dimen/_5mdp"
-            android:textColor="@color/black"
-            android:textColorHint="#919090"
-            android:background="@drawable/shape_rect_02"
-            android:drawableStart="@drawable/ic_shipping_gray"
-            android:drawablePadding="@dimen/_5mdp"
-            android:hint="@string/delivery_fee"
-            android:inputType="numberDecimal"
-            android:padding="@dimen/_10mdp" />
+            <EditText
+                android:id="@+id/deliveryET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5mdp"
+                android:layout_marginEnd="@dimen/_5mdp"
+                android:layout_marginBottom="@dimen/_5mdp"
+                android:background="@drawable/shape_rect_02"
+                android:drawableStart="@drawable/ic_shipping_gray"
+                android:drawablePadding="@dimen/_5mdp"
+                android:hint="@string/delivery_fee"
+                android:inputType="numberDecimal"
+                android:padding="@dimen/_10mdp"
+                android:textColor="@color/black"
+                android:textColorHint="#919090" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
 
         <LinearLayout
             android:id="@+id/linearLayoutLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/deliveryET"
+            android:layout_below="@id/textInputDelivery"
             android:layout_margin="@dimen/_5mdp"
             android:orientation="horizontal">
 
@@ -233,69 +294,115 @@
             android:background="@drawable/shape_rect_02"
             android:drawableStart="@drawable/ic_location_gray"
             android:drawablePadding="@dimen/_5mdp"
-            android:textColor="@color/black"
-            android:textColorHint="#919090"
             android:hint="@string/complete_address"
             android:inputType="textPostalAddress|textMultiLine"
             android:padding="@dimen/_10mdp"
+            android:textColor="@color/black"
+            android:textColorHint="#919090"
             android:visibility="visible" />
 
-        <EditText
-            android:id="@+id/emailEt"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/textInputEmail"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
+            app:hintEnabled="false"
+            android:layout_marginTop="@dimen/_5mdp"
             android:layout_below="@id/completeAddressET"
-            android:layout_marginStart="@dimen/_5mdp"
-            android:layout_marginTop="@dimen/_5mdp"
-            android:layout_marginEnd="@dimen/_5mdp"
-            android:layout_marginBottom="@dimen/_5mdp"
-            android:background="@drawable/shape_rect_02"
-            android:drawableStart="@drawable/ic_mail_gray"
-            android:drawablePadding="@dimen/_5mdp"
-            android:hint="@string/email"
-            android:textColor="@color/black"
-            android:textColorHint="#919090"
-            android:inputType="textEmailAddress"
-            android:padding="@dimen/_10mdp"
-            android:visibility="visible" />
+            app:boxBackgroundMode="outline"
+            app:helperTextTextColor="#919090"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:helperText="example@gmail.com">
 
-        <EditText
+            <EditText
+                android:id="@+id/emailEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5mdp"
+                android:layout_marginEnd="@dimen/_5mdp"
+                android:layout_marginBottom="@dimen/_5mdp"
+                android:background="@drawable/shape_rect_02"
+                android:drawableStart="@drawable/ic_mail_gray"
+                android:drawablePadding="@dimen/_5mdp"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:padding="@dimen/_10mdp"
+                android:textColor="@color/black"
+                android:textColorHint="#919090"
+                android:visibility="visible" />
 
-            android:id="@+id/passwordET"
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputPass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/emailEt"
-            android:layout_marginStart="@dimen/_5mdp"
+            android:layout_below="@id/textInputEmail"
+            app:passwordToggleEnabled="true"
+            app:errorEnabled="true"
+            app:helperText="**********"
+            app:passwordToggleTint="#919090"
+            app:helperTextTextColor="#919090"
             android:layout_marginTop="@dimen/_5mdp"
-            android:textColor="@color/black"
-            android:textColorHint="#919090"
-            android:layout_marginEnd="@dimen/_5mdp"
-            android:layout_marginBottom="@dimen/_5mdp"
-            android:background="@drawable/shape_rect_02"
-            android:drawableStart="@drawable/ic_lock_gray"
-            android:drawablePadding="@dimen/_5mdp"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:padding="@dimen/_10mdp" />
+            app:hintEnabled="false">
 
-        <EditText
-            android:id="@+id/confirmPasswordET"
+            <EditText
+
+                android:id="@+id/passwordET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5mdp"
+                android:textColor="@color/black"
+                android:textColorHint="#919090"
+                android:layout_marginEnd="@dimen/_5mdp"
+                android:layout_marginBottom="@dimen/_5mdp"
+                android:background="@drawable/shape_rect_02"
+                android:drawableStart="@drawable/ic_lock_gray"
+                android:drawablePadding="@dimen/_5mdp"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:padding="@dimen/_10mdp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputConfirmPass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/passwordET"
-            android:layout_marginStart="@dimen/_5mdp"
+            android:layout_below="@id/textInputPass"
+            app:passwordToggleEnabled="true"
+            app:errorEnabled="true"
+            app:helperText="**********"
+            app:helperTextTextColor="#919090"
+            app:passwordToggleTint="#919090"
             android:layout_marginTop="@dimen/_5mdp"
-            android:layout_marginEnd="@dimen/_5mdp"
-            android:layout_marginBottom="@dimen/_5mdp"
-            android:background="@drawable/shape_rect_02"
-            android:drawableStart="@drawable/ic_lock_gray"
-            android:drawablePadding="@dimen/_5mdp"
-            android:hint="@string/confirm_password"
-            android:textColor="@color/black"
-            android:textColorHint="#919090"
-            android:inputType="textPassword"
-            android:padding="@dimen/_10mdp"
-            android:visibility="visible" />
+            app:hintEnabled="false">
+
+            <EditText
+                android:id="@+id/confirmPasswordET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textInputPass"
+                android:layout_marginStart="@dimen/_5mdp"
+                android:layout_marginEnd="@dimen/_5mdp"
+                android:layout_marginBottom="@dimen/_5mdp"
+                android:background="@drawable/shape_rect_02"
+                android:drawableStart="@drawable/ic_lock_gray"
+                android:drawablePadding="@dimen/_5mdp"
+                android:hint="@string/confirm_password"
+                android:textColor="@color/black"
+                android:textColorHint="#919090"
+                android:inputType="textPassword"
+                android:padding="@dimen/_10mdp"
+                android:visibility="visible" />
+
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
 
 
         <Button
@@ -303,7 +410,7 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/confirmPasswordET"
+            android:layout_below="@id/textInputConfirmPass"
             android:layout_centerHorizontal="true"
             android:minWidth="@dimen/_120mdp"
             android:text="@string/register"

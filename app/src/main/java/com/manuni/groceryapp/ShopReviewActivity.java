@@ -1,10 +1,10 @@
 package com.manuni.groceryapp;
 
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-import android.view.View;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,18 +28,21 @@ public class ShopReviewActivity extends AppCompatActivity {
         binding = ActivityShopReviewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        shopUid = getIntent().getStringExtra("shopUid");
+        try {
+            shopUid = getIntent().getStringExtra("shopUid");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        loadShopDetails();
-        loadShopReviews();
+        try {
+            loadShopDetails();
+            loadShopReviews();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
-        binding.backArrowBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        binding.backArrowBtn.setOnClickListener(view -> onBackPressed());
 
     }
 
@@ -48,21 +51,40 @@ public class ShopReviewActivity extends AppCompatActivity {
         modelReviewArrayList = new ArrayList<>();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
         reference.child(shopUid).child("Ratings").addValueEventListener(new ValueEventListener() {
+            @SuppressLint({"DefaultLocale", "SetTextI18n"})
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 modelReviewArrayList.clear();
                 ratingSum = 0;
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    float rating = Float.parseFloat(""+dataSnapshot.child("ratings").getValue());//e.g 4.5
+                    float rating = 0;//e.g 4.5
+                    try {
+                        rating = Float.parseFloat(""+dataSnapshot.child("ratings").getValue());
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
                     ratingSum = ratingSum+rating;
 
-                    ModelReview modelReview = dataSnapshot.getValue(ModelReview.class);
+                    ModelReview modelReview = null;
+                    try {
+                        modelReview = dataSnapshot.getValue(ModelReview.class);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
-                    modelReviewArrayList.add(modelReview);
+                    try {
+                        modelReviewArrayList.add(modelReview);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 adapterReview = new AdapterReview(ShopReviewActivity.this,modelReviewArrayList);
 
-                binding.reviewRV.setAdapter(adapterReview);
+                try {
+                    binding.reviewRV.setAdapter(adapterReview);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 long numberOfReviews = snapshot.getChildrenCount();
                 float avgOfReviews = ratingSum/numberOfReviews;
@@ -83,8 +105,14 @@ public class ShopReviewActivity extends AppCompatActivity {
         dbRef.child(shopUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String shopName = ""+snapshot.child("shopName").getValue();
-                String profileImage = ""+snapshot.child("profileImage").getValue();
+                String shopName = null;
+                String profileImage = null;
+                try {
+                    shopName = ""+snapshot.child("shopName").getValue();
+                    profileImage = ""+snapshot.child("profileImage").getValue();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 binding.shopNameTV.setText(shopName);
                 try {

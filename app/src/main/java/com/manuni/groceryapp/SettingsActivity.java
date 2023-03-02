@@ -44,20 +44,20 @@ public class SettingsActivity extends AppCompatActivity {
 
         binding.notificationSwitch.setChecked(isChecked);
 
-        binding.backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        binding.backBtn.setOnClickListener(view -> onBackPressed());
 
-        binding.notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked){
-                   subscribeToTopic();
-                }else {
+        binding.notificationSwitch.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            if (isChecked){
+                try {
+                    subscribeToTopic();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else {
+                try {
                     unSubscribeToTopic();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -65,38 +65,22 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
     private void subscribeToTopic(){
-        FirebaseMessaging.getInstance().subscribeToTopic(Constants.TOPICS).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                spEditor = sharedPreferences.edit();
-                spEditor.putBoolean("FCM_ENABLED",true);
-                spEditor.apply();
-                Toast.makeText(SettingsActivity.this, "You will be able to get all the notifications", Toast.LENGTH_SHORT).show();
-                binding.notificationStatusTV.setText(enabledMessaging);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(SettingsActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        FirebaseMessaging.getInstance().subscribeToTopic(Constants.TOPICS).addOnSuccessListener(unused -> {
+            spEditor = sharedPreferences.edit();
+            spEditor.putBoolean("FCM_ENABLED",true);
+            spEditor.apply();
+            Toast.makeText(SettingsActivity.this, "You will be able to get all the notifications", Toast.LENGTH_SHORT).show();
+            binding.notificationStatusTV.setText(enabledMessaging);
+        }).addOnFailureListener(e -> Toast.makeText(SettingsActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show());
     }
     private void unSubscribeToTopic(){
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(Constants.TOPICS).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                spEditor = sharedPreferences.edit();
-                spEditor.putBoolean("FCM_ENABLED",false);
-                spEditor.apply();
-                //Toast.makeText(SettingsActivity.this, ""+disabledMessaging, Toast.LENGTH_SHORT).show();
-                Toast.makeText(SettingsActivity.this, "You will not get any notifications", Toast.LENGTH_SHORT).show();
-                binding.notificationStatusTV.setText(disabledMessaging);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(SettingsActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(Constants.TOPICS).addOnSuccessListener(unused -> {
+            spEditor = sharedPreferences.edit();
+            spEditor.putBoolean("FCM_ENABLED",false);
+            spEditor.apply();
+            //Toast.makeText(SettingsActivity.this, ""+disabledMessaging, Toast.LENGTH_SHORT).show();
+            Toast.makeText(SettingsActivity.this, "You will not get any notifications", Toast.LENGTH_SHORT).show();
+            binding.notificationStatusTV.setText(disabledMessaging);
+        }).addOnFailureListener(e -> Toast.makeText(SettingsActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 }

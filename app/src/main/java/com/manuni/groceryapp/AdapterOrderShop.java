@@ -1,5 +1,6 @@
 package com.manuni.groceryapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.text.format.DateFormat;
@@ -40,6 +41,7 @@ public class AdapterOrderShop extends RecyclerView.Adapter<AdapterOrderShop.Adap
         return new AdapterOrderShopViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull AdapterOrderShopViewHolder holder, int position) {
         ModelOrderShop data = list.get(position);
@@ -75,18 +77,15 @@ public class AdapterOrderShop extends RecyclerView.Adapter<AdapterOrderShop.Adap
 
         holder.binding.dateTV.setText(date);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context,OrderDetailsSellerActivity.class);
-                intent.putExtra("orderId",orderId);//to load order info
-                intent.putExtra("orderBy",orderBy);//to load user info
-                intent.putExtra("orderTo",orderTo);
-                try {
-                    context.startActivity(intent);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(context,OrderDetailsSellerActivity.class);
+            intent.putExtra("orderId",orderId);//to load order info
+            intent.putExtra("orderBy",orderBy);//to load user info
+            intent.putExtra("orderTo",orderTo);
+            try {
+                context.startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }

@@ -39,7 +39,7 @@
                 android:layout_marginTop="@dimen/_2mdp"
                 android:layout_marginEnd="@dimen/_2mdp"
                 android:layout_marginBottom="@dimen/_2mdp"
-                android:text="@string/shop_name"
+                android:text="@string/fetching"
                 android:textColor="@color/white" />
 
             <TextView
@@ -51,7 +51,7 @@
                 android:layout_marginTop="@dimen/_2mdp"
                 android:layout_marginEnd="@dimen/_2mdp"
                 android:layout_marginBottom="@dimen/_2mdp"
-                android:text="@string/phone_number"
+                android:text="@string/fetching"
                 android:textColor="@color/white" />
 
             <TextView
@@ -59,8 +59,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/phoneTV"
-                android:layout_margin="@dimen/_2mdp"
-                android:text="@string/email"
+                android:layout_marginStart="@dimen/_2mdp"
+                android:layout_marginTop="@dimen/_2mdp"
+                android:layout_marginEnd="@dimen/_2mdp"
+                android:layout_marginBottom="@dimen/_2mdp"
+                android:text="@string/fetching"
                 android:textColor="@color/white" />
 
             <TextView
@@ -68,9 +71,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_margin="@dimen/_2mdp"
+                android:layout_marginStart="@dimen/_2mdp"
+                android:layout_marginTop="@dimen/_2mdp"
+                android:layout_marginEnd="@dimen/_2mdp"
+                android:layout_marginBottom="@dimen/_2mdp"
                 android:padding="@dimen/_5mdp"
-                android:text="@string/shop_open"
+                android:text="@string/fetching"
                 android:textColor="@color/white" />
 
             <TextView
@@ -83,7 +89,7 @@
                 android:layout_marginTop="@dimen/_2mdp"
                 android:layout_marginEnd="@dimen/_2mdp"
                 android:layout_marginBottom="@dimen/_2mdp"
-                android:text="@string/delivery_fee"
+                android:text="@string/fetching"
                 android:textColor="@color/white" />
 
             <RatingBar
@@ -103,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/emailTV"
                 android:layout_marginTop="@dimen/_10mdp"
-                android:text="@string/complete_address"
+                android:text="@string/fetching"
                 android:textColor="@color/white" />
 
             <LinearLayout
@@ -201,22 +207,35 @@
         android:layout_height="match_parent"
         android:layout_below="@id/shopRL">
 
-        <EditText
-            android:id="@+id/searchET"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/textInputSearch"
             android:layout_marginStart="@dimen/_5mdp"
             android:layout_marginTop="@dimen/_5mdp"
             android:layout_marginEnd="@dimen/_5mdp"
             android:layout_marginBottom="@dimen/_5mdp"
-            android:textColor="@color/black"
-            android:textColorHint="#919090"
             android:layout_toStartOf="@id/filterProductBtn"
-            android:background="@drawable/shape_rect_02"
-            android:drawableStart="@drawable/ic_search_gray"
-            android:drawablePadding="@dimen/_10mdp"
-            android:hint="@string/search"
-            android:padding="@dimen/_8mdp" />
+            app:endIconMode="clear_text"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="outline"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+           >
+
+            <EditText
+                android:id="@+id/searchET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_rect_02"
+                android:drawableStart="@drawable/ic_search_gray"
+                android:drawablePadding="@dimen/_10mdp"
+                android:hint="@string/search"
+                android:padding="@dimen/_8mdp"
+                android:textColor="@color/black"
+                android:textColorHint="#919090" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <ImageButton
             android:id="@+id/filterProductBtn"
@@ -234,7 +253,7 @@
             android:id="@+id/filterProductTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/searchET"
+            android:layout_below="@id/textInputSearch"
             android:layout_marginStart="@dimen/_5mdp"
             android:layout_marginBottom="@dimen/_5mdp"
             android:text="@string/showing_all"
@@ -245,7 +264,7 @@
             android:layout_height="wrap_content"
             android:text=""
             android:layout_toEndOf="@id/filterProductTV"
-            android:layout_below="@id/searchET"
+            android:layout_below="@id/textInputSearch"
             android:textColor="#919090"
             android:layout_marginStart="@dimen/_3mdp"/>
 

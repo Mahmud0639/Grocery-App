@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GroceryApp</string>
+    <string name="app_name">Shopper</string>
     <string name="add_category">Add Category</string>
     <string name="category_name">Category name</string>
     <string name="add_product">Add Product</string>
@@ -117,5 +117,6 @@
     <string name="_1_kg">1 KG</string>
     <string name="deshi_fresh_fooddeshi_fresh_fooddeshi_fresh_fooddeshi_fresh_foodeshi_fresh_fooddeshi_fresh_food">Deshi fresh foodDeshi fresh foodDeshi fresh foodDeshi fresh fooDeshi fresh foodDeshi fresh food</string>
     <string name="order_korun">অর্ডার করুন</string>
-    <string name="terms_conditions_text">By default you\'re blocked while creating an account automatically without our permission to create a seller account.You may be blocked by your admin if you violet any rules.Please contact your admin to unblock your account and make sure that you are definitely opening the account on your own volition. In any circumstances you may be contacted, you will immediately join us in contacting you. In any problem you can contact our admin. So if you are agree then please click on the I agree button.If you are old user then if you blocked then there is no need to set shop category again. You just need to be unblocked by an admin.</string>
+    <string name="terms_conditions_text">By default you\'re blocked while creating an account automatically without our permission to create a seller account.You may be blocked by your admin if you violet any rules.Please contact your admin to unblock your account and make sure that you are definitely opening the account on your own volition. In any circumstances you may be contacted, you will immediately join us in contacting you. In any problem you can contact our admin. So if you are agree then please click on the I agree button.If you are old user then if you blocked then there is no need to set shop category again. You just need to be unblocked by an admin.If you are old user then if you blocked then there is no need to set shop category again. You just need to be unblocked by an admin.If you are old user then if you blocked then there is no need to set shop category again. You just need to be unblocked by an admin.If you are old user then if you blocked then there is no need to set shop category again. You just need to be unblocked by an admin.If you are old user then if you blocked then there is no need to set shop category again. You just need to be unblocked by an admin.If you are old user then if you blocked then there is no need to set shop category again. You just need to be unblocked by an admin.If you are old user then if you blocked then there is no need to set shop category again. You just need to be unblocked by an admin.</string>
+    <string name="fetching">fetching…</string>
 </resources>

@@ -25,7 +25,7 @@
             android:textSize="@dimen/_13font_mdp"/>
         <TextView
             android:id="@+id/category"
-            android:layout_width="@dimen/_140mdp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cooking_needs"
             android:textColor="#2C2A2A"

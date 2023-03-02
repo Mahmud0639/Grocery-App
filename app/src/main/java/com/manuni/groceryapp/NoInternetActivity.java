@@ -1,9 +1,5 @@
 package com.manuni.groceryapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,10 +8,11 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.manuni.groceryapp.databinding.ActivityNoInternetBinding;
+
+import java.util.Objects;
 
 public class NoInternetActivity extends AppCompatActivity {
     ActivityNoInternetBinding binding;
@@ -55,88 +54,75 @@ public class NoInternetActivity extends AppCompatActivity {
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setMessage("Please wait...");
 
-        binding.reloadit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ConnectivityManager manager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-                NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-                NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        binding.reloadit.setOnClickListener(view -> {
+            ConnectivityManager manager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
-                FirebaseUser user = auth.getCurrentUser();
-                
-                if (wifi.isConnected()){
-                    WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-                    int numberOfLevels = 5;
-                    WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-                    int level = WifiManager.calculateSignalLevel(wifiInfo.getRssi(),numberOfLevels);
+            FirebaseUser user = auth.getCurrentUser();
 
-                    if (level < 2){
-                        Toast.makeText(NoInternetActivity.this, "Your internet is unstable to load", Toast.LENGTH_LONG).show();
+            if (wifi.isConnected()){
+                WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                int numberOfLevels = 5;
+                WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+                int level = WifiManager.calculateSignalLevel(wifiInfo.getRssi(),numberOfLevels);
+
+                if (level < 2){
+                    Toast.makeText(NoInternetActivity.this, "Your internet is unstable to load", Toast.LENGTH_LONG).show();
+                    try {
                         startActivity(new Intent(NoInternetActivity.this,NoInternetActivity.class));
-                    }else {
-                        if (user==null){
-                            startActivity(new Intent(NoInternetActivity.this,LoginActivity.class));
-                            finish();
-                        }else {
-                            checkUserType();
-                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-
-                }else if (mobile.isConnected()){
-
-                    TelephonyManager telephonyManager = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-                    @SuppressLint("MissingPermission") int networkType = telephonyManager.getNetworkType();
-                    switch (networkType){
-                        case TelephonyManager.NETWORK_TYPE_GPRS:
-                        case TelephonyManager.NETWORK_TYPE_EDGE:
-                        case TelephonyManager.NETWORK_TYPE_CDMA:
-                        case TelephonyManager.NETWORK_TYPE_1xRTT:
-                        case TelephonyManager.NETWORK_TYPE_IDEN:{
-                            Toast.makeText(NoInternetActivity.this, "You need a strong connection to load", Toast.LENGTH_LONG).show();
-                            break;
-                        }
-                        case TelephonyManager.NETWORK_TYPE_UMTS:
-                        case TelephonyManager.NETWORK_TYPE_EVDO_0:
-                        case TelephonyManager.NETWORK_TYPE_EVDO_A:
-                        case TelephonyManager.NETWORK_TYPE_HSDPA:
-                        case TelephonyManager.NETWORK_TYPE_HSUPA:
-                        case TelephonyManager.NETWORK_TYPE_HSPA:
-                        case TelephonyManager.NETWORK_TYPE_EVDO_B:
-                        case TelephonyManager.NETWORK_TYPE_EHRPD:
-                        case TelephonyManager.NETWORK_TYPE_HSPAP:{
-                            if (user==null){
-                                startActivity(new Intent(NoInternetActivity.this,LoginActivity.class));
-                                finish();
-                            }else {
-                                checkUserType();
-                            }
-                            break;
-                        }
-                        case TelephonyManager.NETWORK_TYPE_LTE:{
-                            if (user==null){
-                                startActivity(new Intent(NoInternetActivity.this,LoginActivity.class));
-                                finish();
-                            }else {
-                                checkUserType();
-                            }
-                            break;
-                        }
-
-
-                    }
-                }else if (wifi.isFailover()||mobile.isFailover()){
-                    Toast.makeText(NoInternetActivity.this, "Check your connection", Toast.LENGTH_LONG).show();
-
-                }else if (wifi.isAvailable()||mobile.isAvailable()){
-                    Toast.makeText(NoInternetActivity.this, "Check your connection", Toast.LENGTH_LONG).show();
-                }else if (wifi.isConnectedOrConnecting()){
-                    Toast.makeText(NoInternetActivity.this, "Internet is slow to load", Toast.LENGTH_LONG).show();
-
                 }else {
-                    Snackbar.make(view,"Check your internet connection to further proceed",Snackbar.LENGTH_LONG).show();
+                    if (user==null){
+                        try {
+                            startActivity(new Intent(NoInternetActivity.this,LoginActivity.class));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        finish();
+                    }else {
+                        try {
+                            checkUserType();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
 
+            }else if (mobile.isConnected()){
+                if (user==null){
+                    try {
+                        startActivity(new Intent(NoInternetActivity.this,LoginActivity.class));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    finish();
+                }else {
+                    try {
+                        checkUserType();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }else if (wifi.isFailover()||mobile.isFailover()){
+                Toast.makeText(NoInternetActivity.this, "Check your connection", Toast.LENGTH_LONG).show();
+
+            }else if (wifi.isAvailable()||mobile.isAvailable()){
+                Toast.makeText(NoInternetActivity.this, "Check your connection", Toast.LENGTH_LONG).show();
+            }else if (wifi.isConnectedOrConnecting()){
+                Toast.makeText(NoInternetActivity.this, "Internet is slow to load", Toast.LENGTH_LONG).show();
+
+            }else {
+                try {
+                    Snackbar.make(view,"Check your internet connection to further proceed",Snackbar.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+
         });
 
 
@@ -149,19 +135,35 @@ public class NoInternetActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    String accountType = ""+dataSnapshot.child("accountType").getValue();
+                    String accountType = null;
+                    try {
+                        accountType = ""+dataSnapshot.child("accountType").getValue();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    assert accountType != null;
                     if (accountType.equals("Seller")){
                         DatabaseReference myReference = FirebaseDatabase.getInstance().getReference().child("Users");
 
-                        myReference.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+                        myReference.child(Objects.requireNonNull(auth.getUid())).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if (snapshot.exists()){
-                                    String status = ""+snapshot.child("accountStatus").getValue();
+                                    String status = null;
+                                    try {
+                                        status = ""+snapshot.child("accountStatus").getValue();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    assert status != null;
                                     if (status.equals("blocked")){
                                         Toast.makeText(NoInternetActivity.this, "You are blocked.Please contact with your admin.", Toast.LENGTH_SHORT).show();
                                     }else {
-                                        startActivity(new Intent(NoInternetActivity.this,MainSellerActivity.class));
+                                        try {
+                                            startActivity(new Intent(NoInternetActivity.this,MainSellerActivity.class));
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
                                         finish();
                                     }
                                 }
@@ -174,7 +176,11 @@ public class NoInternetActivity extends AppCompatActivity {
                         });
                         progressDialog.dismiss();
                     }else {
-                        startActivity(new Intent(NoInternetActivity.this,MainUserActivity.class));
+                        try {
+                            startActivity(new Intent(NoInternetActivity.this,MainUserActivity.class));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         finish();
                         progressDialog.dismiss();
                     }

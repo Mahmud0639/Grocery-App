@@ -39,6 +39,7 @@ public class AdapterCartItem extends RecyclerView.Adapter<AdapterCartItem.CartIt
         return new CartItemViewHolder(view);
     }
 
+    @SuppressLint({"SetTextI18n", "DefaultLocale", "NotifyDataSetChanged"})
     @Override
     public void onBindViewHolder(@NonNull CartItemViewHolder holder, @SuppressLint("RecyclerView") int position) {
         ModelCartItem data = list.get(position);
@@ -71,10 +72,8 @@ public class AdapterCartItem extends RecyclerView.Adapter<AdapterCartItem.CartIt
         holder.binding.itemQuantityTV.setText("["+quantity+"]");
 
 
-        holder.binding.removeTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //create table if not exists but in that case insha Allah must exists
+        holder.binding.removeTV.setOnClickListener(view -> {
+            //create table if not exists but in that case insha Allah must exists
 //                EasyDB easyDB = EasyDB.init(context,"ITEMS_DB")
 //                        .setTableName("ITEMS_TABLE")
 //                        .addColumn(new Column("Item_Id",new String[]{"text","unique"}))
@@ -85,38 +84,51 @@ public class AdapterCartItem extends RecyclerView.Adapter<AdapterCartItem.CartIt
 //                        .addColumn(new Column("Item_Quantity",new String[]{"text","not null"}))
 //                        .doneTableColumn();
 
-                EasyDB easyDB = EasyDB.init(context,"ITEM_DB_NEW")
-                        .setTableName("ITEM_TABLE_NEW")
-                        .addColumn(new Column("Items_Id",new String[]{"text","unique"}))
-                        .addColumn(new Column("Items_PID",new String[]{"text","not null"}))
-                        .addColumn(new Column("Items_Name",new String[]{"text","not null"}))
-                        .addColumn(new Column("Items_Each_Price",new String[]{"text","not null"}))
-                        .addColumn(new Column("Items_Price",new String[]{"text","not null"}))
-                        .addColumn(new Column("Items_Quantity",new String[]{"text","not null"}))
-                        .addColumn(new Column("Items_Pro_Quantity",new String[]{"text","not null"}))
-                        .addColumn(new Column("Items_Pro_Image",new String[]{"text","not null"}))
-                        .doneTableColumn();
+         /*   EasyDB easyDB = EasyDB.init(context,"ITEM_DB_NEW")
+                    .setTableName("ITEM_TABLE_NEW")
+                    .addColumn(new Column("Items_Id",new String[]{"text","unique"}))
+                    .addColumn(new Column("Items_PID",new String[]{"text","not null"}))
+                    .addColumn(new Column("Items_Name",new String[]{"text","not null"}))
+                    .addColumn(new Column("Items_Each_Price",new String[]{"text","not null"}))
+                    .addColumn(new Column("Items_Price",new String[]{"text","not null"}))
+                    .addColumn(new Column("Items_Quantity",new String[]{"text","not null"}))
+                    .addColumn(new Column("Items_Pro_Quantity",new String[]{"text","not null"}))
+                    .addColumn(new Column("Items_Pro_Image",new String[]{"text","not null"}))
+                    .doneTableColumn();
 
-                easyDB.deleteRow(1,id);
-                Toast.makeText(context, "Removed from cart.", Toast.LENGTH_SHORT).show();
 
-                //refresh list
-                list.remove(position);
-                notifyItemChanged(position);
-                notifyDataSetChanged();
+*/
 
-                double tx = Double.parseDouble((((ShopDetailsActivity)context).allTotalPriceTV.getText().toString().trim().replace("৳","")));
-                double totalPrice = tx-Double.parseDouble(cost.replace("৳",""));
-                double deliveryFee = Double.parseDouble((((ShopDetailsActivity)context).deliveryFee.replace("৳","")));
-                double subTotal = Double.parseDouble(String.format("%.2f",totalPrice))-Double.parseDouble(String.format("%.2f",deliveryFee));
-                ((ShopDetailsActivity)context).allTotalPrice=0.00;//shopdetails activity access kore oi public allTotalPrice er value update kora hoyece ekhane ei process a
-                ((ShopDetailsActivity)context).subTotalPriceTV.setText("৳"+String.format("%.2f",subTotal));
-                ((ShopDetailsActivity)context).allTotalPriceTV.setText("৳"+String.format("%.2f",Double.parseDouble(String.format("%.2f",totalPrice))));
+            EasyDB easyDB = EasyDB.init(context,"ITEM_DB_NEW_TWO")
+                    .setTableName("ITEM_TABLE_NEW_TWO")
+                    .addColumn(new Column("Items_Id_Two",new String[]{"text","unique"}))
+                    .addColumn(new Column("Items_PID_Two",new String[]{"text","not null"}))
+                    .addColumn(new Column("Items_Name_Two",new String[]{"text","not null"}))
+                    .addColumn(new Column("Items_Each_Price_Two",new String[]{"text","not null"}))
+                    .addColumn(new Column("Items_Price_Two",new String[]{"text","not null"}))
+                    .addColumn(new Column("Items_Quantity_Two",new String[]{"text","not null"}))
+                    .addColumn(new Column("Items_Pro_Quantity_Two",new String[]{"text","not null"}))
+                    .addColumn(new Column("Items_Pro_Image_Two",new String[]{"text","not null"}))
+                    .doneTableColumn();
+            easyDB.deleteRow(1,id);
+            Toast.makeText(context, "Removed from cart.", Toast.LENGTH_SHORT).show();
 
-                //after removing update cart count
-                ((ShopDetailsActivity)context).cartCount();
+            //refresh list
+            list.remove(position);
+            notifyItemChanged(position);
+            notifyDataSetChanged();
 
-            }
+            double tx = Double.parseDouble((((ShopDetailsActivity)context).allTotalPriceTV.getText().toString().trim().replace("৳","")));
+            double totalPrice = tx-Double.parseDouble(cost.replace("৳",""));
+            double deliveryFee = Double.parseDouble((((ShopDetailsActivity)context).deliveryFee.replace("৳","")));
+            double subTotal = Double.parseDouble(String.format("%.2f",totalPrice))-Double.parseDouble(String.format("%.2f",deliveryFee));
+            ((ShopDetailsActivity)context).allTotalPrice=0.00;//shopdetails activity access kore oi public allTotalPrice er value update kora hoyece ekhane ei process a
+            ((ShopDetailsActivity)context).subTotalPriceTV.setText("৳"+String.format("%.2f",subTotal));
+            ((ShopDetailsActivity)context).allTotalPriceTV.setText("৳"+String.format("%.2f",Double.parseDouble(String.format("%.2f",totalPrice))));
+
+            //after removing update cart count
+            ((ShopDetailsActivity)context).cartCount();
+
         });
 
     }

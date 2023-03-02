@@ -1,14 +1,11 @@
 package com.manuni.groceryapp;
 
+import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,6 +16,7 @@ import com.manuni.groceryapp.databinding.ActivityReviewBinding;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class ReviewActivity extends AppCompatActivity {
     ActivityReviewBinding binding;
@@ -31,24 +29,28 @@ public class ReviewActivity extends AppCompatActivity {
         binding = ActivityReviewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        shopUid = getIntent().getStringExtra("shopUid");
+        try {
+            shopUid = getIntent().getStringExtra("shopUid");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         auth = FirebaseAuth.getInstance();
 
-        loadShopInfo();
-        loadMyReview();
+        try {
+            loadShopInfo();
+            loadMyReview();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        binding.backArrowBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        binding.backArrowBtn.setOnClickListener(view -> onBackPressed());
 
-        binding.fabReview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        binding.fabReview.setOnClickListener(view -> {
+            try {
                 inputData();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
@@ -59,8 +61,14 @@ public class ReviewActivity extends AppCompatActivity {
         ref.child(shopUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String shopName = ""+snapshot.child("shopName").getValue();
-                String shopImage = ""+snapshot.child("profileImage").getValue();
+                String shopName = null;
+                String shopImage = null;
+                try {
+                    shopName = ""+snapshot.child("shopName").getValue();
+                    shopImage = ""+snapshot.child("profileImage").getValue();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 binding.shopNameTV.setText(shopName);
 
@@ -81,16 +89,28 @@ public class ReviewActivity extends AppCompatActivity {
 
     private void loadMyReview() {
         DatabaseReference dRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        dRef.child(shopUid).child("Ratings").child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+        dRef.child(shopUid).child("Ratings").child(Objects.requireNonNull(auth.getUid())).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
-                    String uid = ""+snapshot.child("uid").getValue();
-                    String ratings = ""+snapshot.child("ratings").getValue();
-                    String reviews = ""+snapshot.child("reviews").getValue();
-                    String timestamp = ""+snapshot.child("timestamp").getValue();
+                    String ratings = null;
+                    String reviews = null;
+                    try {
+                        String uid = ""+snapshot.child("uid").getValue();
+                        ratings = ""+snapshot.child("ratings").getValue();
+                        reviews = ""+snapshot.child("reviews").getValue();
+                        String timestamp = ""+snapshot.child("timestamp").getValue();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
-                    float myRatings = Float.parseFloat(ratings);
+                    float myRatings = 0;
+                    try {
+                        assert ratings != null;
+                        myRatings = Float.parseFloat(ratings);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
                     binding.ratings.setRating(myRatings);
                     binding.reviewET.setText(reviews);
                 }
@@ -104,9 +124,16 @@ public class ReviewActivity extends AppCompatActivity {
     }
 
     private void inputData(){
-        String ratings = ""+binding.ratings.getRating();
-        String reviewTxt = binding.reviewET.getText().toString().trim();
-        String timestamp = ""+System.currentTimeMillis();
+        String ratings = null;
+        String reviewTxt = null;
+        String timestamp = null;
+        try {
+            ratings = ""+binding.ratings.getRating();
+            reviewTxt = binding.reviewET.getText().toString().trim();
+            timestamp = ""+System.currentTimeMillis();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         HashMap<String,Object> hashMap = new HashMap<>();
         hashMap.put("uid",""+auth.getUid());
@@ -115,16 +142,6 @@ public class ReviewActivity extends AppCompatActivity {
         hashMap.put("timestamp",""+timestamp);
 
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        dbRef.child(shopUid).child("Ratings").child(auth.getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Toast.makeText(ReviewActivity.this, "We got your reviews!", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(ReviewActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        dbRef.child(shopUid).child("Ratings").child(Objects.requireNonNull(auth.getUid())).updateChildren(hashMap).addOnSuccessListener(unused -> Toast.makeText(ReviewActivity.this, "We got your reviews!", Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Toast.makeText(ReviewActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 }

@@ -1,5 +1,6 @@
 package com.manuni.groceryapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.text.format.DateFormat;
@@ -21,7 +22,6 @@ import com.manuni.groceryapp.databinding.RowOrderUserBinding;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Set;
 
 public class AdapterOrderUser extends RecyclerView.Adapter<AdapterOrderUser.AdapterOrderUserViewHolder> implements Filterable {
     private Context context;
@@ -41,6 +41,7 @@ public class AdapterOrderUser extends RecyclerView.Adapter<AdapterOrderUser.Adap
         return new AdapterOrderUserViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull AdapterOrderUserViewHolder holder, int position) {
         ModelOrderUser data = list.get(position);
@@ -74,14 +75,11 @@ public class AdapterOrderUser extends RecyclerView.Adapter<AdapterOrderUser.Adap
 
         holder.binding.dateTV.setText(dateTime);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context,OrderDetailsUsersActivity.class);
-                intent.putExtra("orderTo",orderTo);
-                intent.putExtra("orderId",orderId);
-                context.startActivity(intent);
-            }
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(context,OrderDetailsUsersActivity.class);
+            intent.putExtra("orderTo",orderTo);
+            intent.putExtra("orderId",orderId);
+            context.startActivity(intent);
         });
     }
 

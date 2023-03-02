@@ -1,8 +1,10 @@
 package com.manuni.groceryapp;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +43,7 @@ public class ProductUserAdapter extends RecyclerView.Adapter<ProductUserAdapter.
         return new ProductUserViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ProductUserViewHolder holder, int position) {
         ModelProduct data = list.get(position);
@@ -59,38 +62,57 @@ public class ProductUserAdapter extends RecyclerView.Adapter<ProductUserAdapter.
         String productAvailable = data.getProductAvailable();
 
 
+        try {
+            holder.binding.titleTV.setText(productTitle);
+            holder.binding.descriptionTV.setText(productDescription);
+            holder.binding.quantityTV.setText("পরিমাণঃ "+"("+productQuantity+")");
 
-        holder.binding.titleTV.setText(productTitle);
-        holder.binding.descriptionTV.setText(productDescription);
-        holder.binding.quantityTV.setText("পরিমাণঃ "+"("+productQuantity+")");
-
-        holder.binding.originalPriceTV.setText("৳"+originalPrice);
-        holder.binding.discountPriceTV.setText("৳"+discountPrice);
+            holder.binding.originalPriceTV.setText("৳"+originalPrice);
+            holder.binding.discountPriceTV.setText("৳"+discountPrice);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         if (productAvailable.equals("false")&&(discountAvailable.equals("true")||discountAvailable.equals("false"))){
-            holder.binding.productAvailableTV.setText("Not Available");
-            holder.binding.productAvailableTV.setTextColor(context.getResources().getColor(R.color.colorRed));
-            holder.binding.discountNoteTV.setVisibility(View.GONE);
-            holder.binding.productAvailableTV.setVisibility(View.VISIBLE);
-            holder.binding.addToCartTV.setVisibility(View.INVISIBLE);
+            try {
+                holder.binding.productAvailableTV.setText("Not Available");
+                holder.binding.productAvailableTV.setTextColor(context.getResources().getColor(R.color.colorRed));
+                holder.binding.discountNoteTV.setVisibility(View.GONE);
+                holder.binding.productAvailableTV.setVisibility(View.VISIBLE);
+                holder.binding.addToCartTV.setVisibility(View.INVISIBLE);
+            } catch (Resources.NotFoundException e) {
+                e.printStackTrace();
+            }
 
         }else {
-            holder.binding.discountNoteTV.setText(discountNote+"% OFF");
-            holder.binding.productAvailableTV.setVisibility(View.GONE);
-            holder.binding.discountNoteTV.setVisibility(View.VISIBLE);
-            holder.binding.addToCartTV.setVisibility(View.VISIBLE);
+            try {
+                holder.binding.discountNoteTV.setText(discountNote+"% OFF");
+                holder.binding.productAvailableTV.setVisibility(View.GONE);
+                holder.binding.discountNoteTV.setVisibility(View.VISIBLE);
+                holder.binding.addToCartTV.setVisibility(View.VISIBLE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         }
 
         if (discountAvailable.equals("true") && productAvailable.equals("true")){
-            holder.binding.discountPriceTV.setVisibility(View.VISIBLE);
-            holder.binding.discountNoteTV.setVisibility(View.VISIBLE);
-            holder.binding.originalPriceTV.setPaintFlags(holder.binding.discountPriceTV.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
+            try {
+                holder.binding.discountPriceTV.setVisibility(View.VISIBLE);
+                holder.binding.discountNoteTV.setVisibility(View.VISIBLE);
+                holder.binding.originalPriceTV.setPaintFlags(holder.binding.discountPriceTV.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }else {
-            holder.binding.discountPriceTV.setVisibility(View.GONE);
-            holder.binding.discountNoteTV.setVisibility(View.GONE);
-            holder.binding.originalPriceTV.setPaintFlags(0);
+            try {
+                holder.binding.discountPriceTV.setVisibility(View.GONE);
+                holder.binding.discountNoteTV.setVisibility(View.GONE);
+                holder.binding.originalPriceTV.setPaintFlags(0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         try {
             Picasso.get().load(productIcon).placeholder(R.drawable.impl1).into(holder.binding.productIconIV);
@@ -98,28 +120,24 @@ public class ProductUserAdapter extends RecyclerView.Adapter<ProductUserAdapter.
             holder.binding.productIconIV.setImageResource(R.drawable.impl1);
         }
 
-        holder.binding.addToCartTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showQuantityDialog(data);
-            }
-        });
+        try {
+            holder.binding.addToCartTV.setOnClickListener(view -> showQuantityDialog(data));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context,ProductInfoActivity.class);
-                intent.putExtra("productIcon",productIcon);
-                intent.putExtra("originalPrice",originalPrice);
-                intent.putExtra("discountPrice",discountPrice);
-                intent.putExtra("productTitle",productTitle);
-                intent.putExtra("discountNote",discountNote);
-                intent.putExtra("productDes",productDescription);
-                try {
-                    context.startActivity(intent);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(context,ProductInfoActivity.class);
+            intent.putExtra("productIcon",productIcon);
+            intent.putExtra("originalPrice",originalPrice);
+            intent.putExtra("discountPrice",discountPrice);
+            intent.putExtra("productTitle",productTitle);
+            intent.putExtra("discountNote",discountNote);
+            intent.putExtra("productDes",productDescription);
+            try {
+                context.startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
@@ -129,9 +147,10 @@ public class ProductUserAdapter extends RecyclerView.Adapter<ProductUserAdapter.
     private String productQuantity;
     private String image;
 
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     private void showQuantityDialog(ModelProduct modelProduct) {
         DialogQuantityBinding binding;
-        View view = LayoutInflater.from(context).inflate(R.layout.dialog_quantity,null);
+        @SuppressLint("InflateParams") View view = LayoutInflater.from(context).inflate(R.layout.dialog_quantity,null);
         binding = DialogQuantityBinding.bind(view);
 
         String productId = modelProduct.getProductId();
@@ -144,15 +163,27 @@ public class ProductUserAdapter extends RecyclerView.Adapter<ProductUserAdapter.
         String price;
         if (modelProduct.getProductDiscountAvailable().equals("true")){
             price = modelProduct.getProductDiscountPrice();
-            binding.discountNoteTV.setVisibility(View.VISIBLE);
-            binding.originalPriceTV.setPaintFlags(binding.originalPriceTV.getPaintFlags()|Paint.STRIKE_THRU_TEXT_FLAG);
+            try {
+                binding.discountNoteTV.setVisibility(View.VISIBLE);
+                binding.originalPriceTV.setPaintFlags(binding.originalPriceTV.getPaintFlags()|Paint.STRIKE_THRU_TEXT_FLAG);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }else {
             price = modelProduct.getProductOriginalPrice();
-            binding.discountNoteTV.setVisibility(View.GONE);
-            binding.discountPriceTV.setVisibility(View.GONE);
+            try {
+                binding.discountNoteTV.setVisibility(View.GONE);
+                binding.discountPriceTV.setVisibility(View.GONE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        cost = Double.parseDouble(price.replaceAll("৳",""));
-        finalCost = Double.parseDouble(price.replaceAll("৳",""));
+        try {
+            cost = Double.parseDouble(price.replaceAll("৳",""));
+            finalCost = Double.parseDouble(price.replaceAll("৳",""));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
         quantity = 1;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -162,101 +193,73 @@ public class ProductUserAdapter extends RecyclerView.Adapter<ProductUserAdapter.
         }catch (Exception e){
             binding.productIV.setImageResource(R.drawable.ic_cart_gray);
         }
-        binding.titleTV.setText(""+title);
-        binding.quantityTV.setText(""+quantity);
-        binding.pDescription.setText(""+description);
-        binding.finalTV.setText("৳"+finalCost);
-        binding.discountNoteTV.setText(""+discountNote+"% OFF");
-        binding.originalPriceTV.setText("৳"+modelProduct.getProductOriginalPrice());
-        binding.discountPriceTV.setText("৳"+modelProduct.getProductDiscountPrice());
-        binding.pQuantityTV.setText("["+productQuantity+"]");
+        try {
+            binding.titleTV.setText(""+title);
+            binding.quantityTV.setText(""+quantity);
+            binding.pDescription.setText(""+description);
+            binding.finalTV.setText("৳"+finalCost);
+            binding.discountNoteTV.setText(""+discountNote+"% OFF");
+            binding.originalPriceTV.setText("৳"+modelProduct.getProductOriginalPrice());
+            binding.discountPriceTV.setText("৳"+modelProduct.getProductDiscountPrice());
+            binding.pQuantityTV.setText("["+productQuantity+"]");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        binding.incrementBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finalCost = finalCost+cost;
-                quantity++;
+        binding.incrementBtn.setOnClickListener(view13 -> {
+            finalCost = finalCost+cost;
+            quantity++;
 
+            try {
                 binding.finalTV.setText("৳"+String.format("%.1f",finalCost));
                 binding.quantityTV.setText(""+quantity);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
-        binding.decrementBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (quantity>1){
-                    finalCost = finalCost-cost;
-                    quantity--;
+        binding.decrementBtn.setOnClickListener(view12 -> {
+            if (quantity>1){
+                finalCost = finalCost-cost;
+                quantity--;
 
+                try {
                     binding.finalTV.setText("৳"+String.format("%.1f",finalCost));
                     binding.quantityTV.setText(""+quantity);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
-        binding.continueBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String title = binding.titleTV.getText().toString().trim();
-                String priceEach = price;
-                String totalPrice = binding.finalTV.getText().toString().trim().replace("৳","");
-                String quantity = binding.quantityTV.getText().toString().trim();
-                String pQuantity = binding.pQuantityTV.getText().toString().trim();
+        binding.continueBtn.setOnClickListener(view1 -> {
+            String title1 = binding.titleTV.getText().toString().trim();
+            String priceEach = price;
+            String totalPrice = binding.finalTV.getText().toString().trim().replace("৳","");
+            String quantity = binding.quantityTV.getText().toString().trim();
+            String pQuantity = binding.pQuantityTV.getText().toString().trim();
 
 
-                //add to database(sqlite)
-                addToCart(productId,title,priceEach,totalPrice,quantity,pQuantity,image);
-                dialog.dismiss();
-            }
+            //add to database(sqlite)
+            addToCart(productId, title1,priceEach,totalPrice,quantity,pQuantity,image);
+            dialog.dismiss();
         });
     }
 
-    private int itemId = 1;
+
+
     private void addToCart(String productId, String title, String priceEach, String price, String quantity,String proQuantity,String prImage) {
-        itemId++;
-     /*   EasyDB easyDB = EasyDB.init(context,"ITEMS_DB")
-                .setTableName("ITEMS_TABLE")
-                .addColumn(new Column("Item_Id",new String[]{"text","unique"}))
-                .addColumn(new Column("Item_PID",new String[]{"text","not null"}))
-                .addColumn(new Column("Item_Name",new String[]{"text","not null"}))
-                .addColumn(new Column("Item_Each_Price",new String[]{"text","not null"}))
-                .addColumn(new Column("Item_Price",new String[]{"text","not null"}))
-                .addColumn(new Column("Item_Quantity",new String[]{"text","not null"}))
-                .doneTableColumn();
 
-        Boolean b = easyDB.addData("Item_Id",itemId)
-                .addData("Item_PID",productId)
-                .addData("Item_Name",title)
-                .addData("Item_Each_Price",priceEach)
-                .addData("Item_Price",price)
-                .addData("Item_Quantity",quantity)
-                .doneDataAdding();*/
-
-//        EasyDB easyDB = EasyDB.init(context,"ITEM_DB")
-//                .setTableName("ITEM_TABLE")
-//                .addColumn(new Column("Items_Id",new String[]{"text","unique"}))
-//                .addColumn(new Column("Items_PID",new String[]{"text","not null"}))
-//                .addColumn(new Column("Items_Name",new String[]{"text","not null"}))
-//                .addColumn(new Column("Items_Each_Price",new String[]{"text","not null"}))
-//                .addColumn(new Column("Items_Price",new String[]{"text","not null"}))
-//                .addColumn(new Column("Items_Quantity",new String[]{"text","not null"}))
-//                .addColumn(new Column("Items_Pro_Quantity",new String[]{"text","not null"}))
-//                .doneTableColumn();
-//
-//        Boolean b = easyDB.addData("Items_Id",itemId)
-//                .addData("Items_PID",productId)
-//                .addData("Items_Name",title)
-//                .addData("Items_Each_Price",priceEach)
-//                .addData("Items_Price",price)
-//                .addData("Items_Quantity",quantity)
-//                .addData("Items_Pro_Quantity",proQuantity)
-//                .doneDataAdding();
+      long myItem =  System.currentTimeMillis();
 
 
+            myItem++;
 
+       // Toast.makeText(context, ""+myItem, Toast.LENGTH_SHORT).show();
+
+        /*
         EasyDB easyDB = EasyDB.init(context,"ITEM_DB_NEW")
                 .setTableName("ITEM_TABLE_NEW")
                 .addColumn(new Column("Items_Id",new String[]{"text","unique"}))
@@ -267,16 +270,29 @@ public class ProductUserAdapter extends RecyclerView.Adapter<ProductUserAdapter.
                 .addColumn(new Column("Items_Quantity",new String[]{"text","not null"}))
                 .addColumn(new Column("Items_Pro_Quantity",new String[]{"text","not null"}))
                 .addColumn(new Column("Items_Pro_Image",new String[]{"text","not null"}))
+                .doneTableColumn();*/
+
+
+        EasyDB easyDB = EasyDB.init(context,"ITEM_DB_NEW_TWO")
+                .setTableName("ITEM_TABLE_NEW_TWO")
+                .addColumn(new Column("Items_Id_Two",new String[]{"text","unique"}))
+                .addColumn(new Column("Items_PID_Two",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Name_Two",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Each_Price_Two",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Price_Two",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Quantity_Two",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Pro_Quantity_Two",new String[]{"text","not null"}))
+                .addColumn(new Column("Items_Pro_Image_Two",new String[]{"text","not null"}))
                 .doneTableColumn();
 
-        Boolean b = easyDB.addData("Items_Id",itemId)
-                .addData("Items_PID",productId)
-                .addData("Items_Name",title)
-                .addData("Items_Each_Price",priceEach)
-                .addData("Items_Price",price)
-                .addData("Items_Quantity",quantity)
-                .addData("Items_Pro_Quantity",proQuantity)
-                .addData("Items_Pro_Image",prImage)
+        Boolean b = easyDB.addData("Items_Id_Two", (int) myItem)
+                .addData("Items_PID_Two",productId)
+                .addData("Items_Name_Two",title)
+                .addData("Items_Each_Price_Two",priceEach)
+                .addData("Items_Price_Two",price)
+                .addData("Items_Quantity_Two",quantity)
+                .addData("Items_Pro_Quantity_Two",proQuantity)
+                .addData("Items_Pro_Image_Two",prImage)
                 .doneDataAdding();
 
         Toast.makeText(context, "Product Added.", Toast.LENGTH_SHORT).show();

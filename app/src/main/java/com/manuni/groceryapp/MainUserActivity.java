@@ -1,24 +1,19 @@
 package com.manuni.groceryapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,17 +25,15 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Objects;
-import java.util.Set;
 
 public class MainUserActivity extends AppCompatActivity {
     ActivityMainUserBinding binding;
     private FirebaseAuth auth;
-   private String city;
+   private String city,state;
 
-    String[] data;
-    ArrayList<String> dataList;
+    String[] data,dataArea;
+    ArrayList<String> dataList,areaList;
 
     private DatabaseReference dbRef;
     private ProgressDialog dialog,progressDialog;
@@ -71,11 +64,18 @@ public class MainUserActivity extends AppCompatActivity {
 
         dbRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
-        checkUser();
 
-        loadToSpinner();
 
-        showShopsUI();
+        try {
+
+            checkUser();
+
+            loadToSpinner();
+
+            showShopsUI();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         PopupMenu popupMenu = new PopupMenu(MainUserActivity.this,binding.moreBtn);
         popupMenu.getMenu().add("Edit Profile");
@@ -84,29 +84,37 @@ public class MainUserActivity extends AppCompatActivity {
         popupMenu.getMenu().add("Logout");
 
 
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getTitle()=="Edit Profile"){
+        popupMenu.setOnMenuItemClickListener(item -> {
+            if (item.getTitle()=="Edit Profile"){
+                try {
                     startActivity(new Intent(MainUserActivity.this,EditeProfileUserActivity.class));
-                }else if (item.getTitle()=="Settings"){
-                    Intent intent = new Intent(MainUserActivity.this,SettingsActivity.class);
-                    startActivity(intent);
-                }else if (item.getTitle()=="Logout"){
-                    makeMeOffLine();
-                }else if (item.getTitle()=="Send Feedback"){
-                    startActivity(new Intent(MainUserActivity.this,FeedbackActivity.class));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                return true;
+            }else if (item.getTitle()=="Settings"){
+                Intent intent = new Intent(MainUserActivity.this,SettingsActivity.class);
+                try {
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else if (item.getTitle()=="Logout"){
+                try {
+                    makeMeOffLine();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else if (item.getTitle()=="Send Feedback"){
+                try {
+                    startActivity(new Intent(MainUserActivity.this,FeedbackActivity.class));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+            return true;
         });
 
-        binding.moreBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                popupMenu.show();
-            }
-        });
+        binding.moreBtn.setOnClickListener(view -> popupMenu.show());
 
         binding.searchForOrders.addTextChangeListener(new TextWatcher() {
             @Override
@@ -130,10 +138,12 @@ public class MainUserActivity extends AppCompatActivity {
             }
         });
 
-        binding.filterProductBtn.setOnClickListener(new View.OnClickListener() {
+        binding.filterProductBtn.setOnClickListener(view -> categoryDialog());
+
+        binding.filterArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                categoryDialog();
+                areaDialog();
             }
         });
 
@@ -159,23 +169,58 @@ public class MainUserActivity extends AppCompatActivity {
         });
 
 
-        binding.tabShopsTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        binding.tabShopsTV.setOnClickListener(view -> showShopsUI());
+        binding.tabOrdersTV.setOnClickListener(view -> showOrdersUI());
 
-                showShopsUI();
+
+
+    }
+
+    private void loadArea() {
+
+
+        DatabaseReference myDbRef = FirebaseDatabase.getInstance().getReference().child("ShopArea");
+        myDbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                areaList = new ArrayList<>();
+                if (snapshot.exists()){
+                    areaList.clear();
+                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                        String area = null;
+                        try {
+                            area = ""+dataSnapshot.child("area").getValue();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            areaList.add(area);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    dataArea = areaList.toArray(new String[areaList.size()]);
+
+                    //Toast.makeText(MainUserActivity.this, "All area added.", Toast.LENGTH_SHORT).show();
+
+
+
+                }
+                progressDialog.dismiss();
+
+
+
+                //adapter.notifyDataSetChanged();
+
+            }
+
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
-        binding.tabOrdersTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                showOrdersUI();
-            }
-        });
-
-
-
     }
 
     private void showShopsUI() {
@@ -195,6 +240,8 @@ public class MainUserActivity extends AppCompatActivity {
         binding.filterProductBtn.setVisibility(View.VISIBLE);
         binding.filterTxt.setVisibility(View.VISIBLE);
         binding.shopsFoundTV.setVisibility(View.VISIBLE);
+        binding.filterArea.setVisibility(View.VISIBLE);
+
     }
     private void showOrdersUI(){
 
@@ -213,8 +260,14 @@ public class MainUserActivity extends AppCompatActivity {
         binding.filterProductBtn.setVisibility(View.GONE);
         binding.filterTxt.setVisibility(View.GONE);
         binding.shopsFoundTV.setVisibility(View.GONE);
+        binding.filterArea.setVisibility(View.GONE);
+        binding.myArea.setVisibility(View.GONE);
 
-        loadOrders();//ekhane rakhar karone duplicate ashe na
+        try {
+            loadOrders();//ekhane rakhar karone duplicate ashe na
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
     }
@@ -224,27 +277,33 @@ public class MainUserActivity extends AppCompatActivity {
         HashMap<String,Object> hashMap = new HashMap<>();
         hashMap.put("online","false");
 
-        dbRef.child(auth.getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                //checkUserType();
-                auth.signOut();
+        dbRef.child(Objects.requireNonNull(auth.getUid())).updateChildren(hashMap).addOnSuccessListener(unused -> {
+            //checkUserType();
+            auth.signOut();
+            try {
                 checkUser();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                dialog.dismiss();
-                Toast.makeText(MainUserActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
+        }).addOnFailureListener(e -> {
+            dialog.dismiss();
+            Toast.makeText(MainUserActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
         });
 
     }
     private void checkUser(){
         if (auth.getCurrentUser()==null){
-            startActivity(new Intent(MainUserActivity.this,LoginActivity.class));
+            try {
+                startActivity(new Intent(MainUserActivity.this,LoginActivity.class));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }else {
-            loadMyInfo();
+            try {
+                loadMyInfo();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             //Toast.makeText(this, "You are logged in.", Toast.LENGTH_SHORT).show();
         }
 
@@ -253,15 +312,26 @@ public class MainUserActivity extends AppCompatActivity {
     private void loadMyInfo(){
         DatabaseReference dR = FirebaseDatabase.getInstance().getReference().child("Users");
         dR.orderByChild("uid").equalTo(auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    String name = ""+dataSnapshot.child("fullName").getValue();
-                    String accountType = ""+dataSnapshot.child("accountType").getValue();
-                    String email = ""+dataSnapshot.child("email").getValue();
-                    String phoneNumber = ""+dataSnapshot.child("phoneNumber").getValue();
-                    String profileImage = ""+dataSnapshot.child("profileImage").getValue();
-                    city = ""+dataSnapshot.child("city").getValue();
+                    String name = null;
+                    String accountType = null;
+                    String email = null;
+                    String phoneNumber = null;
+                    String profileImage = null;
+                    try {
+                        name = ""+dataSnapshot.child("fullName").getValue();
+                        accountType = ""+dataSnapshot.child("accountType").getValue();
+                        email = ""+dataSnapshot.child("email").getValue();
+                        phoneNumber = ""+dataSnapshot.child("phoneNumber").getValue();
+                        profileImage = ""+dataSnapshot.child("profileImage").getValue();
+                        city = ""+dataSnapshot.child("city").getValue();
+                        state = ""+dataSnapshot.child("state").getValue();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                     binding.nameTxt.setText(name+"("+accountType+")");
                     binding.emailTV.setText(email);
@@ -273,8 +343,16 @@ public class MainUserActivity extends AppCompatActivity {
                         binding.profileIV.setImageResource(R.drawable.ic_person_gray);
                     }
 
-                    //load only those shops that are in the user area or city
-                    loadShops(city);
+                    //load only those shops that are in the user area or state
+                    try {
+
+                            loadShops(state);
+
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                 }
             }
@@ -295,8 +373,14 @@ public class MainUserActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 modelOrderUsers.clear();
                 for (DataSnapshot ds: snapshot.getChildren()){
-                    String uid = ""+ds.getRef().getKey();
+                    String uid = null;
+                    try {
+                        uid = ""+ds.getRef().getKey();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
+                    assert uid != null;
                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("Orders");
                     ref.orderByChild("orderBy").equalTo(auth.getUid()).addValueEventListener(new ValueEventListener() {
                         @Override
@@ -304,14 +388,27 @@ public class MainUserActivity extends AppCompatActivity {
                             if (snapshot.exists()){
                                // modelOrderUsers.clear(); //ei line tir jonno onno store er order dekhato na.
                                 for (DataSnapshot ds: snapshot.getChildren()){
-                                    ModelOrderUser orderUser = ds.getValue(ModelOrderUser.class);
+                                    ModelOrderUser orderUser = null;
+                                    try {
+                                        orderUser = ds.getValue(ModelOrderUser.class);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
 
-                                    modelOrderUsers.add(0,orderUser);
+                                    try {
+                                        modelOrderUsers.add(0,orderUser);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
 
 
                                 }
                                 adapterOrderUser = new AdapterOrderUser(MainUserActivity.this,modelOrderUsers);
-                                binding.ordersRV.setAdapter(adapterOrderUser);
+                                try {
+                                    binding.ordersRV.setAdapter(adapterOrderUser);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
 
                             }
                         }
@@ -331,11 +428,12 @@ public class MainUserActivity extends AppCompatActivity {
         });
     }
 
-    private void loadShops(String myCity) {
+    private void loadShops(String myState) {
         modelShopArrayList = new ArrayList<>();
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
         reference.orderByChild("accountType").equalTo("Seller").addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 modelShopArrayList.clear();
@@ -347,39 +445,43 @@ public class MainUserActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    String shopCity = ""+dataSnapshot1.child("city").getValue() ;
-                    String status = ""+dataSnapshot1.child("accountStatus").getValue();
-                    String onlineStatus = ""+dataSnapshot1.child("online").getValue();
-                    String shopOpen = ""+dataSnapshot1.child("shopOpen").getValue();
-
-                    if (Objects.requireNonNull(shopCity).equals(myCity) && status.equals("unblocked")&& shopOpen.equals("true")){
-                        modelShopArrayList.add(modelShop);
+                    String shopCity = null;
+                    String status = null;
+                    String shopOpen = null;
+                    String shopState = null;
+                    try {
+                        shopCity = ""+dataSnapshot1.child("city").getValue();
+                        shopState = ""+dataSnapshot1.child("state").getValue();
+                        status = ""+dataSnapshot1.child("accountStatus").getValue();
+                        String onlineStatus = ""+dataSnapshot1.child("online").getValue();
+                        shopOpen = ""+dataSnapshot1.child("shopOpen").getValue();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-//                    reference.orderByChild("accountType").equalTo("seller").addValueEventListener(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                            if (snapshot.exists()){
-//                                for (DataSnapshot dSnapShot: snapshot.getChildren()){
-//
-//
-//                                }
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError error) {
-//
-//                        }
-//                    });
-                    //Log.e("TAG", "onDataChange: checkAfter ModelShop Object" );
 
-                    //Log.e("TAG", "onDataChange: checkAfter shopCity" );
+                    if (Objects.requireNonNull(shopState).equals(myState)) {
+                        assert status != null;
+                        if (status.equals("unblocked")) {
+                            assert shopOpen != null;
+                            if (shopOpen.equals("true")) {
+                                try {
+                                    modelShopArrayList.add(modelShop);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
 
 
                 }
-                binding.shopsFoundTV.setText("("+modelShopArrayList.size()+"shops available)");
+                binding.shopsFoundTV.setText("("+modelShopArrayList.size()+" shops available)");
                 adapterShop = new AdapterShop(MainUserActivity.this,modelShopArrayList);
-                binding.shopRV.setAdapter(adapterShop);
+                try {
+                    binding.shopRV.setAdapter(adapterShop);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
             }
 
@@ -410,25 +512,231 @@ public class MainUserActivity extends AppCompatActivity {
         mBackPressed = System.currentTimeMillis();
     }
 
+    private void areaDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Shop Area").setItems(dataArea, (dialogInterface, i) -> {
+            String shopArea = dataArea[i];//ekhane kono category select kora hole seta ei variable er moddhe chole ashbe
+                binding.filterTxt.setVisibility(View.GONE);
+                binding.myArea.setText(shopArea);
+
+               // binding.myArea.setVisibility(View.VISIBLE);
+                loadAllAreaShops(shopArea);
+
+
+        }).show();
+    }
+
+    private void loadAllAreaShops(String shopAreaHere) {
+        modelShopArrayList = new ArrayList<>();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        databaseReference.orderByChild("accountType").equalTo("Seller").addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                modelShopArrayList.clear();
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    String shopCat = null;
+                    String myCity = null;
+                    String myDivision = null;
+                    String myArea = null;
+                    try {
+                        shopCat = ""+dataSnapshot.child("shopCategory").getValue();
+                        myCity = ""+dataSnapshot.child("city").getValue();
+                        myDivision = ""+dataSnapshot.child("state").getValue();
+                        myArea = ""+dataSnapshot.child("shopArea").getValue();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    if (shopAreaHere.equals(myArea)) {
+                        if (myDivision.equals(state)) {
+                            ModelShop modelShop = null;
+                            try {
+                                modelShop = dataSnapshot.getValue(ModelShop.class);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            try {
+                                modelShopArrayList.add(modelShop);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+
+
+                binding.shopsFoundTV.setText("("+modelShopArrayList.size()+" shops found)");
+                adapterShop = new AdapterShop(MainUserActivity.this,modelShopArrayList);
+                try {
+                    binding.shopRV.setAdapter(adapterShop);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    @SuppressLint("SetTextI18n")
     private void categoryDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Shop Category").setItems(data, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                String category = data[i];//ekhane kono category select kora hole seta ei variable er moddhe chole ashbe
-                if (category.equals("All")){
-                    binding.filterTxt.setVisibility(View.VISIBLE);
-                    binding.filterTxt.setText("Showing All");
-                    loadShops(city);
-                }else{
-                    binding.filterTxt.setVisibility(View.VISIBLE);
-                    binding.filterTxt.setText(category);
-                    loadAllShops(category);
+        builder.setTitle("Shop Category").setItems(data, (dialogInterface, i) -> {
+            String category = data[i];//ekhane kono category select kora hole seta ei variable er moddhe chole ashbe
+           // Toast.makeText(this, ""+category, Toast.LENGTH_SHORT).show();
+           String areaTxt;
+           areaTxt = binding.myArea.getText().toString().trim();
+           binding.myArea.setVisibility(View.VISIBLE);
+
+
+            //Toast.makeText(this, ""+areaTxt, Toast.LENGTH_SHORT).show();
+            if (category.equals("All")){
+                binding.filterTxt.setVisibility(View.VISIBLE);
+                binding.filterTxt.setText("Showing All");
+                binding.myArea.setVisibility(View.GONE);
+                try {
+                    loadShops(state);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }/*else if (areaTxt.equals("All")){
+                loadAllMyShops(category);
+            }*/else{
+                binding.filterTxt.setVisibility(View.VISIBLE);
+                binding.filterTxt.setText(category);
+
+                try {
+                    loadAllShops(category,areaTxt);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }).show();
     }
 
+    private void loadAllShops(String selected,String areaSelected) {
+
+        modelShopArrayList = new ArrayList<>();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        databaseReference.orderByChild("accountType").equalTo("Seller").addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                modelShopArrayList.clear();
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    String shopCat = null;
+                    String myCity = null;
+                    String myDivision = null;
+                    String myShopArea = null;
+                    try {
+                        shopCat = ""+dataSnapshot.child("shopCategory").getValue();
+                        myCity = ""+dataSnapshot.child("city").getValue();
+                        myDivision = ""+dataSnapshot.child("state").getValue();
+                        myShopArea = ""+dataSnapshot.child("shopArea").getValue();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    if (selected.equals(shopCat) && areaSelected.equals(myShopArea)) {
+                        if (myDivision.equals(state)) {
+                            ModelShop modelShop = null;
+                            try {
+                                modelShop = dataSnapshot.getValue(ModelShop.class);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            try {
+                                modelShopArrayList.add(modelShop);
+                                binding.myArea.setVisibility(View.VISIBLE);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }else if (selected.equals(shopCat)&&areaSelected.equals("")){
+
+                       loadAllShops(selected);
+
+                    }
+                }
+
+                binding.shopsFoundTV.setText("("+modelShopArrayList.size()+" shops found)");
+                adapterShop = new AdapterShop(MainUserActivity.this,modelShopArrayList);
+                try {
+                    binding.shopRV.setAdapter(adapterShop);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
+
+
+    private void loadToSpinner() {
+        progressDialog.setTitle("Please wait");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+
+        DatabaseReference myDbRef = FirebaseDatabase.getInstance().getReference().child("ShopCategory");
+        myDbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dataList = new ArrayList<>();
+                if (snapshot.exists()){
+                    dataList.clear();
+                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                        String categories = null;
+                        try {
+                            categories = ""+dataSnapshot.child("category").getValue();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            dataList.add(categories);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    try {
+                        dataList.add(0,"All");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    data = dataList.toArray(new String[dataList.size()]);
+
+
+
+                }
+                //progressDialog.dismiss();
+                loadArea();
+
+
+                //adapter.notifyDataSetChanged();
+
+            }
+
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
     private void loadAllShops(String selected) {
         modelShopArrayList = new ArrayList<>();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -440,9 +748,10 @@ public class MainUserActivity extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                     String shopCat = ""+dataSnapshot.child("shopCategory").getValue();
                     String myCity = ""+dataSnapshot.child("city").getValue();
+                    String myDivision = ""+dataSnapshot.child("state").getValue();
 
-                    if (selected.equals(shopCat) && myCity.equals(city)){
-                       ModelShop modelShop = dataSnapshot.getValue(ModelShop.class);
+                    if (selected.equals(shopCat) && myDivision.equals(state)){
+                        ModelShop modelShop = dataSnapshot.getValue(ModelShop.class);
                         modelShopArrayList.add(modelShop);
                     }
                 }
@@ -454,44 +763,6 @@ public class MainUserActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private void loadToSpinner() {
-        progressDialog.setTitle("Please wait");
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
-
-        DatabaseReference myDbRef = FirebaseDatabase.getInstance().getReference().child("ShopCategory");
-        myDbRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                dataList = new ArrayList<>();
-                if (snapshot.exists()){
-                    dataList.clear();
-                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                        String categories = ""+dataSnapshot.child("category").getValue();
-                        dataList.add(categories);
-                    }
-                    dataList.add(0,"All");
-                    data = dataList.toArray(new String[dataList.size()]);
-
-
-
-                }
-                progressDialog.dismiss();
-
-
-                //adapter.notifyDataSetChanged();
-
-            }
-
-
-
-            @Override
-            public void onCancelled(DatabaseError error) {
 
             }
         });

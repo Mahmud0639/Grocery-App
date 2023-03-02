@@ -1,10 +1,9 @@
 package com.manuni.groceryapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.manuni.groceryapp.databinding.ActivityFeedbackBinding;
 
@@ -17,19 +16,10 @@ public class FeedbackActivity extends AppCompatActivity {
         binding = ActivityFeedbackBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.sendButtonId.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendFeedback();
-
-            }
-        });
-        binding.clearButtonId.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.nameEditTextId.setText("");
-                binding.messageEditTextId.setText("");
-            }
+        binding.sendButtonId.setOnClickListener(v -> sendFeedback());
+        binding.clearButtonId.setOnClickListener(v -> {
+            binding.nameEditTextId.setText("");
+            binding.messageEditTextId.setText("");
         });
     }
 

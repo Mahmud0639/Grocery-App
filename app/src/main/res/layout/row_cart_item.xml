@@ -18,7 +18,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_3mdp"
         android:layout_toEndOf="@id/productImage"
-        android:text="@string/item_title"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:maxWidth="@dimen/_80mdp"
+        android:text="CCA CSA One Plus Earphone"
         android:textColor="@color/black" />
 
     <TextView
@@ -34,17 +37,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/itemTitleTV"
-        android:gravity="center"
-        android:text="@string/_0"
         android:layout_marginStart="@dimen/_3mdp"
         android:layout_toEndOf="@id/productImage"
+        android:gravity="center"
+        android:text="@string/_0"
         android:textColor="@color/black" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/itemTitleTV"
-        android:layout_centerHorizontal="true">
+        android:layout_marginStart="@dimen/_5mdp"
+       android:layout_toEndOf="@id/itemPriceTV">
 
         <TextView
             android:id="@+id/itemPriceEachTV"
@@ -77,8 +81,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/_1mdp"
-        android:background="@color/colorGreen"
         android:layout_below="@id/removeTV"
-        android:layout_marginTop="@dimen/_4mdp"/>
+        android:layout_marginTop="@dimen/_4mdp"
+        android:background="@color/colorGreen" />
 
 </RelativeLayout>

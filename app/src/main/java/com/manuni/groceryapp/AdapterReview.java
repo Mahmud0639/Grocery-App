@@ -54,7 +54,12 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.AdapterRev
 
         holder.binding.reviewMsgTV.setText(reviews);
         //set ratings as float
-        float ratingsValue = Float.parseFloat(ratings);
+        float ratingsValue = 0;
+        try {
+            ratingsValue = Float.parseFloat(ratings);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
         holder.binding.ratingBar.setRating(ratingsValue);
 
         holder.binding.dateTV.setText(date);
@@ -68,8 +73,14 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.AdapterRev
         ref.child(uidOfUser).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String fullName = ""+snapshot.child("fullName").getValue();
-                String profile = ""+snapshot.child("profileImage").getValue();
+                String fullName = null;
+                String profile = null;
+                try {
+                    fullName = ""+snapshot.child("fullName").getValue();
+                    profile = ""+snapshot.child("profileImage").getValue();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 holder.binding.nameTV.setText(fullName);
                 try {

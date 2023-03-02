@@ -1,22 +1,9 @@
 package com.manuni.groceryapp;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -26,13 +13,15 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.github.dhaval2404.imagepicker.ImagePicker;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,7 +32,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.manuni.groceryapp.databinding.ActivityEditeProfileUserBinding;
 import com.squareup.picasso.Picasso;
 
@@ -51,6 +39,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class EditeProfileUserActivity extends AppCompatActivity implements LocationListener{
     ActivityEditeProfileUserBinding binding;
@@ -62,8 +51,7 @@ public class EditeProfileUserActivity extends AppCompatActivity implements Locat
     private FirebaseAuth auth;
 
     private static final int LOCATION_PERMISSION_CODE = 100;
-    public static final int CAMERA_PERMISSION_CODE = 200;
-    public static final int STORAGE_PERMISSION_CODE = 300;
+
 
     private String[] locationPermissions;
     private String[] cameraPermissions;
@@ -79,7 +67,11 @@ public class EditeProfileUserActivity extends AppCompatActivity implements Locat
 
         auth = FirebaseAuth.getInstance();
 
-        checkUser();
+        try {
+            checkUser();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         progressDialog = new ProgressDialog(this);
@@ -91,36 +83,26 @@ public class EditeProfileUserActivity extends AppCompatActivity implements Locat
         cameraPermissions = new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-            binding.backArrowBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onBackPressed();
-                }
-            });
+            binding.backArrowBtn.setOnClickListener(view -> onBackPressed());
 
-            binding.gpsBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (checkLocationPermission()){
+            binding.gpsBtn.setOnClickListener(view -> {
+                if (checkLocationPermission()){
+                    try {
                         detectLocation();
-                    }else {
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    try {
                         requestLocationPermission();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             });
-            binding.updateBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    inputData();
-                }
-            });
+            binding.updateBtn.setOnClickListener(view -> inputData());
 
-            binding.profileIV.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    showImagePickDialog();
-                }
-            });
+            binding.addPhoto.setOnClickListener(view -> showImagePickDialog());
     }
 
     private void showImagePickDialog(){
@@ -135,6 +117,7 @@ public class EditeProfileUserActivity extends AppCompatActivity implements Locat
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK){
+            assert data != null;
             imageUri = data.getData();
 
             try {
@@ -151,7 +134,11 @@ public class EditeProfileUserActivity extends AppCompatActivity implements Locat
         FirebaseUser firebaseUser = auth.getCurrentUser();
         if (firebaseUser == null){
             Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
-            startActivity(intent);
+            try {
+                startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             finish();
         }else {
             loadMyInfo();
@@ -168,7 +155,11 @@ public class EditeProfileUserActivity extends AppCompatActivity implements Locat
         city = binding.cityET.getText().toString().trim();
         address = binding.completeAddressET.getText().toString().trim();
 
-        updateProfile();
+        try {
+            updateProfile();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void updateProfile(){
         progressDialog.setMessage("Updating profile...");
@@ -189,65 +180,47 @@ public class EditeProfileUserActivity extends AppCompatActivity implements Locat
 
 
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
-            databaseReference.child(auth.getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void unused) {
-                    progressDialog.dismiss();
-                    Toast.makeText(EditeProfileUserActivity.this, "Profile Updated!", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    progressDialog.dismiss();
-                    Toast.makeText(EditeProfileUserActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+            databaseReference.child(Objects.requireNonNull(auth.getUid())).updateChildren(hashMap).addOnSuccessListener(unused -> {
+                progressDialog.dismiss();
+                Toast.makeText(EditeProfileUserActivity.this, "Profile Updated!", Toast.LENGTH_SHORT).show();
+            }).addOnFailureListener(e -> {
+                progressDialog.dismiss();
+                Toast.makeText(EditeProfileUserActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
             });
 
         }else {
             //update with image
             String filePathAndName = "profile_images/"+""+auth.getUid();
             StorageReference storageReference = FirebaseStorage.getInstance().getReference(filePathAndName);
-            storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                    while (!uriTask.isSuccessful());
-                    Uri downloadUri = uriTask.getResult();
+            storageReference.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
+                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!uriTask.isSuccessful());
+                Uri downloadUri = uriTask.getResult();
 
-                    if (uriTask.isSuccessful()){
-                        HashMap<String,Object> hashMap = new HashMap<>();
-                        hashMap.put("fullName",""+name);
-                        hashMap.put("phoneNumber",""+phone);
-                        hashMap.put("countryName",""+country);
-                        hashMap.put("state",""+state);
-                        hashMap.put("city",""+city);
-                        hashMap.put("address",""+address);
-                        hashMap.put("latitude",""+latitude);
-                        hashMap.put("longitude",longitude);
-                        hashMap.put("profileImage",""+downloadUri);
+                if (uriTask.isSuccessful()){
+                    HashMap<String,Object> hashMap = new HashMap<>();
+                    hashMap.put("fullName",""+name);
+                    hashMap.put("phoneNumber",""+phone);
+                    hashMap.put("countryName",""+country);
+                    hashMap.put("state",""+state);
+                    hashMap.put("city",""+city);
+                    hashMap.put("address",""+address);
+                    hashMap.put("latitude",""+latitude);
+                    hashMap.put("longitude",longitude);
+                    hashMap.put("profileImage",""+downloadUri);
 
-                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
-                        databaseReference.child(auth.getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                progressDialog.dismiss();
-                                Toast.makeText(EditeProfileUserActivity.this, "Profile Updated!", Toast.LENGTH_SHORT).show();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                progressDialog.dismiss();
-                                Toast.makeText(EditeProfileUserActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+                    databaseReference.child(Objects.requireNonNull(auth.getUid())).updateChildren(hashMap).addOnSuccessListener(unused -> {
+                        progressDialog.dismiss();
+                        Toast.makeText(EditeProfileUserActivity.this, "Profile Updated!", Toast.LENGTH_SHORT).show();
+                    }).addOnFailureListener(e -> {
+                        progressDialog.dismiss();
+                        Toast.makeText(EditeProfileUserActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
                 }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    progressDialog.dismiss();
-                    Toast.makeText(EditeProfileUserActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+            }).addOnFailureListener(e -> {
+                progressDialog.dismiss();
+                Toast.makeText(EditeProfileUserActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
             });
         }
     }
@@ -283,9 +256,9 @@ public class EditeProfileUserActivity extends AppCompatActivity implements Locat
 
 
                     try {
-                        Picasso.get().load(profileImage).placeholder(R.drawable.ic_person_gray).into(binding.profileIV);
+                        Picasso.get().load(profileImage).placeholder(R.drawable.ic_person_gray).into(binding.profileIVShow);
                     } catch (Exception e) {
-                        binding.profileIV.setImageResource(R.drawable.ic_person_gray);
+                        binding.profileIVShow.setImageResource(R.drawable.ic_person_gray);
                         e.printStackTrace();
                     }
 
@@ -298,96 +271,6 @@ public class EditeProfileUserActivity extends AppCompatActivity implements Locat
             }
         });
     }
-//    private void showImagePickDialog(){
-//        String[] options = {"Camera","Gallery"};
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("Images Pick").setItems(options, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//                if (i==0){
-//                    //camera
-//                    if (checkCameraPermission()){
-//                        pickFromCamera();
-//                    }else {
-//                        requestPermissionForCamera();
-//                    }
-//                }else {
-//                    //gallery
-//                    if (checkStoragePermission()){
-//                        pickFromStorage();
-//                    }else {
-//                        requestPermissionForStorage();
-//                    }
-//                }
-//            }
-//        }).show();
-//    }
-//    private boolean checkCameraPermission(){
-//        boolean result1 = ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED;
-//        boolean result2 = ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED;
-//        return result1 && result2;
-//    }
-//    private void pickFromCamera(){
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put(MediaStore.Images.Media.TITLE,"Temp_image Title");
-//        contentValues.put(MediaStore.Images.Media.DESCRIPTION,"Temp_image Description");
-//
-//        imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,contentValues);
-//
-//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
-//
-//        resultLauncherForCamera.launch(intent);
-//
-//    }
-//    private ActivityResultLauncher<Intent> resultLauncherForCamera = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-//        @Override
-//        public void onActivityResult(ActivityResult result) {
-//            if (result.getResultCode()==RESULT_OK){
-//                try {
-//                    binding.profileIV.setImageURI(imageUri);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }else {
-//                Toast.makeText(EditeProfileUserActivity.this, "Try Again!", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    });
-//    private void requestPermissionForCamera(){
-//        ActivityCompat.requestPermissions(this,cameraPermissions,CAMERA_PERMISSION_CODE);
-//    }
-//    private boolean checkStoragePermission(){
-//        boolean result = ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED;
-//        return result;
-//    }
-//    private void pickFromStorage(){
-//        Intent intent = new Intent(Intent.ACTION_PICK);
-//        intent.setType("image/*");
-//
-//        resultLauncherForStorage.launch(intent);
-//    }
-//    private ActivityResultLauncher<Intent> resultLauncherForStorage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-//        @Override
-//        public void onActivityResult(ActivityResult result) {
-//            if (result.getResultCode()==RESULT_OK){
-//                Intent data = result.getData();
-//                imageUri = data.getData();
-//
-//                try {
-//                    binding.profileIV.setImageURI(imageUri);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }else {
-//                Toast.makeText(EditeProfileUserActivity.this, "Please try again!", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    });
-//    private void requestPermissionForStorage(){
-//        ActivityCompat.requestPermissions(this,storagePermissions,STORAGE_PERMISSION_CODE);
-//
-//    }
 
     private boolean checkLocationPermission(){
         boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)==(PackageManager.PERMISSION_GRANTED);
@@ -396,18 +279,30 @@ public class EditeProfileUserActivity extends AppCompatActivity implements Locat
     @SuppressLint("MissingPermission")
     private void detectLocation(){
         Toast.makeText(this, "Please wait for a while...", Toast.LENGTH_SHORT).show();
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,this);
+        try {
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void requestLocationPermission(){
-        ActivityCompat.requestPermissions(this,locationPermissions,LOCATION_PERMISSION_CODE);
+        try {
+            ActivityCompat.requestPermissions(this,locationPermissions,LOCATION_PERMISSION_CODE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
-        findAddress();
+        try {
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+            findAddress();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void findAddress(){
         Geocoder geocoder;
@@ -455,36 +350,17 @@ public class EditeProfileUserActivity extends AppCompatActivity implements Locat
                 if (grantResults.length>0){
                     boolean locationAccepted = grantResults[0]==PackageManager.PERMISSION_GRANTED;
                     if (locationAccepted){
-                        detectLocation();
+                        try {
+                            detectLocation();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }else {
                         Toast.makeText(this, "Location permission required!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
             break;
-//            case CAMERA_PERMISSION_CODE:{
-//                if (grantResults.length>0){
-//                    boolean cameraAccepted = grantResults[0]==PackageManager.PERMISSION_GRANTED;
-//                    boolean storageAccepted = grantResults[1]==PackageManager.PERMISSION_GRANTED;
-//
-//                    if (cameraAccepted && storageAccepted){
-//                        pickFromCamera();
-//                    }else {
-//                        Toast.makeText(this, "Camera permission required!", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            }
-//            break;
-//            case STORAGE_PERMISSION_CODE:{
-//                if (grantResults.length>0){
-//                    boolean storageAccepted = grantResults[0]==PackageManager.PERMISSION_GRANTED;
-//                    if (storageAccepted){
-//                        pickFromStorage();
-//                    }else {
-//                        Toast.makeText(this, "Please try again!", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            }
         }
     }
 

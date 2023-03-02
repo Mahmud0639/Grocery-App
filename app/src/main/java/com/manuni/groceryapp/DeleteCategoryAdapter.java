@@ -3,7 +3,6 @@ package com.manuni.groceryapp;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.manuni.groceryapp.databinding.CategorySampleBinding;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class DeleteCategoryAdapter extends RecyclerView.Adapter<DeleteCategoryAdapter.DeleteCategoryAdapterViewHolder>{
     private Context context;
@@ -49,6 +47,7 @@ public class DeleteCategoryAdapter extends RecyclerView.Adapter<DeleteCategoryAd
         return new DeleteCategoryAdapterViewHolder(view);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull DeleteCategoryAdapterViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
@@ -59,49 +58,32 @@ public class DeleteCategoryAdapter extends RecyclerView.Adapter<DeleteCategoryAd
 
         holder.binding.category.setText(categoryName);
 
-        holder.binding.deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Warning!");
-                builder.setMessage("Are you sure you want to delete "+categoryName+"?");
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        progressDialog.show();
-                        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("Categories");
-                        dbRef.child(auth.getUid()).child(categoryId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                progressDialog.dismiss();
-                                Toast.makeText(context, ""+categoryName+" Removed successfully!", Toast.LENGTH_SHORT).show();
+        holder.binding.deleteBtn.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Warning!");
+            builder.setMessage("Are you sure you want to delete "+categoryName+"?");
+            builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+                progressDialog.show();
+                DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("Categories");
+                dbRef.child(Objects.requireNonNull(auth.getUid())).child(categoryId).removeValue().addOnSuccessListener(unused -> {
+                    progressDialog.dismiss();
+                    Toast.makeText(context, ""+categoryName+" Removed successfully!", Toast.LENGTH_SHORT).show();
 
-                                notifyItemRemoved(position);
-                                notifyItemChanged(position);
-                                notifyDataSetChanged();
-                                list.clear();
+                    notifyItemRemoved(position);
+                    notifyItemChanged(position);
+                    notifyDataSetChanged();
+                    list.clear();
 
-                                deleteCategoryProduct(categoryName,position);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                progressDialog.dismiss();
-                                Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
+                    deleteCategoryProduct(categoryName,position);
+                }).addOnFailureListener(e -> {
+                    progressDialog.dismiss();
+                    Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
+            }).setNegativeButton("No", (dialogInterface, i) -> dialogInterface.dismiss());
 
-                AlertDialog dialog = builder.create();
-                dialog.show();
+            AlertDialog dialog = builder.create();
+            dialog.show();
 
-            }
         });
 
     }
@@ -109,7 +91,8 @@ public class DeleteCategoryAdapter extends RecyclerView.Adapter<DeleteCategoryAd
     private void deleteCategoryProduct(String cateName,int pos) {
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users");
-        ref.child(auth.getUid()).child("Products").orderByChild("productCategory").equalTo(cateName).addValueEventListener(new ValueEventListener() {
+        ref.child(Objects.requireNonNull(auth.getUid())).child("Products").orderByChild("productCategory").equalTo(cateName).addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
@@ -117,23 +100,14 @@ public class DeleteCategoryAdapter extends RecyclerView.Adapter<DeleteCategoryAd
                         String id = ""+dataSnapshot.child("productId").getValue();
 
                         DatabaseReference dRef = FirebaseDatabase.getInstance().getReference().child("Users");
-                        dRef.child(auth.getUid()).child("Products").child(id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
+                        dRef.child(auth.getUid()).child("Products").child(id).removeValue().addOnSuccessListener(unused -> {
 
-                                Toast.makeText(context, "Deleted all category product!", Toast.LENGTH_SHORT).show();
-                               notifyItemRemoved(pos);
-                                notifyItemChanged(pos);
-                                notifyDataSetChanged();
-                                list.clear();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-
-                                Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                            Toast.makeText(context, "Deleted all category product!", Toast.LENGTH_SHORT).show();
+                           notifyItemRemoved(pos);
+                            notifyItemChanged(pos);
+                            notifyDataSetChanged();
+                            list.clear();
+                        }).addOnFailureListener(e -> Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show());
                     }
                 }
             }

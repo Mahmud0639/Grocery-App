@@ -1,5 +1,6 @@
 package com.manuni.groceryapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,7 @@ public class AdapterOrderedItems extends RecyclerView.Adapter<AdapterOrderedItem
         return new AdapterOrderedItemsViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull AdapterOrderedItemsViewHolder holder, int position) {
         ModelOrderedItems data = list.get(position);

@@ -1,9 +1,10 @@
 package com.manuni.groceryapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -12,6 +13,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.manuni.groceryapp.databinding.ActivityTotalCostBinding;
+
+import java.util.Objects;
 
 public class TotalCostActivity extends AppCompatActivity {
     ActivityTotalCostBinding binding;
@@ -31,29 +34,49 @@ public class TotalCostActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
       //  orderToSeller = getIntent().getStringExtra("orderToSeller");
-        loadAccountStatus();
-        loadThisShopDeliveryFee();
-        loadAllCompletedOrders();
-        loadAllInProgressOrder();
-        loadAllCancelledOrders();
-        loadAllShopsInfo();
-
+        try {
+            loadAccountStatus();
+            loadThisShopDeliveryFee();
+            loadAllCompletedOrders();
+            loadAllInProgressOrder();
+            loadAllCancelledOrders();
+            loadAllShopsInfo();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
     }
     private void loadAllShopsInfo() {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users");
-        db.child(auth.getUid()).child("Orders").addValueEventListener(new ValueEventListener() {
+        db.child(Objects.requireNonNull(auth.getUid())).child("Orders").addValueEventListener(new ValueEventListener() {
+            @SuppressLint({"SetTextI18n", "DefaultLocale"})
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                long totalOrders = snapshot.getChildrenCount();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                long totalOrders = 0;
+                try {
+                    totalOrders = snapshot.getChildrenCount();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 binding.totalOrders.setText("" + totalOrders);
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    String totalCostForAllType = "" + dataSnapshot.child("orderCost").getValue();
+                    String totalCostForAllType = null;
+                    try {
+                        totalCostForAllType = "" + dataSnapshot.child("orderCost").getValue();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
-                    double orderCostInDouble = Double.parseDouble(totalCostForAllType);
+                    assert totalCostForAllType != null;
+                    double orderCostInDouble = 0;
+                    try {
+                        orderCostInDouble = Double.parseDouble(totalCostForAllType);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
                     totalOrderCostForAll = totalOrderCostForAll + orderCostInDouble;
                 }
 
@@ -62,31 +85,43 @@ public class TotalCostActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
 
-        binding.backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        binding.backBtn.setOnClickListener(view -> onBackPressed());
     }
     private void loadAllCancelledOrders() {
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        dbRef.child(auth.getUid()).child("Orders").orderByChild("orderStatus").equalTo("Cancelled").addValueEventListener(new ValueEventListener() {
+        dbRef.child(Objects.requireNonNull(auth.getUid())).child("Orders").orderByChild("orderStatus").equalTo("Cancelled").addValueEventListener(new ValueEventListener() {
+            @SuppressLint({"SetTextI18n", "DefaultLocale"})
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                long cancelledOrders = snapshot.getChildrenCount();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                long cancelledOrders = 0;
+                try {
+                    cancelledOrders = snapshot.getChildrenCount();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 binding.cancelledOrders.setText("" + cancelledOrders);
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    String orderCostCancelled = "" + dataSnapshot.child("orderCost").getValue();
+                    String orderCostCancelled = null;
+                    try {
+                        orderCostCancelled = "" + dataSnapshot.child("orderCost").getValue();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
-                    double orderCostInDouble = Double.parseDouble(orderCostCancelled);
+                    assert orderCostCancelled != null;
+                    double orderCostInDouble = 0;
+                    try {
+                        orderCostInDouble = Double.parseDouble(orderCostCancelled);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
                     totalOrderCostForCancelled = totalOrderCostForCancelled + orderCostInDouble;
                 }
 
@@ -94,47 +129,69 @@ public class TotalCostActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
     private void loadAllInProgressOrder() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users");
-        ref.child(auth.getUid()).child("Orders").orderByChild("orderStatus").equalTo("In Progress").addValueEventListener(new ValueEventListener() {
+        ref.child(Objects.requireNonNull(auth.getUid())).child("Orders").orderByChild("orderStatus").equalTo("In Progress").addValueEventListener(new ValueEventListener() {
+            @SuppressLint({"SetTextI18n", "DefaultLocale"})
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                long inProgressOrders = snapshot.getChildrenCount();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                long inProgressOrders = 0;
+                try {
+                    inProgressOrders = snapshot.getChildrenCount();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 binding.inProgressOrders.setText("" + inProgressOrders);
 
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    String orderCost = "" + dataSnapshot.child("orderCost").getValue();
+                    String orderCost = null;
+                    try {
+                        orderCost = "" + dataSnapshot.child("orderCost").getValue();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
-                    double orderCostInDouble = Double.parseDouble(orderCost);
+                    assert orderCost != null;
+                    double orderCostInDouble = 0;
+                    try {
+                        orderCostInDouble = Double.parseDouble(orderCost);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
                     totalOrderCost = totalOrderCost + orderCostInDouble;
 
                 }
 
                 binding.totalCostInProgress.setText(String.format("%.2f", totalOrderCost)+" tk");
 
-                ;
-
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
     private void loadAccountStatus(){
         DatabaseReference dref = FirebaseDatabase.getInstance().getReference().child("Users");
-        dref.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+        dref.child(Objects.requireNonNull(auth.getUid())).addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                String accountStatus = ""+snapshot.child("accountStatus").getValue();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String accountStatus = null;
+                try {
+                    accountStatus = ""+snapshot.child("accountStatus").getValue();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                assert accountStatus != null;
                 if (accountStatus.equals("blocked")){
                     binding.accountStatusTxt.setTextColor(getResources().getColor(R.color.colorRed));
                     binding.accountStatusTxt.setText("Account Status: "+accountStatus);
@@ -145,31 +202,43 @@ public class TotalCostActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
     private void loadAllCompletedOrders() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
-        reference.child(auth.getUid()).child("Orders").orderByChild("orderStatus").equalTo("Completed").addValueEventListener(new ValueEventListener() {
+        reference.child(Objects.requireNonNull(auth.getUid())).child("Orders").orderByChild("orderStatus").equalTo("Completed").addValueEventListener(new ValueEventListener() {
+            @SuppressLint({"DefaultLocale", "SetTextI18n"})
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                long completedOrder = snapshot.getChildrenCount();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                long completedOrder = 0;
+                try {
+                    completedOrder = snapshot.getChildrenCount();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 String completedOrderASString = String.valueOf(completedOrder);
-                double completedOrderAsDouble = Double.parseDouble(completedOrderASString);
+                double completedOrderAsDouble = 0;
+                try {
+                    completedOrderAsDouble = Double.parseDouble(completedOrderASString);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
 
                 //long delFeeAsLong = Long.parseLong(deliFee);
-                double delFeeAsDouble = Double.parseDouble(deliFee);
+                double delFeeAsDouble = 0;
+                try {
+                    delFeeAsDouble = Double.parseDouble(deliFee);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
 
                 double totalComFeeAsDouble = completedOrderAsDouble*delFeeAsDouble;
 
 
-
-                // long totalCompletedDelFee = (long) (completedOrder*delFeeAsDouble);
-
-                //binding.deliFeeForCompleted.setText(totalCompletedDelFee+" Taka");
                 binding.deliFeeForCompleted.setText(String.format("%.2f",totalComFeeAsDouble)+" Taka");
 
 
@@ -179,9 +248,20 @@ public class TotalCostActivity extends AppCompatActivity {
                 binding.completedOrders.setText("" + completedOrder);
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    String orderCostCompleted = "" + dataSnapshot.child("orderCost").getValue();
+                    String orderCostCompleted = null;
+                    try {
+                        orderCostCompleted = "" + dataSnapshot.child("orderCost").getValue();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
-                    double orderCostInDouble = Double.parseDouble(orderCostCompleted);
+                    assert orderCostCompleted != null;
+                    double orderCostInDouble = 0;
+                    try {
+                        orderCostInDouble = Double.parseDouble(orderCostCompleted);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
                     totalOrderCostForCompleted = totalOrderCostForCompleted + orderCostInDouble;
                 }
 
@@ -189,25 +269,30 @@ public class TotalCostActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
     private void loadThisShopDeliveryFee() {
         DatabaseReference dRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        dRef.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+        dRef.child(Objects.requireNonNull(auth.getUid())).addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                deliFee = "" + snapshot.child("deliveryFee").getValue();
-                shopName = ""+snapshot.child("shopName").getValue();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                try {
+                    deliFee = "" + snapshot.child("deliveryFee").getValue();
+                    shopName = ""+snapshot.child("shopName").getValue();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 binding.shopNameTV.setText("Shop Name: "+shopName);
                 binding.deliveryFee.setText("Delivery Fee: "+deliFee+" Taka");
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
