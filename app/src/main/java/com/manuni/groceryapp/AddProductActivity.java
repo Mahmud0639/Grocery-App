@@ -101,7 +101,7 @@ public class AddProductActivity extends AppCompatActivity {
 
 
     }
-    private String productTitle,productDescription,productCategory,productQuantity,originalPrice,discountPrice,discountNote;
+    private String productTitle,productDescription,productCategory,productQuantity,originalPrice,discountPrice,discountNote,productBrand;
     private  boolean discountAvailable = false;
     private double discountNoteSum=0.0;
 
@@ -111,6 +111,7 @@ public class AddProductActivity extends AppCompatActivity {
         productCategory = binding.categoryTV.getText().toString().trim();
         productQuantity = binding.quantityET.getText().toString().trim();
         originalPrice = binding.priceET.getText().toString().trim();
+        productBrand = binding.brandET.getText().toString().trim();
 
         discountAvailable = binding.discountSwitch.isChecked();//true or false...jodi check thake tahole discountAvailable false theke true te update hoye jabe
 
@@ -125,6 +126,10 @@ public class AddProductActivity extends AppCompatActivity {
         }
         if (TextUtils.isEmpty(productCategory)){
             Toast.makeText(this, "Select a category!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (TextUtils.isEmpty(productBrand)){
+            Toast.makeText(this, "Brand is empty!", Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(productQuantity)){
@@ -207,6 +212,7 @@ public class AddProductActivity extends AppCompatActivity {
             hashMap.put("timestamp",""+timestamp);
             hashMap.put("uid",""+auth.getUid());
             hashMap.put("productAvailable","true");
+            hashMap.put("productBrand",""+productBrand);
 
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
             reference.child(Objects.requireNonNull(auth.getUid())).child("Products").child(timestamp).setValue(hashMap).addOnSuccessListener(unused -> {
@@ -242,6 +248,7 @@ public class AddProductActivity extends AppCompatActivity {
                     hashMap.put("timestamp",""+timestamp);
                     hashMap.put("uid",""+auth.getUid());
                     hashMap.put("productAvailable","true");
+                    hashMap.put("productBrand",""+productBrand);
 
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
                     reference.child(Objects.requireNonNull(auth.getUid())).child("Products").child(timestamp).setValue(hashMap).addOnSuccessListener(unused -> {

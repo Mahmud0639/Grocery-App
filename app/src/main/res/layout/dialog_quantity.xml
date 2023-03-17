@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:local="http://schemas.android.com/tools"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -130,7 +131,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="@null"
-            android:layout_marginEnd="@dimen/_2mdp"
+            android:layout_marginEnd="@dimen/_8mdp"
             android:src="@drawable/ic_remove" />
 
         <TextView
@@ -147,8 +148,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="@null"
-            android:layout_marginStart="@dimen/_2mdp"
+            android:layout_marginStart="@dimen/_8mdp"
             android:src="@drawable/ic_add_black" />
+
+        <Spinner
+            android:id="@+id/quantitySpinner"
+            android:layout_width="wrap_content"
+            android:spinnerMode="dropdown"
+            android:backgroundTint="#8A8989"
+            android:layout_height="wrap_content"/>
+
+
+
 
 
     </LinearLayout>
